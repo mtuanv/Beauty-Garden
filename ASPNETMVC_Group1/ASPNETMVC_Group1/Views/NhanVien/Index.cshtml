@@ -1,0 +1,385 @@
+﻿@model ASPNETMVC_Group1.Models.GroupedUserViewModel
+
+@{
+	ViewBag.Title = "Danh sách nhân viên";
+	Layout = "~/Views/Shared/_LayoutBackEnd.cshtml";
+}
+@section breadcumb{
+	<li class="breadcrumb-item"><a href="@Url.Action("Index", "QuanLy")">Dashboard</a></li>
+	<li class="breadcrumb-item active">Nhân viên</li>
+}
+<section class="content">
+	<div class="card">
+		<div class="card-header">
+			<div class="row">
+				<div class="col-12">
+					<h3 class="card-title">Thông tin admin</h3>
+				</div>
+			</div>
+		</div>
+		<div class="card-body p-0" style="display:block">
+			<div class="row">
+				@foreach (var item in Model.Admins)
+				{
+					<div class="col-md-6">
+						<div class="card collapsed-card">
+							<div class="card-header">
+								<h3 class="card-title">@item.Ten</h3>
+								<div class="card-tools">
+									<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+										<i class="fas fa-plus"></i>
+									</button>
+								</div>
+							</div>
+							<div class="card-body" style="display: none">
+								<p><b>Họ tên: </b>@item.Ten</p>
+								<p><b>Email: </b>@item.Email</p>
+								<p><b>Số điện thoại: </b>@item.PhoneNumber</p>
+								<p><b>Giới tính: </b>@item.GioiTinh</p>
+								<p><b>Ngày sinh: </b>@Convert.ToDateTime(item.NgaySinh).ToString("yyyy-MM-dd")</p>
+								<p><b>Thành phố: </b>@item.ThanhPho</p>
+								<p><b>Quận huyện: </b>@item.QuanHuyen</p>
+								<p><b>Địa chỉ: </b>@item.DiaChi</p>
+								@{
+									string ImagePath = "~/wwwroot/Avatars/";
+									if (item.Anh != null && item.Anh.Trim() != "")
+									{
+										ImagePath += item.Anh;
+									}
+									else
+									{
+										ImagePath += "default_avatar.jpg";
+									}
+								}
+								<p><b>Ảnh đại diện: </b></p>
+								<img src="@Url.Content(ImagePath)" alt="Avatar" width="150" class="img-thumbnail">
+								<div class="pt-3">
+									<a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-info btn-sm">
+										<i class="fas fa-pencil-alt">
+										</i>
+										Sửa thông tin
+									</a>
+									<a href="@Url.Action("Password", new { id = item.Id })" class="btn btn-warning btn-sm text-white">
+										<i class="fas fa-key"></i>
+										Đổi mật khẩu
+									</a>
+									<a href="@Url.Action("Avatar", new { id = item.Id })" class="btn btn-success btn-sm">
+										<i class="far fa-image"></i>
+										Đổi ảnh đại diện
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+	</div>
+	<div class="card">
+		<div class="card-header">
+			<div class="row">
+				<div class="col-6">
+					<h3 class="card-title">Thông tin nhân viên</h3>
+				</div>
+				<div class="col-6">
+					<a href="@Url.Action("Create")" class="btn btn-success btn-sm">
+						<i class="fas fa-plus-circle"></i>
+						Thêm nhân viên
+					</a>
+				</div>
+			</div>
+		</div>
+		<div class="card-body p-0" style="display:block">
+			<div class="row">
+				@foreach (var item in Model.Staffs)
+				{
+					<div class="col-md-6">
+						<div class="card collapsed-card">
+							<div class="card-header">
+								<h3 class="card-title">@item.Ten</h3>
+								<div class="card-tools">
+									<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+										<i class="fas fa-plus"></i>
+									</button>
+								</div>
+							</div>
+							<div class="card-body" style="display: none">
+								<p><b>Họ tên: </b>@item.Ten</p>
+								<p><b>Email: </b>@item.Email</p>
+								<p><b>Số điện thoại: </b>@item.PhoneNumber</p>
+								<p><b>Giới tính: </b>@item.GioiTinh</p>
+								<p><b>Ngày sinh: </b>@Convert.ToDateTime(item.NgaySinh).ToString("yyyy-MM-dd")</p>
+								<p><b>Thành phố: </b>@item.ThanhPho</p>
+								<p><b>Quận huyện: </b>@item.QuanHuyen</p>
+								<p><b>Địa chỉ: </b>@item.DiaChi</p>
+								@{
+									string ImagePath = "~/wwwroot/Avatars/";
+									if (item.Anh != null && item.Anh.Trim() != "")
+									{
+										ImagePath += item.Anh;
+									}
+									else
+									{
+										ImagePath += "default_avatar.jpg";
+									}
+								}
+								<p><b>Ảnh đại diện: </b></p>
+								<img src="@Url.Content(ImagePath)" alt="Avatar" width="150" class="img-thumbnail">
+								<div class="pt-3">
+									@if (!item.LockoutEnabled)
+									{
+										using (Html.BeginForm("Lockout", "QuanLy/NhanVien", new { id = item.Id }, FormMethod.Post))
+										{
+											<a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-info btn-sm">
+												<i class="fas fa-pencil-alt">
+												</i>
+												Sửa thông tin
+											</a>
+											<a href="@Url.Action("Password", new { id = item.Id })" class="btn btn-warning btn-sm text-white">
+												<i class="fas fa-key"></i>
+												Đổi mật khẩu
+											</a>
+											<a href="@Url.Action("Avatar", new { id = item.Id })" class="btn btn-success btn-sm">
+												<i class="far fa-image"></i>
+												Đổi ảnh đại diện
+											</a>
+											@Html.AntiForgeryToken()
+											<button type="submit" data-click="lockout" class="btn btn-danger btn-sm">
+												<i class="fas fa-lock"></i>
+												Khoá tài khoản
+											</button>
+										}
+									}
+									else
+									{
+										using (Html.BeginForm("Unlock", "QuanLy/NhanVien", new { id = item.Id }, FormMethod.Post))
+										{
+											<a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-info btn-sm">
+												<i class="fas fa-pencil-alt">
+												</i>
+												Sửa thông tin
+											</a>
+											<a href="@Url.Action("Password", new { id = item.Id })" class="btn btn-warning btn-sm text-white">
+												<i class="fas fa-key"></i>
+												Đổi mật khẩu
+											</a>
+											<a href="@Url.Action("Avatar", new { id = item.Id })" class="btn btn-success btn-sm">
+												<i class="far fa-image"></i>
+												Đổi ảnh đại diện
+											</a>
+											@Html.AntiForgeryToken()
+											<button type="submit" data-click="unlock" class="btn btn-primary btn-sm">
+												<i class="fas fa-lock-open"></i>
+												Mở khoá tài khoản
+											</button>
+										}
+									}
+								</div>
+							</div>
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+	</div>
+</section>
+@section css{
+	<link href="~/Public/BackEnd/dist/css/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+}
+@section scripts{
+	<script src="~/Public/FrontEnd/js/sweetalert2.all.min.js"></script>
+	<script>
+		//Initialize
+		$('#nhanvien').addClass('active');
+	</script>
+	<script>
+		//Submit lockout
+		$(document).ready(function () {
+			$('[data-click="lockout"]').click(function (e) {
+				e.preventDefault();
+				var form = $(this).parents('form');
+				const swalWithBootstrapButtons = Swal.mixin({
+					customClass: {
+						confirmButton: 'btn btn-success mr-3',
+						cancelButton: 'btn btn-danger'
+					},
+					buttonsStyling: false
+				})
+				swalWithBootstrapButtons.fire({
+					title: 'Khoá tài khoản',
+					text: "Bạn có chắc chắn muốn khoá tài khoản này?",
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonText: 'Có',
+					cancelButtonText: 'Không'
+				}).then((result) => {
+					if (result.isConfirmed) {
+						form.submit()
+					}
+				});
+			});
+		});
+		//Submit unlock
+		$(document).ready(function () {
+			$('[data-click="unlock"]').click(function (e) {
+				e.preventDefault();
+				var form = $(this).parents('form');
+				const swalWithBootstrapButtons = Swal.mixin({
+					customClass: {
+						confirmButton: 'btn btn-success mr-3',
+						cancelButton: 'btn btn-danger'
+					},
+					buttonsStyling: false
+				})
+				swalWithBootstrapButtons.fire({
+					title: 'Mở khoá tài khoản',
+					text: "Bạn có chắc chắn muốn mở khoá tài khoản này?",
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonText: 'Có',
+					cancelButtonText: 'Không'
+				}).then((result) => {
+					if (result.isConfirmed) {
+						form.submit()
+					}
+				});
+			});
+		});
+	</script>
+	@if (ViewBag.CreateSuccess != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Thêm thành công!',
+				'',
+				'success'
+			)
+		</script>
+	}
+	@if (ViewBag.EditSuccess != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Sửa thành công!',
+				'',
+				'success'
+			)
+		</script>
+	}
+	@if (ViewBag.LockoutSuccess != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Khoá thành công!',
+				'',
+				'success'
+			)
+		</script>
+	}
+	@if (ViewBag.LockoutError != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Khoá thất bại!',
+				"Hãy thử lại sau",
+				'error'
+			)
+		</script>
+	}
+	@if (ViewBag.UnlockSuccess != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Mở khoá thành công!',
+				'',
+				'success'
+			)
+		</script>
+	}
+	@if (ViewBag.UnlockError != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Mở khoá thất bại!',
+				"Hãy thử lại sau",
+				'error'
+			)
+		</script>
+	}
+	@if (ViewBag.ChangePassSuccess != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Đổi mật khẩu thành công!',
+				'',
+				'success'
+			)
+		</script>
+	}
+	@if (ViewBag.ChangeAvatarSuccess != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Đổi ảnh đại diện thành công!',
+				'',
+				'success'
+			)
+		</script>
+	}
+}

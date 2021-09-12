@@ -1,0 +1,220 @@
+﻿@model PagedList.IPagedList<ASPNETMVC_Group1.Models.TinTuc>
+@using PagedList.Mvc;
+
+@{
+	ViewBag.Title = "Danh sách tin tức";
+	Layout = "~/Views/Shared/_LayoutBackEnd.cshtml";
+}
+@section breadcumb{
+	<li class="breadcrumb-item"><a href="@Url.Action("Index","QuanLy")">Dashboard</a></li>
+	<li class="breadcrumb-item active">Tin tức</li>
+}
+<section class="content">
+	<div class="card">
+		<div class="card-header">
+			<div class="row">
+				<div class="col-4">
+					<a href="@Url.Action("Create")" class="btn btn-success btn-sm">
+						<i class="fas fa-plus-circle"></i>
+						Thêm mới
+					</a>
+				</div>
+				<div class="col-8">
+					@using (Html.BeginForm("Index", "TinTucs", FormMethod.Get))
+					{
+						<div class="input-group rounded">
+							@Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { type = "search", @class = "form-control rounded", placeholder = "Tìm kiếm", autocomplete = "off" })
+							<button class="input-group-text border-0" id="search-addon"><i class="fas fa-search"></i></button>
+						</div>
+					}
+				</div>
+
+			</div>
+		</div>
+		<div class="card-body p-0" style="display:block">
+			<table class="table table-striped projects">
+				<thead>
+					<tr>
+						<th style="width: 50%">
+							Tiêu đề
+							<a href="@Url.Action("Index", new { sortOrder = ViewBag.SapTheoTD, currentFilter=ViewBag.CurrentFilter  })" class="btn">
+								<i class="fas fa-sort"></i>
+							</a>
+						</th>
+						<th style="width: 15%">
+							Loại tin tức
+							<a href="@Url.Action("Index", new { sortOrder = ViewBag.SapTheoLoai, currentFilter=ViewBag.CurrentFilter  })" class="btn">
+								<i class="fas fa-sort"></i>
+							</a>
+						</th>
+						<th style="width: 15%">
+							Tin nổi bật
+							<a href="@Url.Action("Index", new { sortOrder = ViewBag.SapTheoNB, currentFilter=ViewBag.CurrentFilter  })" class="btn">
+								<i class="fas fa-sort"></i>
+							</a>
+						</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model)
+					{
+						<tr>
+							<td>
+								@Html.DisplayFor(modelItem => item.TieuDe)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.LoaiTinTuc)
+							</td>
+							<td>
+								@if ((bool)item.NoiBat)
+								{
+									<span>Có</span>
+								}
+								else
+								{
+							<span>Không</span>
+								}
+							</td>
+							<td align="center">
+								<a href="@Url.Action("Index","TT", new { id = item.MaTinTuc})" class="btn btn-primary btn-sm mb-1" target="_blank">
+									<i class="fas fa-folder">
+									</i>
+									Chi tiết
+								</a>
+								<a href="@Url.Action("Edit", new { id = item.MaTinTuc })" class="btn btn-info btn-sm">
+									<i class="fas fa-pencil-alt">
+									</i>
+									Sửa
+								</a>
+								@using (Html.BeginForm("Delete", "QuanLy/TinTucs", new { id = item.MaTinTuc }, FormMethod.Post, new { @class = "d-inline" }))
+								{
+									@Html.AntiForgeryToken()
+									<button type="submit" data-click="delete" class="btn btn-danger btn-sm">
+										<i class="fas fa-trash"></i>
+										Xoá
+									</button>
+								}
+							</td>
+						</tr>
+					}
+				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="4" align="right">
+							Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+							@Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+						</td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+	</div>
+</section>
+@section css{
+	<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+	<link href="~/Public/BackEnd/dist/css/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+}
+@section scripts{
+	<script src="~/Public/BackEnd/dist/js/sweetalert2.all.min.js"></script>
+	<script>
+		//Initialize
+		$('#tintuc').addClass('active');
+	</script>
+	<script>
+		//Submit delete
+		$(document).ready(function () {
+			$('[data-click="delete"]').click(function (e) {
+				e.preventDefault();
+				var form = $(this).parents('form');
+				const swalWithBootstrapButtons = Swal.mixin({
+					customClass: {
+						confirmButton: 'btn btn-success mr-3',
+						cancelButton: 'btn btn-danger'
+					},
+					buttonsStyling: false
+				})
+				swalWithBootstrapButtons.fire({
+					title: 'Xoá tin tức',
+					text: "Bạn có chắc chắn muốn xoá?",
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonText: 'Có',
+					cancelButtonText: 'Không'
+				}).then((result) => {
+					if (result.isConfirmed) {
+						form.submit()
+					}
+				});
+			});
+		});
+	</script>
+	@if (ViewBag.CreateSuccess != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Thêm thành công!',
+				'',
+				'success'
+			)
+		</script>
+	}
+	@if (ViewBag.EditSuccess != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Sửa thành công!',
+				'',
+				'success'
+			)
+		</script>
+	}
+	@if (ViewBag.DeleteSuccess != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Xoá thành công!',
+				'',
+				'success'
+			)
+		</script>
+	}
+	@if (ViewBag.DeleteError != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Xoá thất bại!',
+				"Hãy thử lại sau",
+				'error'
+			)
+		</script>
+	}
+}

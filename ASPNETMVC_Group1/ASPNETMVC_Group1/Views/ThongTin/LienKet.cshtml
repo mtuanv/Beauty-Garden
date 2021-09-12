@@ -1,0 +1,88 @@
+﻿
+@{
+	ViewBag.Title = "Liên kết";
+	Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
+}
+<main role="main" class="pb-3">
+
+	<div class="bracum">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<ol class="ol-non">
+						<li><a href="@Url.Action("Index","Home")">Trang chủ</a></li>
+						<li><a href="javascript:void(0);">@ViewBag.Title</a></li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-9 order-lg-last">
+					<div class="box-manugar">
+
+						<div class="my-content">
+							<div class="head-box">
+								<div class="title-box">
+									<h1>
+										<a href="javascript:void()" title="">
+											Liên kết
+										</a>
+									</h1>
+								</div>
+								<div class="clr"></div>
+							</div>
+							<div class="body-box">
+								<p>
+									<span style="color:#ff0000;"><strong>Cám ơn Quý khách đã truy cập và mua sắm tại beautygarden.vn !</strong></span>
+								</p>
+								<p>
+									Baeuty Garden hiểu được rằng chất lượng sản phẩm và dịch vụ là 2 yếu tố được quan tâm hàng đầu khi mua sắm trực tuyến. Vì vậy,&nbsp;beautygarden.vn đã đưa ra những quy định riêng và được tuân thủ vô cùng nghiêm ngặt nhằm mang đến sự thoải mái khi quý khách hàng mua sắm tại shop của chúng tôi.
+								</p>
+								<p style="text-align: center;">
+									<img alt="giao-hang-toan-quoc" src="/Files/Uploads/giao-hang-toan-quoc.jpg" style="width: 800px; height: 245px;" title="giao-hang-toan-quoc">
+								</p>
+								<p>
+									Về dịch vụ giao hàng, chúng tôi đã ký hợp đồng với những đối tác giao hàng lớn và uy tín để phục vụ khách hàng trên mọi miền đất nước kể cả vùng sâu vùng xa như:
+								</p>
+								<p>
+									- <strong>Công ty Cổ Phần Chuyển Fax Nhanh Bưu Điện (EMS)</strong>.
+								</p>
+								<p>
+									- <strong>Công ty Cổ Phần Bưu Chính Viettel (Viettel Post)</strong>.
+								</p>
+								<p>
+									- <strong>Công ty Cổ Phần Dịch Vụ Giao Hàng Nhanh (GHN)</strong>.
+								</p>
+								<p>
+									&nbsp;
+								</p>
+								<p>
+									Về đối tác cung cấp sản phẩm,&nbsp;beautygarden.vn có quy trình kiểm duyệt chặt chẽ để lựa chọn đối tác cũng như sản phẩm phù hợp với những tiêu chí đặt ra như chất lượng, hiệu quả, an toàn và chính hãng nhằm nâng cao giá trị của người tiêu dùng. Với&nbsp;beautygarden.vn,&nbsp;mỗi đối tác là một người bạn và luôn song hành để cùng phát triển. Vì vậy, việc lựa chọn đối tác hợp tác là điều luôn được Shop chú trọng hàng đầu. Chính vì vậy, đến với beautygarden.vn, bạn hoàn toàn có thể yên tâm thỏa sức mua sắm với những món sản phẩm uy tín và chất lượng nhất.
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3 order-lg-first">
+					<div class="box-left hidden-sm hidden-xs">
+						@{Html.RenderAction("DanhMucSanPham", "Partial");}
+					</div>
+					<div class="box-left hidden-sm hidden-xs">
+						@{Html.RenderAction("TinNoiBat", "Partial");}
+					</div>
+					<div class="box-left">
+						@{Html.RenderAction("SanPhamMoiVe", "Partial");}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+@section css{
+	<link href="~/Public/FrontEnd/css/category.css" rel="stylesheet" />
+	<link href="~/Public/FrontEnd/css/huongdan.css" rel="stylesheet" />
+}
+

@@ -1,0 +1,759 @@
+﻿@model ASPNETMVC_Group1.Models.DetailSanPhamViewModel
+
+@{
+	ViewBag.Title = Model.sanPham.TenSanPham;
+	Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
+}
+<main role="main" class="pb-3">
+
+	<style>
+		img {
+			aspect-ratio: attr(width) / attr(height);
+		}
+	</style>
+	<div class="bracum">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<ol class="ol-non">
+						<li><a href="@Url.Action("Index", "Home")">Trang chủ</a></li>
+						<li><a href="/danh-muc/nuoc-hoa-nu.html">@Model.sanPham.DanhMuc.TenDanhMuc</a></li>
+						<li><a href="javascript:void(0);">@Model.sanPham.TenSanPham</a></li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-9">
+					<div class="box-product-detail">
+						<div class="row">
+							<div class="col-lg-6">
+								<div class="mar-bot-20">
+									<div class="box-img-detail">
+										<div class="config-alige">
+											<div class="easyzoom easyzoom--overlay easyzoom--with-thumbnails">
+												@{var ImagePath = ""; }
+												@if (Model.anhs != null)
+												{
+													ImagePath = "~/wwwroot/Products/";
+													if (Model.anhs.Where(s => s.MaSanPham == Model.sanPham.MaSanPham).FirstOrDefault() != null)
+													{
+														ImagePath += Model.anhs.Where(s => s.MaSanPham == Model.sanPham.MaSanPham).FirstOrDefault().LinkAnh;
+													}
+													<a href="@Url.Content(ImagePath)">
+														<img src="@Url.Content(ImagePath)"
+															 data-src="@Url.Content(ImagePath)"
+															 alt="@Model.sanPham.TenSanPham" class="img-reponsive lazy" width="300" height="305" />
+													</a>
+												}
+											</div>
+										</div>
+									</div>
+									<div class="box-thumnail-detail">
+										<a href="javascript:void(0)" class="thumnail-pre btn-thumail">
+											<i class="fa fa-angle-left" aria-hidden="true"></i>
+										</a>
+										<div class="thumbnails owl-carousel">
+											@if (Model.anhs != null)
+											{
+												foreach (var a in Model.anhs.Where(s => s.MaSanPham == Model.sanPham.MaSanPham))
+												{
+													ImagePath = "~/wwwroot/Products/";
+													if (a.LinkAnh != null)
+													{
+														ImagePath += a.LinkAnh;
+													}
+													<div class="item">
+														<div class="item-thumnail">
+															<a href="@Url.Content(ImagePath)" data-standard="@Url.Content(ImagePath)" class="active">
+																<img width="85" height="85" data-src="@Url.Content(ImagePath)" alt="@Model.sanPham.TenSanPham" class="img-reponsive lazy" src="@Url.Content(ImagePath)" />
+															</a>
+														</div>
+													</div>
+												}
+											}
+										</div>
+										<a href="javascript:void(0)" class="thumnail-nex btn-thumail">
+											<i class="fa fa-angle-right" aria-hidden="true"></i>
+										</a>
+									</div>
+
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div>
+									<h1 class="title-Product">
+										@Model.sanPham.TenSanPham
+									</h1>
+									<div class="rate-star">
+										<div class='rating-stars' data-star="@ViewBag.Sao">
+											<ul id='stars'>
+												<li class='star' title='Tệ' data-value='1' onclick="chooseReview(this)">
+													<i class='fa fa-star fa-fw'></i>
+												</li>
+												<li class='star' title='Tạm được' data-value='2' onclick="chooseReview(this)">
+													<i class='fa fa-star fa-fw'></i>
+												</li>
+												<li class='star' title='Tốt' data-value='3' onclick="chooseReview(this)">
+													<i class='fa fa-star fa-fw'></i>
+												</li>
+												<li class='star' title='Rất tốt' data-value='4' onclick="chooseReview(this)">
+													<i class='fa fa-star fa-fw'></i>
+												</li>
+												<li class='star' title='Tuyệt vời' data-value='5' onclick="chooseReview(this)">
+													<i class='fa fa-star fa-fw'></i>
+												</li>
+											</ul>
+										</div>
+										<div class="text-rating">
+											@if (ViewBag.Count > 0)
+											{
+												<p><span>@ViewBag.DanhGia</span> sao - <span>@ViewBag.Count</span> lượt đánh giá</p>
+											}
+											else
+											{
+												<p>Chưa có đánh giá nào</p>
+											}
+										</div>
+									</div>
+									<div class="box-price">
+										<div class="price-drop">
+											@functions
+											{
+												long RoundingTo(long myNum, long roundTo)
+												{
+													if (roundTo <= 0) return myNum;
+													return (myNum + roundTo / 2) / roundTo * roundTo;
+												}
+												long RoundingTo(long myNum, int roundTo)
+												{
+													return RoundingTo(myNum, (long)roundTo);
+												}
+												int RoundingTo(int myNum, int roundTo)
+												{
+													return (int)RoundingTo((long)myNum, (long)roundTo);
+												}
+											}
+											@{
+
+												int gb = (int)Model.sanPham.GiaBan;
+												int gtt = (int)Model.sanPham.GiaThiTruong;
+												int tk = gtt - gb;
+												string gb2 = "";
+												if (Model.sanPham.GiamGia != null || Model.sanPham.GiamGia > 0)
+												{
+													gb2 = double.Parse(gb.ToString()).ToString("#,###");
+													int gg = (int)Model.sanPham.GiamGia;
+													gb = (int)(gb - gb * ((double)gg / 100));
+													int digits = gb.ToString().Length;
+													gb = RoundingTo(gb, 1000);
+												}
+												string giaban = double.Parse(gb.ToString()).ToString("#,###");
+												string giathitruong = double.Parse(gtt.ToString()).ToString("#,###");
+												string tietkiem = double.Parse(tk.ToString()).ToString("#,###");
+												string phantram = Math.Round(((double)(tk * 100) / gtt)).ToString();
+
+											}
+											<span>@giaban₫</span>
+											@if (Model.sanPham.GiamGia != null)
+											{
+												<span class="issale">@gb2₫</span>
+												<span class="persale">- @Model.sanPham.GiamGia%</span>
+											}
+										</div>
+										<div class="price-vince">
+											<p>Giá thị trường: <span>@giathitruong₫</span> - Tiết kiệm: <span>@tietkiem₫ </span> (<span>-@phantram%</span>)</p>
+										</div>
+										<div class="hanc">
+											<p>Thương hiệu: @Model.sanPham.NhanHieu.TenNhanHieu</p>
+										</div>
+									</div>
+									@if (Model.sanPham.CongDung != null)
+									{
+										<div class="box-note">
+											@Html.Raw(Model.sanPham.CongDung)
+										</div>
+									}
+									@if (Model.sanPham.TinhTrang == 1)
+									{
+										<div class="card-box">
+											<div class="inner-load">
+												<div class="box-add">
+													<form action="@Url.Action("AddCart","GioHang", new { id = Model.sanPham.MaSanPham })" method="post">
+														<input type="hidden" id="MaSP" name="MaSP" value="@Model.sanPham.MaSanPham" />
+														<div class="number-card">
+															<span>Số lượng:</span>
+															<input type="number" name="SoLuong" id="SoLuong" class="form-control" value="1" min="1" max="99">
+															<div class="clr"></div>
+														</div>
+														<div class="bst">
+
+															<button type="submit" class="btn-bts btn-atc">
+																<i class="fa fa-shopping-cart"></i>
+																Thêm giỏ hàng
+															</button>
+
+															<button type="button" class="btn-bts btn-hea " onclick="AddLike(@Model.sanPham.MaSanPham)">
+																<i class="fa fa-heart-o heart_new"></i>
+															</button>
+															<div class="clr"></div>
+														</div>
+														<div class="clr"></div>
+													</form>
+												</div>
+											</div>
+										</div>
+									}
+									else if (Model.sanPham.TinhTrang == 3)
+									{
+										<div class="select-land">
+											<span>Tình trạng: <b class="red-color">Dừng bán</b></span>
+										</div>
+									}
+									else
+									{
+										<div class="select-land">
+											<span>Tình trạng: <b class="red-color">Cháy hàng</b></span>
+										</div>
+									}
+									<div class="box-filter-brach">
+										<a href="@Url.Action("HeThong","ThongTin")" class="a-title">
+											<img width="12" height="15" src="~/Public/FrontEnd/img/local.png" alt="local" class="img-reponsive">
+											Tìm cửa hàng gần bạn
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="box-products">
+						<div class="head-box">
+							<div class="title-box">
+								<strong>
+									SẢN PHẨM CÙNG XEM
+								</strong>
+							</div>
+							<div class="arrow-slider">
+								<a href="javascript:void(0)" class="new-pre btn-pre bnts">
+									<i class="fa fa-angle-left" aria-hidden="true"></i>
+								</a>
+								<a href="javascript:void(0)" class="new-nex btn-next bnts">
+									<i class="fa fa-angle-right" aria-hidden="true"></i>
+								</a>
+							</div>
+							<div class="clr"></div>
+						</div>
+						<div class="body-box">
+							<div class="owl-carousel new-sale">
+								@foreach (var item in Model.cungXem)
+								{
+									gb = (int)item.GiaBan;
+									gtt = (int)item.GiaThiTruong;
+									tk = gtt - gb;
+									gb2 = "";
+									if (item.GiamGia != null || item.GiamGia > 0)
+									{
+										gb2 = double.Parse(gb.ToString()).ToString("#,###");
+										int gg = (int)item.GiamGia;
+										gb = (int)(gb - gb * ((double)gg / 100));
+										int digits = gb.ToString().Length;
+										gb = RoundingTo(gb, 1000);
+									}
+									giaban = double.Parse(gb.ToString()).ToString("#,###");
+									giathitruong = double.Parse(gtt.ToString()).ToString("#,###");
+									ImagePath = "~/wwwroot/Products/";
+									if (Model.anhs.Where(s => s.MaSanPham == item.MaSanPham).FirstOrDefault() != null)
+									{
+										ImagePath += Model.anhs.Where(s => s.MaSanPham == item.MaSanPham).FirstOrDefault().LinkAnh;
+									}
+									<div class="item">
+										<div class="pd-box ">
+											<div class="box-images">
+												<a href="@Url.Action("Index", "SP", new { id = item.MaSanPham })" title="@item.TenSanPham">
+													<img src="@Url.Content(ImagePath)"
+														 data-src="@Url.Content(ImagePath)"
+														 alt="@item.TenSanPham" class="img-reponsive owl-lazy " style="width: 206px;height:230px" />
+												</a>
+												<button type="button" class="btn-addlike " onclick="AddLike(@item.MaSanPham)"><i class="fa fa-heart-o heart_new"></i></button>
+												@if (item.GiamGia != null || item.GiamGia > 0)
+												{
+													<div class="sale-off ">@item.GiamGia%<br />OFF</div>
+												}
+											</div>
+											<div class="box-content">
+												<h3>
+													<a href="@Url.Action("Index", "SP", new { id = item.MaSanPham })" title="@item.TenSanPham">@item.TenSanPham</a>
+												</h3>
+												<div>
+													<span class="price-drop">@giaban₫</span>
+													<span class="price ">@giathitruong₫</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								}
+							</div>
+						</div>
+					</div>
+
+
+					<div class="box-thongtin">
+						@Html.Raw(Model.sanPham.MoTa)
+						<div class="item-note ">
+							<div class="title-member right-border title-behide">
+								<h2>l&#xFD; do n&#xEA;n mua t&#x1EA1;i Beauty Garden</h2>
+							</div>
+							<div class="back-content">
+								<p style="box-sizing: border-box; margin: 0px 0px 10px; color: rgb(102, 102, 102); font-family: Arial, serif; font-size: 14px;">
+									<span style="color: rgb(51, 51, 51); font-family: arial; font-weight: 700;">CAM KẾT CH&Iacute;NH H&Atilde;NG 100%</span>
+								</p>
+								<p style="box-sizing: border-box; margin: 0px 0px 10px; color: rgb(102, 102, 102); font-family: Arial, serif; font-size: 14px;">
+									<span style="box-sizing: border-box; font-weight: 700; margin: 0px; padding: 0px; color: rgb(51, 51, 51); font-family: arial;">ĐỘI NGŨ TƯ VẤN CHUY&Ecirc;N NGHIỆP</span>
+								</p>
+								<p style="box-sizing: border-box; margin: 0px 0px 10px; color: rgb(102, 102, 102); font-family: Arial, serif; font-size: 14px;">
+									<span style="color: rgb(51, 51, 51); font-family: arial; font-weight: 700;">GIAO H&Agrave;NG TR&Ecirc;N TO&Agrave;N QUỐC</span>
+								</p>
+								<p style="box-sizing: border-box; margin: 0px 0px 10px; color: rgb(102, 102, 102); font-family: Arial, serif; font-size: 14px;">
+									<span style="color: rgb(51, 51, 51); font-family: arial; font-weight: 700;">ĐƯỢC ĐỔI TRẢ SẢN PH&Acirc;M NẾU BỊ LỖI SẢN XUẤT</span>
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="box-products">
+						<div class="head-box">
+							<div class="title-box">
+								<strong>
+									SẢN PHẨM MUA CÙNG
+								</strong>
+							</div>
+							<div class="arrow-slider">
+								<a href="javascript:void(0)" class="togtether-pre btn-pre bnts">
+									<i class="fa fa-angle-left" aria-hidden="true"></i>
+								</a>
+								<a href="javascript:void(0)" class="togtether-nex btn-next bnts">
+									<i class="fa fa-angle-right" aria-hidden="true"></i>
+								</a>
+							</div>
+							<div class="clr"></div>
+						</div>
+						<div class="body-box">
+							<div class="owl-carousel products-togtether">
+								@foreach (var item in Model.muaCung)
+								{
+									gb = (int)item.GiaBan;
+									gtt = (int)item.GiaThiTruong;
+									tk = gtt - gb;
+									gb2 = "";
+									if (item.GiamGia != null || item.GiamGia > 0)
+									{
+										gb2 = double.Parse(gb.ToString()).ToString("#,###");
+										int gg = (int)item.GiamGia;
+										gb = (int)(gb - gb * ((double)gg / 100));
+										int digits = gb.ToString().Length;
+										gb = RoundingTo(gb, 1000);
+									}
+									giaban = double.Parse(gb.ToString()).ToString("#,###");
+									giathitruong = double.Parse(gtt.ToString()).ToString("#,###");
+									ImagePath = "~/wwwroot/Products/";
+									if (Model.anhs.Where(s => s.MaSanPham == item.MaSanPham).FirstOrDefault() != null)
+									{
+										ImagePath += Model.anhs.Where(s => s.MaSanPham == item.MaSanPham).FirstOrDefault().LinkAnh;
+									}
+									<div class="item">
+										<div class="pd-box ">
+											<div class="box-images">
+												<a href="@Url.Action("Index", "SP", new { id = item.MaSanPham })" title="@item.TenSanPham">
+													<img src="@Url.Content(ImagePath)"
+														 data-src="@Url.Content(ImagePath)"
+														 alt="@item.TenSanPham" class="img-reponsive owl-lazy " style="width: 206px;height:230px" />
+												</a>
+												<button type="button" class="btn-addlike " onclick="AddLike(@item.MaSanPham)"><i class="fa fa-heart-o heart_new"></i></button>
+												@if (item.GiamGia != null || item.GiamGia > 0)
+												{
+													<div class="sale-off ">@item.GiamGia%<br />OFF</div>
+												}
+											</div>
+											<div class="box-content">
+												<h3>
+													<a href="@Url.Action("Index", "SP", new { id = item.MaSanPham })" title="@item.TenSanPham">@item.TenSanPham</a>
+												</h3>
+												<div>
+													<span class="price-drop">@giaban₫</span>
+													<span class="price ">@giathitruong₫</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								}
+
+							</div>
+						</div>
+					</div>
+
+					<div class="box-products">
+						<div class="head-box">
+							<div class="title-box">
+								<strong>
+									SẢN PHẨM CÙNG LOẠI
+								</strong>
+							</div>
+							<div class="arrow-slider">
+								<a href="javascript:void(0)" class="same-pre btn-pre bnts">
+									<i class="fa fa-angle-left" aria-hidden="true"></i>
+								</a>
+								<a href="javascript:void(0)" class="same-nex btn-next bnts">
+									<i class="fa fa-angle-right" aria-hidden="true"></i>
+								</a>
+							</div>
+							<div class="clr"></div>
+						</div>
+						<div class="body-box">
+							<div class="owl-carousel products-same">
+								@foreach (var item in Model.cungLoai)
+								{
+									gb = (int)item.GiaBan;
+									gtt = (int)item.GiaThiTruong;
+									tk = gtt - gb;
+									gb2 = "";
+									if (item.GiamGia != null || item.GiamGia > 0)
+									{
+										gb2 = double.Parse(gb.ToString()).ToString("#,###");
+										int gg = (int)item.GiamGia;
+										gb = (int)(gb - gb * ((double)gg / 100));
+										int digits = gb.ToString().Length;
+										gb = RoundingTo(gb, 1000);
+									}
+									giaban = double.Parse(gb.ToString()).ToString("#,###");
+									giathitruong = double.Parse(gtt.ToString()).ToString("#,###");
+									ImagePath = "~/wwwroot/Products/";
+									if (Model.anhs.Where(s => s.MaSanPham == item.MaSanPham).FirstOrDefault() != null)
+									{
+										ImagePath += Model.anhs.Where(s => s.MaSanPham == item.MaSanPham).FirstOrDefault().LinkAnh;
+									}
+									<div class="item">
+										<div class="pd-box ">
+											<div class="box-images">
+												<a href="@Url.Action("Index", "SP", new { id = item.MaSanPham })" title="@item.TenSanPham">
+													<img src="@Url.Content(ImagePath)"
+														 data-src="@Url.Content(ImagePath)"
+														 alt="@item.TenSanPham" class="img-reponsive owl-lazy " style="width: 206px;height:230px" />
+												</a>
+												<button type="button" class="btn-addlike " onclick="AddLike(@item.MaSanPham)"><i class="fa fa-heart-o heart_new"></i></button>
+												@if (item.GiamGia != null || item.GiamGia > 0)
+												{
+													<div class="sale-off ">@item.GiamGia%<br />OFF</div>
+												}
+											</div>
+											<div class="box-content">
+												<h3>
+													<a href="@Url.Action("Index", "SP", new { id = item.MaSanPham })" title="@item.TenSanPham">@item.TenSanPham</a>
+												</h3>
+												<div>
+													<span class="price-drop">@giaban₫</span>
+													<span class="price ">@giathitruong₫</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								}
+
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="col-lg-3">
+					<div class="box-left">
+						<div class="title-left">
+							<strong>-- CHẤT LƯỢNG CHO TẤT CẢ --</strong>
+						</div>
+						<div class="content-left pad-8-15">
+							<div class="box-shas rig-limit">
+								<img width="75" height="70"
+									 data-src="https://adminbeauty.hvnet.vn/Upload/files/chinh-sach-04.png?v=012"
+									 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
+									 alt="TRI ÂN KHÁCH HÀNG" class="img-reponsive lazy" />
+								<div class="content-shas">
+									<strong>mỹ phẩm 100% chính hãng </strong>
+									<p>Chất lượng sản phẩm luôn được chứng nhận bằng sự tin cậy của Khách Hàng suốt nhiều năm qua</p>
+								</div>
+								<div class="clr"></div>
+							</div>
+							<div class="box-shas rig-limit">
+								<img width="75" height="70"
+									 data-src="https://adminbeauty.hvnet.vn/Upload/files/chinh-sach-05.png?v=012"
+									 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" alt="TRI ÂN KHÁCH HÀNG" class="img-reponsive lazy" />
+								<div class="content-shas">
+									<strong>
+										LUÔN ĐƯỢC TÍCH ĐIỂM
+									</strong>
+									<p>
+										Đơn hàng từ 100k=1 điểm 10 điểm nhận voucher 100k
+									</p>
+								</div>
+								<div class="clr"></div>
+							</div>
+							<div class="box-shas rig-limit">
+								<img width="75" height="70"
+									 data-src="https://adminbeauty.hvnet.vn/Upload/files/chinh-sach-06.png?v=012"
+									 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" alt="TRI ÂN KHÁCH HÀNG" class="img-reponsive lazy" />
+								<div class="content-shas">
+									<strong>MIỄN PHÍ GIAO HÀNG </strong>
+									<p>Đơn hàng trên 200k nội thành HCM</p>
+								</div>
+								<div class="clr"></div>
+							</div>
+							<div class="box-shas rig-limit">
+								<img width="75" height="70"
+									 data-src="https://adminbeauty.hvnet.vn/Upload/files/chinh-sach-07.png?v=012"
+									 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" alt="TRI ÂN KHÁCH HÀNG" class="img-reponsive lazy" />
+								<div class="content-shas">
+									<strong>TRI ÂN KHÁCH HÀNG</strong>
+									<p>Với các chương trình khuyến mãi, các sự kiện & quà tặng đặc biệt vô cùng hấp dẫn</p>
+								</div>
+								<div class="clr"></div>
+							</div>
+						</div>
+					</div>
+					<div class="box-left">
+						@{Html.RenderAction("DanhMucSanPham", "Partial");}
+					</div>
+					<div class="box-left">
+						@{Html.RenderAction("SanPhamMoiVe", "Partial", new { id = Model.sanPham.MaSanPham });}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="bk-opps">
+		<div class="lds-roller">
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
+	</div>
+
+
+</main>
+
+@section css{
+	<link rel="preload" href="~/Public/FrontEnd/css/slider.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+	<link rel="stylesheet" href="~/Public/FrontEnd/css/details.css" type="text/css">
+	<style>
+		*:focus {
+			outline: none !important;
+		}
+	</style>
+}
+@section scripts{
+
+	<link rel="preload" as="script" href="~/Public/FrontEnd/js/Zoomer.js" />
+	<script src="~/Public/FrontEnd/js/Zoomer.js" type="text/javascript"></script>
+	<link rel="preload" as="script" href="~/Public/FrontEnd/js/owl.carousel.js" />
+	<script src="~/Public/FrontEnd/js/owl.carousel.js"></script>
+	<link rel="preload" as="script" href="~/Public/FrontEnd/js/countdow.js" />
+	<script src="~/Public/FrontEnd/js/countdow.js" type="text/javascript"></script>
+	<script>
+		var owlnew = $('.new-sale');
+		owlnew.owlCarousel({
+			margin: 10,
+			loop: true,
+			lazyLoad: true,
+			autoplayTimeout: 5000,
+			responsive: {
+				0: {
+					items: 2
+				},
+				600: {
+					items: 3
+				},
+				1000: {
+					items: 4
+				}
+			}
+		});
+		$('.new-nex').click(function () {
+			owlnew.trigger('next.owl.carousel');
+		});
+		$('.new-pre').click(function () {
+			owlnew.trigger('prev.owl.carousel');
+		});
+		var owltogtether = $('.products-togtether');
+		owltogtether.owlCarousel({
+			margin: 10,
+			loop: true,
+			lazyLoad: true,
+			autoplayTimeout: 5000,
+			responsive: {
+				0: {
+					items: 2
+				},
+				600: {
+					items: 3
+				},
+				1000: {
+					items: 4
+				}
+			}
+		});
+		$('.togtether-nex').click(function () {
+			owltogtether.trigger('next.owl.carousel');
+		});
+		$('.togtether-pre').click(function () {
+			owltogtether.trigger('prev.owl.carousel');
+		});
+		var owlsame = $('.products-same');
+		owlsame.owlCarousel({
+			margin: 10,
+			loop: true,
+			lazyLoad: true,
+			autoplayTimeout: 5000,
+			responsive: {
+				0: {
+					items: 2
+				},
+				600: {
+					items: 3
+				},
+				1000: {
+					items: 4
+				}
+			}
+		});
+		$('.same-nex').click(function () {
+			owlsame.trigger('next.owl.carousel');
+		});
+		$('.same-pre').click(function () {
+			owlsame.trigger('prev.owl.carousel');
+		});
+
+		var owlthumnail = $('.thumbnails');
+		owlthumnail.owlCarousel({
+			margin: 10,
+			lazyLoad: true,
+			responsive: {
+				0: {
+					items: 4
+				},
+				480: {
+					items: 4
+				},
+				600: {
+					items: 4
+				},
+				1000: {
+					items: 4
+				}
+			}
+		});
+
+		$('.thumnail-nex').click(function () {
+			owlthumnail.trigger('next.owl.carousel');
+		});
+		$('.thumnail-pre').click(function () {
+			owlthumnail.trigger('prev.owl.carousel');
+		});
+	</script>
+	<script>
+		jQuery(document).ready(function () {
+			if (jQuery(window).width() > 768) {
+				// Instantiate EasyZoom instances
+				var $easyzoom = $('.easyzoom').easyZoom();
+
+				// Setup thumbnails example
+				var api1 = $easyzoom.filter('.easyzoom--with-thumbnails').data('easyZoom');
+				// Use EasyZoom's `swap` method
+
+				$('.thumbnails').on('click', 'a', function (e) {
+					var $this = $(this);
+					$('.item-thumnail a').removeClass('active');
+					$(this).addClass('active');
+					e.preventDefault();
+					api1.swap($this.data('standard'), $this.attr('href'));
+				});
+			}
+			else {
+				$('.thumbnails').on('click', 'a', function (e) {
+					var $this = $(this);
+					$('.item-thumnail a').removeClass('active');
+					$(this).addClass('active');
+					var images = $this.data('standard');
+					e.preventDefault();
+					var tag = $('.easyzoom--with-thumbnails')[0].childNodes[1];
+					tag.setAttribute("href", images);
+					tag.childNodes[1].setAttribute("src", images);
+				});
+			}
+		});
+
+
+
+	</script>
+	<script>
+		$(document).ready(function () {
+			loadStar();
+			/* 1. Visualizing things on Hover - See next part for action on click */
+			$('#stars li').on('mouseover', function () {
+				var onStar = parseInt($(this).data('value'), 10); // The star currently mouse on
+
+				// Now highlight all the stars that's not after the current hovered star
+				$(this).parent().children('li.star').each(function (e) {
+					if (e < onStar) {
+						$(this).addClass('hover');
+					}
+					else {
+						$(this).removeClass('hover');
+					}
+				});
+
+			}).on('mouseout', function () {
+				$(this).parent().children('li.star').each(function (e) {
+					$(this).removeClass('hover');
+				});
+			});
+
+
+			/* 2. Action to perform on click */
+			$('#stars li').on('click', function () {
+				var onStar = parseInt($(this).data('value'), 10); // The star currently selected
+				var stars = $(this).parent().children('li.star');
+
+				for (i = 0; i < stars.length; i++) {
+					$(stars[i]).removeClass('selected');
+				}
+
+				for (i = 0; i < onStar; i++) {
+					$(stars[i]).addClass('selected');
+				}
+
+				// JUST RESPONSE (Not needed)
+				var ratingValue = parseInt($('#stars li.selected').last().data('value'), 10);
+			});
+		});
+
+		function loadStar() {
+			var starNumber = $(".rating-stars").data("star");
+			var star = document.querySelectorAll(".star");
+			var dem = 0;
+			star.forEach(function (e) {
+				if (dem < starNumber) {
+					e.classList.add('selected');
+				}
+				dem++;
+			});
+		}
+
+		function chooseReview(e) {
+			var ratingNumber = Number($('input:radio[name=rating]:checked').val());
+			//alert(ratingNumber);
+		}
+	</script>
+}

@@ -1,0 +1,411 @@
+﻿@model PagedList.IPagedList<ASPNETMVC_Group1.Models.SanPham>
+@using PagedList.Mvc;
+@{
+	ViewBag.Title = "Danh sách sản phẩm";
+	Layout = "~/Views/Shared/_LayoutBackEnd.cshtml";
+}
+@section breadcumb{
+	<li class="breadcrumb-item"><a href="@Url.Action("Index","QuanLy")">Dashboard</a></li>
+	<li class="breadcrumb-item active">Sản phẩm</li>
+}
+<section class="content">
+	<div class="card">
+		<div class="card-header">
+			<div class="row">
+				<div class="col-4">
+					<a href="@Url.Action("Create")" class="btn btn-success btn-sm">
+						<i class="fas fa-plus-circle"></i>
+						Thêm mới
+					</a>
+				</div>
+				<div class="col-8">
+					@using (Html.BeginForm("Index", "SanPhams", FormMethod.Get))
+					{
+						<div class="input-group rounded">
+							@Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { type = "search", @class = "form-control rounded", placeholder = "Tìm kiếm", autocomplete = "off" })
+							<button class="input-group-text border-0" id="search-addon"><i class="fas fa-search"></i></button>
+						</div>
+					}
+				</div>
+
+			</div>
+		</div>
+		<div class="card-body p-0" style="display:block">
+			<table class="table table-striped projects">
+				<thead>
+					<tr>
+						<th>
+							Tên sản phẩm
+							<a href="@Url.Action("Index", new { sortOrder = ViewBag.SapTheoTen, currentFilter=ViewBag.CurrentFilter  })" style="color: #000">
+								<i class="fas fa-sort"></i>
+							</a>
+						</th>
+						<th style="width: 10%">
+							Danh mục
+							<a href="@Url.Action("Index", new { sortOrder = ViewBag.SapTheoDM, currentFilter=ViewBag.CurrentFilter  })" style="color: #000">
+								<i class="fas fa-sort"></i>
+							</a>
+						</th>
+						<th style="width: 10%">
+							Nhãn hiệu
+							<a href="@Url.Action("Index", new { sortOrder = ViewBag.SapTheoNH, currentFilter=ViewBag.CurrentFilter  })" style="color: #000">
+								<i class="fas fa-sort"></i>
+							</a>
+						</th>
+						<th style="width: 6%">
+							Tag
+							<a href="@Url.Action("Index", new { sortOrder = ViewBag.SapTheoTag, currentFilter=ViewBag.CurrentFilter  })" style="color: #000">
+								<i class="fas fa-sort"></i>
+							</a>
+						</th>
+						<th style="width: 7%">
+							Số lượng
+							<a href="@Url.Action("Index", new { sortOrder = ViewBag.SapTheoSL, currentFilter=ViewBag.CurrentFilter  })" style="color: #000">
+								<i class="fas fa-sort"></i>
+							</a>
+						</th>
+						<th style="width: 8%">
+							Tình trạng
+							<a href="@Url.Action("Index", new { sortOrder = ViewBag.SapTheoTT, currentFilter=ViewBag.CurrentFilter  })" style="color: #000">
+								<i class="fas fa-sort"></i>
+							</a>
+						</th>
+						<th style="width: 10%">
+							Giá thị trường
+							<a href="@Url.Action("Index", new { sortOrder = ViewBag.SapTheoGTT, currentFilter=ViewBag.CurrentFilter  })" style="color: #000">
+								<i class="fas fa-sort"></i>
+							</a>
+						</th>
+						<th style="width: 7%">
+							Giá bán
+							<a href="@Url.Action("Index", new { sortOrder = ViewBag.SapTheoGB, currentFilter=ViewBag.CurrentFilter  })" style="color: #000">
+								<i class="fas fa-sort"></i>
+							</a>
+						</th>
+						<th style="width: 7%">
+							Giảm giá
+							<a href="@Url.Action("Index", new { sortOrder = ViewBag.SapTheoGG, currentFilter=ViewBag.CurrentFilter  })" style="color: #000">
+								<i class="fas fa-sort"></i>
+							</a>
+						</th>
+						<th style="width: 17%"></th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model)
+					{
+						<tr>
+							<td>
+								@item.TenSanPham
+							</td>
+							<td>
+								@item.DanhMuc.TenDanhMuc
+							</td>
+							<td>
+								@item.NhanHieu.TenNhanHieu
+							</td>
+							<td>
+								@foreach (var spt in item.SanPhamTags)
+								{
+									<span class="badge badge-success">@spt.Tag.TenTag</span>
+								}
+							</td>
+							<td>
+								@item.SoLuong
+							</td>
+							<td>
+								@if (item.TinhTrang == 1)
+								{
+									<span>Còn hàng</span>
+								}
+								else if (item.TinhTrang == 2)
+								{
+									<span>Hết hàng</span>
+								}
+								else { 
+							<span>Dừng bán</span>
+								}
+							</td>
+							<td>
+								@double.Parse(item.GiaThiTruong.ToString()).ToString("#,###")₫
+							</td>
+							<td>
+								@double.Parse(item.GiaBan.ToString()).ToString("#,###")₫
+							</td>
+							<td>
+								@if (item.GiamGia == null)
+								{
+									<span>0%</span>
+								}
+								else
+								{
+									<span>@item.GiamGia%</span>
+								}
+							</td>
+							<td align="center">
+								<a href="@Url.Action("Index","SP", new { id = item.MaSanPham})" class="btn btn-primary btn-sm mb-1" target="_blank">
+									<i class="fas fa-folder">
+									</i>
+									Chi tiết
+								</a>
+								<a href="@Url.Action("Edit", new { id = item.MaSanPham })" class="btn btn-info btn-sm mb-1">
+									<i class="fas fa-pencil-alt">
+									</i>
+									Sửa
+								</a>
+								@using (Html.BeginForm("Delete", "QuanLy/SanPhams", new { id = item.MaSanPham }, FormMethod.Post, new { @class = "d-inline" }))
+								{
+									@Html.AntiForgeryToken()
+									<button type="submit" data-click="delete" class="btn btn-danger btn-sm mb-1">
+										<i class="fas fa-trash"></i>
+										Xoá
+									</button>
+								}
+								@if (item.TinhTrang == 3)
+								{
+									using (Html.BeginForm("ContinueSale", "QuanLy/SanPhams", new { id = item.MaSanPham }, FormMethod.Post, new { @class = "d-inline" }))
+									{
+										@Html.AntiForgeryToken()
+										<button type="submit" data-click="continue" class="btn btn-warning btn-sm text-white mb-1">
+											<i class="fas fa-dollar-sign"></i>
+											Tiếp tục bán
+										</button>
+									}
+								}
+								else
+								{
+									using (Html.BeginForm("StopSale", "QuanLy/SanPhams", new { id = item.MaSanPham }, FormMethod.Post, new { @class = "d-inline" }))
+									{
+										@Html.AntiForgeryToken()
+										<button type="submit" data-click="stop" class="btn btn-secondary btn-sm text-white mb-1">
+											<i class="fas fa-ban"></i>
+											Dừng bán
+										</button>
+									}
+								}
+							</td>
+						</tr>
+					}
+				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="10" align="right">
+							Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+							@Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+						</td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+	</div>
+</section>
+@section css{
+	<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+	<link href="~/Public/BackEnd/dist/css/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+}
+@section scripts{
+	<script src="~/Public/BackEnd/dist/js/sweetalert2.all.min.js"></script>
+	<script>
+		//Initialize
+		$('#sanpham').addClass('active');
+	</script>
+	<script>
+		//Submit delete
+		$(document).ready(function () {
+			$('[data-click="delete"]').click(function (e) {
+				e.preventDefault();
+				var form = $(this).parents('form');
+				const swalWithBootstrapButtons = Swal.mixin({
+					customClass: {
+						confirmButton: 'btn btn-success mr-3',
+						cancelButton: 'btn btn-danger'
+					},
+					buttonsStyling: false
+				})
+				swalWithBootstrapButtons.fire({
+					title: 'Xoá sản phẩm',
+					text: "Bạn có chắc chắn muốn xoá?",
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonText: 'Có',
+					cancelButtonText: 'Không'
+				}).then((result) => {
+					if (result.isConfirmed) {
+						form.submit()
+					}
+				});
+			});
+		});
+		//Submit stopsale
+		$(document).ready(function () {
+			$('[data-click="stop"]').click(function (e) {
+				e.preventDefault();
+				var form = $(this).parents('form');
+				const swalWithBootstrapButtons = Swal.mixin({
+					customClass: {
+						confirmButton: 'btn btn-success mr-3',
+						cancelButton: 'btn btn-danger'
+					},
+					buttonsStyling: false
+				})
+				swalWithBootstrapButtons.fire({
+					title: 'Dừng bán',
+					text: "Bạn có chắc chắn dừng bán sản phẩm này?",
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonText: 'Có',
+					cancelButtonText: 'Không'
+				}).then((result) => {
+					if (result.isConfirmed) {
+						form.submit()
+					}
+				});
+			});
+		});
+		//Submit continuesale
+		$(document).ready(function () {
+			$('[data-click="continue"]').click(function (e) {
+				e.preventDefault();
+				var form = $(this).parents('form');
+				const swalWithBootstrapButtons = Swal.mixin({
+					customClass: {
+						confirmButton: 'btn btn-success mr-3',
+						cancelButton: 'btn btn-danger'
+					},
+					buttonsStyling: false
+				})
+				swalWithBootstrapButtons.fire({
+					title: 'Tiếp tục bán',
+					text: "Bạn có chắc chắn tiếp tục bán sản phẩm này?",
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonText: 'Có',
+					cancelButtonText: 'Không'
+				}).then((result) => {
+					if (result.isConfirmed) {
+						form.submit()
+					}
+				});
+			});
+		});
+	</script>
+	@if (ViewBag.CreateSuccess != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Thêm thành công!',
+				'',
+				'success'
+			)
+		</script>
+	}
+	@if (ViewBag.DeleteSuccess != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Xoá thành công!',
+				'',
+				'success'
+			)
+		</script>
+	}
+	@if (ViewBag.DeleteError != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Xoá thất bại!',
+				"Hãy thử lại sau",
+				'error'
+			)
+		</script>
+	}
+	@if (ViewBag.StopSuccess != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Dừng bán thành công!',
+				'',
+				'success'
+			)
+		</script>
+	}
+	@if (ViewBag.StopError != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Dừng bán thất bại!',
+				"Hãy thử lại sau",
+				'error'
+			)
+		</script>
+	}
+	@if (ViewBag.ContinueSuccess != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Tiếp tục bán thành công!',
+				'',
+				'success'
+			)
+		</script>
+	}
+	@if (ViewBag.ContinueError != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Tiếp tục bán thất bại!',
+				"Hãy thử lại sau",
+				'error'
+			)
+		</script>
+	}
+}

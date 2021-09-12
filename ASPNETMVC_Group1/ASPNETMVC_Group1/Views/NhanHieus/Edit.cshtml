@@ -1,0 +1,91 @@
+﻿@model ASPNETMVC_Group1.Models.NhanHieu
+
+@{
+	ViewBag.Title = "Sửa nhãn hiệu";
+	Layout = "~/Views/Shared/_LayoutBackEnd.cshtml";
+}
+@section breadcumb{
+	<li class="breadcrumb-item"><a href="@Url.Action("Index","QuanLy")">Dashboard</a></li>
+	<li class="breadcrumb-item"><a href="@Url.Action("Index","NhanHieus")">Nhãn hiệu</a></li>
+	<li class="breadcrumb-item active">Sửa</li>
+}
+<div class="row">
+	<div class="col-md-12">
+		<div class="card card-primary">
+			<div class="card-header">
+				<h3 class="card-title">Thông tin nhãn hiệu</h3>
+			</div>
+			<div class="card-body">
+				@using (Html.BeginForm("Edit", "NhanHieus", FormMethod.Post, new { id="editForm", @autocomplete="off"}))
+				{
+					@Html.AntiForgeryToken()
+					@Html.HiddenFor(model => model.MaNhanHieu)
+					<div class="form-group">
+						@Html.LabelFor(model => model.TenNhanHieu, htmlAttributes: new { @class = "control-label col-md-2" })
+						@Html.EditorFor(model => model.TenNhanHieu, new { htmlAttributes = new { @class = "form-control" } })
+						@Html.ValidationMessageFor(model => model.TenNhanHieu, "", new { @class = "text-danger" })
+					</div>
+					<button class="btn btn-success" type="submit" id="submit">Lưu</button>
+				}
+			</div>
+			<!-- /.card-body -->
+		</div>
+		<!-- /.card -->
+	</div>
+</div>
+<div class="row">
+	<div class="col-12">
+		<a href="@Url.Action("Index")" class="btn btn-secondary">Trở về danh sách</a>
+	</div>
+</div>
+@section css{
+	<link href="~/Public/BackEnd/dist/css/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+}
+@section scripts{
+	<script src="~/Public/BackEnd/dist/js/sweetalert2.all.min.js"></script>
+	<script>
+		//Initialize
+		$('#nhanhieu').addClass('active');
+	</script>
+	<script>
+		//Validate
+		$(document).ready(function () {
+			$('#editForm').keyup(function () {
+				if ($('#TenNhanHieu').val() != '') {
+					$('#submit').prop('disabled', false);
+				} else {
+					$('#submit').prop('disabled', true);
+				}
+			})
+			$('#TenNhanHieu').keyup(function () {
+				if ($('#TenNhanHieu').val().trim() == '')
+					$('span[data-valmsg-for="TenNhanHieu"]').text('Hãy nhập tên nhãn hiệu.');
+				else
+					$('span[data-valmsg-for="TenNhanHieu"]').text('');
+			});
+			$('#TenNhanHieu').keydown(function () {
+				if ($('#TenNhanHieu').val().trim() == '')
+					$('span[data-valmsg-for="TenNhanHieu"]').text('Hãy nhập tên nhãn hiệu.');
+				else
+					$('span[data-valmsg-for="TenNhanHieu"]').text('');
+			});
+		});
+	</script>
+	@if (ViewBag.Error != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Sửa thất bại!',
+				"",
+				'error'
+			)
+		</script>
+	}
+}

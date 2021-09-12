@@ -1,0 +1,784 @@
+﻿@model ASPNETMVC_Group1.Models.IndexViewModel
+@{
+	ViewBag.Title = "Quản lý tài khoản";
+	Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
+}
+<div class="bracum">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<ol class="ol-non">
+					<li><a href="@Url.Action("Index","Home")">Trang chủ</a></li>
+					<li><a href="javascript:void(0)">Tài khoản </a></li>
+				</ol>
+			</div>
+		</div>
+	</div>
+</div>
+<main role="main">
+	<div class="container">
+		<div class="row gutters-sm pb-3">
+			<div class="col-md-4 d-none d-md-block">
+				<div class="card">
+					<div class="card-body">
+						<div class="d-flex flex-column align-items-center text-center">
+							@{
+								string ImagePath = "~/wwwroot/Avatars/";
+								if (Model.Avatar != null)
+								{
+									ImagePath += Model.Avatar;
+								}
+								else
+								{
+									ImagePath += "default_avatar.jpg";
+								}
+							}
+							<img src="@Url.Content(ImagePath)" alt="Avatar" id="BigAvatar" width="150">
+							<div class="mt-3">
+								<h4 id="BigName">@Model.Ten</h4>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="card mt-3">
+					<div class="card-body">
+						<nav class="nav flex-column nav-pills nav-gap-y-1">
+							<a href="#profile" data-toggle="tab" class="nav-item nav-link has-icon nav-link-faded active">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user mr-2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>Tài khoản của tôi
+							</a>
+							<a href="#avatar" data-toggle="tab" class="nav-item nav-link has-icon nav-link-faded">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-image mr-2"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><path d="M20.4 14.5L16 10 4 20" /></svg>Ảnh đại diện
+							</a>
+							<a href="#password" data-toggle="tab" class="nav-item nav-link has-icon nav-link-faded">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-settings mr-2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>Đổi mật khẩu
+							</a>
+							<a href="#order" data-toggle="tab" class="nav-item nav-link has-icon nav-link-faded">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shop mr-2"><path d="M6 2L3 6v14c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2V6l-3-4H6zM3.8 6h16.4M16 10a4 4 0 1 1-8 0" /></svg>Đơn hàng
+							</a>
+						</nav>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-8">
+				<div class="card">
+					<div class="card-header border-bottom mb-3 d-flex d-md-none">
+						<ul class="nav nav-tabs card-header-tabs nav-gap-x-1" role="tablist">
+							<li class="nav-item">
+								<a href="#profile" data-toggle="tab" class="nav-link has-icon active"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></a>
+							</li>
+							<li class="nav-item">
+								<a href="#avatar" data-toggle="tab" class="nav-link has-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-image"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><path d="M20.4 14.5L16 10 4 20" /></svg></a>
+							</li>
+							<li class="nav-item">
+								<a href="#password" data-toggle="tab" class="nav-link has-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-settings"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></a>
+							</li>
+							<li class="nav-item">
+								<a href="#order" data-toggle="tab" class="nav-link has-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shop"><path d="M6 2L3 6v14c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2V6l-3-4H6zM3.8 6h16.4M16 10a4 4 0 1 1-8 0" /></svg></a>
+							</li>
+						</ul>
+					</div>
+					<div class="card-body tab-content">
+						@{Html.RenderAction("Profile", "Manage");}
+						@{Html.RenderAction("Avatar", "Manage");}
+						@{Html.RenderAction("Password", "Manage");}
+						@{Html.RenderAction("Order", "Manage");}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+
+
+@section css{
+	<link rel="stylesheet prefetch" href="~/Public/FrontEnd/css/datetimepicker.css">
+	<link rel="stylesheet" href="~/Public/FrontEnd/css/details.css" type="text/css">
+	<style type="text/css">
+		.bracum {
+			background-color: #e2e8f0;
+			margin: 0;
+			padding: 20px 0;
+		}
+
+		main {
+			color: #1a202c;
+			text-align: left;
+			background-color: #e2e8f0;
+		}
+
+		.nav-link {
+			color: #4a5568;
+		}
+
+		.card {
+			box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06);
+		}
+
+		.card {
+			position: relative;
+			display: flex;
+			flex-direction: column;
+			min-width: 0;
+			word-wrap: break-word;
+			background-color: #fff;
+			background-clip: border-box;
+			border: 0 solid rgba(0,0,0,.125);
+			border-radius: .25rem;
+		}
+
+		.card-body {
+			flex: 1 1 auto;
+			min-height: 1px;
+			padding: 1rem;
+		}
+
+		.gutters-sm {
+			margin-right: -8px;
+			margin-left: -8px;
+		}
+
+			.gutters-sm > .col, .gutters-sm > [class*=col-] {
+				padding-right: 8px;
+				padding-left: 8px;
+			}
+
+		.mb-3, .my-3 {
+			margin-bottom: 1rem !important;
+		}
+
+		.bg-gray-300 {
+			background-color: #e2e8f0;
+		}
+
+		.h-100 {
+			height: 100% !important;
+		}
+
+		.shadow-none {
+			box-shadow: none !important;
+		}
+	</style>
+}
+@section scripts{
+	<script src='~/Public/FrontEnd/js/district.min.js'></script>
+	<script src="~/Public/FrontEnd/js/datetimepicker.js"></script>
+	<script>
+		//Initialize
+		$('#NgaySinh').datepicker({
+			dateFormat: 'yy-mm-dd',
+			changeMonth: true,
+			changeYear: true,
+			yearRange: '1950:2010',
+			minDate: new Date(1950, 1 - 1, 1),
+			maxDate: '+30Y',
+			inline: true
+		});
+		$('select[name="ThanhPho"]').each(function () {
+			var $this = $(this),
+				stc = ''
+			c.forEach(function (i, e) {
+				e += +1
+				stc += '<option value="' + i + '">' + i + '</option>'
+				$this.html('<option value="">Chọn tỉnh thành phố</option>' + stc)
+				$this.on('change', function (i) {
+					i = $this.children('option:selected').index() - 1
+					var str = '',
+						r = $this.val()
+					if (r != '') {
+						arr[i].forEach(function (el) {
+							str += '<option value="' + el + '">' + el + '</option>'
+							$('select[name="QuanHuyen"]').html('<option value="">Chọn quận huyện</option>' + str)
+						})
+						$('select[name="QuanHuyen"]').on('change', function () {
+							var target = $(this).children('option:selected')
+							target.attr('selected', '')
+							$('select[name="QuanHuyen"] option').not(target).removeAttr('selected')
+							district = $('select[name="QuanHuyen"]').html()
+						})
+					} else {
+						$('select[name="QuanHuyen"]').html('<option value="">Chọn quận huyện</option>')
+						district = $('select[name="QuanHuyen"]').html()
+					}
+				})
+			})
+		})
+		$('#ThanhPho').val(localStorage.getItem('TP')).change();
+		$('#QuanHuyen').val(localStorage.getItem('QH')).change();
+		$(document).ready(function () {
+/*			loadStar();*/
+			/* 1. Visualizing things on Hover - See next part for action on click */
+			$('#stars li').on('mouseover', function () {
+				var onStar = parseInt($(this).data('value'), 10); // The star currently mouse on
+
+				// Now highlight all the stars that's not after the current hovered star
+				$(this).parent().children('li.star').each(function (e) {
+					if (e < onStar) {
+						$(this).addClass('hover');
+					}
+					else {
+						$(this).removeClass('hover');
+					}
+				});
+
+			}).on('mouseout', function () {
+				$(this).parent().children('li.star').each(function (e) {
+					$(this).removeClass('hover');
+				});
+			});
+
+
+			/* 2. Action to perform on click */
+			$('#stars li').on('click', function () {
+				var onStar = parseInt($(this).data('value'), 10); // The star currently selected
+				var stars = $(this).parent().children('li.star');
+
+				for (i = 0; i < stars.length; i++) {
+					$(stars[i]).removeClass('selected');
+				}
+
+				for (i = 0; i < onStar; i++) {
+					$(stars[i]).addClass('selected');
+				}
+
+				// JUST RESPONSE (Not needed)
+				var ratingValue = parseInt($('#stars li.selected').last().data('value'), 10);
+			});
+		});
+
+		//function loadStar() {
+		//	var starNumber = $(".rating-stars").data("star");
+		//	var star = document.querySelectorAll(".star");
+		//	var dem = 0;
+		//	star.forEach(function (e) {
+		//		if (dem < starNumber) {
+		//			e.classList.add('selected');
+		//		}
+		//		dem++;
+		//	});
+		//}
+	</script>
+	<script>
+		//Validate
+		const reTel = /^\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})$/;
+		const reDOB = /^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/;
+		$(document).ready(function () {
+			$('#changeProfile').keyup(function () {
+				if ($('#Ten').val().trim() != '' && $('#PhoneNumber').val().trim() != '' && $('#ThanhPho').val() != '' && $('#QuanHuyen').val() != '' && $('#DiaChi').val().trim() != '' &&
+					$('#GioiTinh').val() != '' && $('#NgaySinh').val().trim() != '') {
+					if (!reTel.test($('#PhoneNumber').val()) || !reDOB.test($('#NgaySinh').val())) {
+						$('#updateProfile').prop('disabled', true);
+					} else {
+						$('#updateProfile').prop('disabled', false);
+					}
+				} else {
+					$('#updateProfile').prop('disabled', true);
+				}
+			});
+			$('#changeProfile').change(function () {
+				if ($('#Ten').val().trim() != '' && $('#PhoneNumber').val().trim() != '' && $('#ThanhPho').val() != '' && $('#QuanHuyen').val() != '' && $('#DiaChi').val().trim() != '' &&
+					$('#GioiTinh').val() != '' && $('#NgaySinh').val().trim() != '') {
+					if (!reTel.test($('#PhoneNumber').val()) || !reDOB.test($('#NgaySinh').val())) {
+						$('#updateProfile').prop('disabled', true);
+					} else {
+						$('#updateProfile').prop('disabled', false);
+					}
+				} else {
+					$('#updateProfile').prop('disabled', true);
+				}
+			});
+			$('#Ten').keyup(function () {
+				if ($('#Ten').val().trim() == '')
+					$('#ten-valid').text('Hãy nhập họ tên.');
+				else
+					$('#ten-valid').text('');
+			});
+			$('#Ten').keydown(function () {
+				if ($('#Ten').val().trim() == '')
+					$('#ten-valid').text('Hãy nhập họ tên.');
+				else
+					$('#ten-valid').text('');
+			});
+			$('#PhoneNumber').keyup(function () {
+				if ($('#PhoneNumber').val().trim() == '')
+					$('#phone-valid').text('Hãy nhập số điện thoại.');
+				else {
+					if (!reTel.test($('#PhoneNumber').val()))
+						$('#phone-valid').text('Số điện thoại không hợp lệ.');
+					else
+						$('#phone-valid').text('');
+				}
+			});
+			$('#PhoneNumber').keydown(function () {
+				if ($('#PhoneNumber').val().trim() == '')
+					$('#phone-valid').text('Hãy nhập số điện thoại.');
+				else {
+					if (!reTel.test($('#PhoneNumber').val()))
+						$('#phone-valid').text('Số điện thoại không hợp lệ.');
+					else
+						$('#phone-valid').text('');
+				}
+			});
+			$('#GioiTinh').keydown(function () {
+				if ($('#GioiTinh').val() == '')
+					$('#gt-valid').text('Hãy chọn giới tính.');
+				else
+					$('#gt-valid').text('');
+			});
+			$('#GioiTinh').change(function () {
+				if ($('#GioiTinh').val() == '')
+					$('#gt-valid').text('Hãy chọn giới tính.');
+				else
+					$('#gt-valid').text('');
+			});
+			$('#NgaySinh').keyup(function () {
+				if ($('#NgaySinh').val().trim() == '')
+					$('#ns-valid').text('Hãy nhập ngày sinh.');
+				else {
+					if (!reDOB.test($('#NgaySinh').val()))
+						$('#ns-valid').text('Ngày sinh không hợp lệ.');
+					else
+						$('#ns-valid').text('');
+				}
+			});
+			$('#NgaySinh').keydown(function () {
+				if ($('#NgaySinh').val().trim() == '')
+					$('#ns-valid').text('Hãy nhập ngày sinh.');
+				else {
+					if (!reDOB.test($('#NgaySinh').val()))
+						$('#ns-valid').text('Ngày sinh không hợp lệ.');
+					else
+						$('#ns-valid').text('');
+				}
+			});
+			$('#NgaySinh').change(function () {
+				if ($('#NgaySinh').val().trim() == '')
+					$('#ns-valid').text('Hãy nhập ngày sinh.');
+				else {
+					if (!reDOB.test($('#NgaySinh').val()))
+						$('#ns-valid').text('Ngày sinh không hợp lệ.');
+					else
+						$('#ns-valid').text('');
+				}
+			});
+			$('#ThanhPho').keydown(function () {
+				if ($('#ThanhPho').val() == '')
+					$('#tp-valid').text('Hãy chọn tỉnh / thành phố.');
+				else
+					$('#tp-valid').text('');
+			});
+			$('#ThanhPho').change(function () {
+				if ($('#ThanhPho').val() == '')
+					$('#tp-valid').text('Hãy chọn tỉnh / thành phố.');
+				else
+					$('#tp-valid').text('');
+			});
+			$('#QuanHuyen').keydown(function () {
+				if ($('#QuanHuyen').val() == '')
+					$('#qh-valid').text('Hãy chọn quận / huyện.');
+				else
+					$('#qh-valid').text('');
+			});
+			$('#QuanHuyen').change(function () {
+				if ($('#QuanHuyen').val() == '')
+					$('#qh-valid').text('Hãy chọn quận / huyện.');
+				else
+					$('#qh-valid').text('');
+			});
+			$('#DiaChi').keyup(function () {
+				if ($('#DiaChi').val().trim() == '')
+					$('#dc-valid').text('Hãy nhập họ tên.');
+				else
+					$('#dc-valid').text('');
+			});
+			$('#DiaChi').keydown(function () {
+				if ($('#DiaChi').val().trim() == '')
+					$('#dc-valid').text('Hãy nhập địa chỉ.');
+				else
+					$('#dc-valid').text('');
+			});
+			$('#updateAvatar').prop('disabled', true);
+			$('#File').change(function () {
+				if ($("#File").val() == "") {
+					$("#file-valid").text("Hãy chọn ảnh");
+					$('#updateAvatar').prop('disabled', true);
+				} else {
+					var allowed = [".jpg", ".png", ".gif", ".jpeg", ".jfif"];
+					var imageUpload = $("#File")[0];
+					var regexImage = new RegExp(
+						"([a-zA-Z0-9s_\\.-:()])+(" + allowed.join("|") + ")$"
+					);
+					if (!regexImage.test(imageUpload.value.toLowerCase())) {
+						$("#file-valid").text("Định dạng ảnh không phù hợp");
+						$('#updateAvatar').prop('disabled', true);
+					} else {
+						$("#file-valid").text("");
+						$('#updateAvatar').prop('disabled', false);
+					}
+				}
+			});
+			$('#updatePassword').prop('disabled', true);
+			$('#changePassword').keyup(function () {
+				if ($('#OldPassword').val() != '' && $('#NewPassword').val() != '' && $('#ConfirmPassword').val() != '') {
+					if ($('#ConfirmPassword').val() !== $('#NewPassword').val()) {
+						$('#updatePassword').prop('disabled', true);
+					} else {
+						$('#updatePassword').prop('disabled', false);
+					}
+				} else {
+					$('#updatePassword').prop('disabled', true);
+				}
+			});
+			$('#OldPassword').keyup(function () {
+				if ($('#OldPassword').val() == '')
+					$('#op-valid').text('Hãy nhập mật khẩu hiện tại.');
+				else {
+					$('#op-valid').text('');
+				}
+			});
+			$('#OldPassword').keydown(function () {
+				if ($('#OldPassword').val() == '')
+					$('#op-valid').text('Hãy nhập mật khẩu hiện tại.');
+				else {
+					$('#op-valid').text('');
+				}
+			});
+			$('#NewPassword').keyup(function () {
+				if ($('#NewPassword').val() == '')
+					$('#np-valid').text('Hãy nhập mật khẩu mới.');
+				else {
+					if ($('#NewPassword').val().length < 6)
+						$('#np-valid').text('Mật khẩu có ít nhất 6 kí tự.');
+					else
+						$('#np-valid').text('');
+				}
+			});
+			$('#NewPassword').keydown(function () {
+				if ($('#NewPassword').val() == '')
+					$('#np-valid').text('Hãy nhập mật khẩu mới.');
+				else {
+					if ($('#NewPassword').val().length < 6)
+						$('#np-valid').text('Mật khẩu có ít nhất 6 kí tự.');
+					else
+						$('#np-valid').text('');
+				}
+			});
+			$('#ConfirmPassword').keyup(function () {
+				if ($('#ConfirmPassword').val() == '')
+					$('#cp-valid').text('Hãy nhập xác nhận mật khẩu.');
+				else {
+					if ($('#ConfirmPassword').val() !== $('#NewPassword').val())
+						$('#cp-valid').text('Mật khẩu và xác nhận mật khẩu không trùng khớp.');
+					else
+						$('#cp-valid').text('');
+				}
+			});
+			$('#ConfirmPassword').keydown(function () {
+				if ($('#ConfirmPassword').val() == '')
+					$('#cp-valid').text('Hãy nhập xác nhận mật khẩu.');
+				else {
+					if ($('#ConfirmPassword').val() !== $('#NewPassword').val())
+						$('#cp-valid').text('Mật khẩu và xác nhận mật khẩu không trùng khớp.');
+					else
+						$('#cp-valid').text('');
+				}
+			});
+		});
+		var loadFile = function (event) {
+			var flag = true;
+			if ($("#File").val() == "") {
+				flag = false;
+			} else {
+				var allowed = [".jpg", ".png", ".gif", ".jpeg", ".jfif"];
+				var imageUpload = $("#File")[0];
+				var regexImage = new RegExp(
+					"([a-zA-Z0-9s_\\.-:()])+(" + allowed.join("|") + ")$"
+				);
+				if (!regexImage.test(imageUpload.value.toLowerCase())) {
+					flag = false;
+				}
+			}
+			if (flag) {
+				var image = document.getElementById("BigAvatar");
+				image.src = URL.createObjectURL(event.target.files[0]);
+			}
+		};
+
+	</script>
+	<script>
+		//Ajax
+		$("#updateProfile").click(function () {
+			var data = {
+				Ten: $('#Ten').val(),
+				PhoneNumber: $('#PhoneNumber').val(),
+				GioiTinh: $('#GioiTinh').find(":selected").text(),
+				NgaySinh: $('#NgaySinh').val(),
+				ThanhPho: $('#ThanhPho').find(":selected").text(),
+				QuanHuyen: $('#QuanHuyen').find(":selected").text(),
+				DiaChi: $('#DiaChi').val(),
+			}
+			Swal.showLoading();
+			$.ajax({
+				url: "/Manage/ChangeProfile",
+				type: "POST",
+				data: JSON.stringify(data),
+				contentType: "application/json; charset=utf-8",
+				success: function (response) {
+					if (response.success != null) {
+						const swalWithBootstrapButtons = Swal.mixin({
+							customClass: {
+								confirmButton: 'btn btn-success',
+								cancelButton: 'btn btn-danger mr-3'
+							},
+							buttonsStyling: false
+						})
+						swalWithBootstrapButtons.fire(
+							'Cập nhật thành công!',
+							'',
+							'success'
+						)
+						$('#BigName').text($('#Ten').val());
+					}
+					else {
+						const swalWithBootstrapButtons = Swal.mixin({
+							customClass: {
+								confirmButton: 'btn btn-success',
+								cancelButton: 'btn btn-danger mr-3'
+							},
+							buttonsStyling: false
+						})
+						swalWithBootstrapButtons.fire(
+							'Cập nhật thất bại!',
+							'',
+							'error'
+						)
+					}
+				},
+				error: function (response) {
+					const swalWithBootstrapButtons = Swal.mixin({
+						customClass: {
+							confirmButton: 'btn btn-success',
+							cancelButton: 'btn btn-danger mr-3'
+						},
+						buttonsStyling: false
+					})
+					swalWithBootstrapButtons.fire(
+						'Cập nhật thất bại!',
+						'',
+						'error'
+					)
+				}
+			});
+		});
+		$("#updateAvatar").click(function () {
+			Swal.showLoading();
+			var form = new FormData($("#changeAvatar")[0]);
+			$.ajax({
+				url: "/Manage/ChangeAvatar",
+				type: "POST",
+				data: form,
+				processData: false,
+				contentType: false,
+				success: function (response) {
+					if (response.success != null) {
+						const swalWithBootstrapButtons = Swal.mixin({
+							customClass: {
+								confirmButton: 'btn btn-success',
+								cancelButton: 'btn btn-danger mr-3'
+							},
+							buttonsStyling: false
+						})
+						swalWithBootstrapButtons.fire(
+							'Cập nhật thành công!',
+							'',
+							'success'
+						)
+						$('#changeAvatar').trigger("reset");
+					}
+					else {
+						const swalWithBootstrapButtons = Swal.mixin({
+							customClass: {
+								confirmButton: 'btn btn-success',
+								cancelButton: 'btn btn-danger mr-3'
+							},
+							buttonsStyling: false
+						})
+						swalWithBootstrapButtons.fire(
+							'Cập nhật thất bại!',
+							'',
+							'error'
+						)
+					}
+				},
+				error: function (response) {
+					const swalWithBootstrapButtons = Swal.mixin({
+						customClass: {
+							confirmButton: 'btn btn-success',
+							cancelButton: 'btn btn-danger mr-3'
+						},
+						buttonsStyling: false
+					})
+					swalWithBootstrapButtons.fire(
+						'Cập nhật thất bại!',
+						'',
+						'error'
+					)
+				}
+			});
+		});
+		$("#updatePassword").click(function () {
+			var data = {
+				OldPassword: $('#OldPassword').val(),
+				NewPassword: $('#NewPassword').val(),
+				ConfirmPassword: $('#ConfirmPassword').val(),
+			}
+			Swal.showLoading();
+			$.ajax({
+				url: "/Manage/ChangePassword",
+				type: "POST",
+				data: JSON.stringify(data),
+				contentType: "application/json; charset=utf-8",
+				async: true,
+				success: function (response) {
+					if (response.success != null) {
+						const swalWithBootstrapButtons = Swal.mixin({
+							customClass: {
+								confirmButton: 'btn btn-success',
+								cancelButton: 'btn btn-danger mr-3'
+							},
+							buttonsStyling: false
+						})
+						swalWithBootstrapButtons.fire(
+							'Đổi mật khẩu thành công!',
+							'',
+							'success'
+						)
+						$('#changePassword').trigger("reset");
+					}
+					else if (response.error1 != null) {
+						const swalWithBootstrapButtons = Swal.mixin({
+							customClass: {
+								confirmButton: 'btn btn-success',
+								cancelButton: 'btn btn-danger mr-3'
+							},
+							buttonsStyling: false
+						})
+						swalWithBootstrapButtons.fire(
+							'Mật khẩu hiện tại sai hoặc mật khẩu mới sai định dạng!',
+							"Mật khẩu phải có ít nhất một ký tự không phải chữ cái hoặc chữ số. Mật khẩu phải có ít nhất một chữ thường ('a' - 'z'). Mật khẩu phải có ít nhất một chữ hoa ('A' - 'Z').",
+							'error'
+						)
+					} else {
+						const swalWithBootstrapButtons = Swal.mixin({
+							customClass: {
+								confirmButton: 'btn btn-success',
+								cancelButton: 'btn btn-danger mr-3'
+							},
+							buttonsStyling: false
+						})
+						swalWithBootstrapButtons.fire(
+							'Đổi mật khẩu thất bại!',
+							"",
+							'error'
+						)
+					}
+				},
+				error: function (response) {
+					const swalWithBootstrapButtons = Swal.mixin({
+						customClass: {
+							confirmButton: 'btn btn-success',
+							cancelButton: 'btn btn-danger mr-3'
+						},
+						buttonsStyling: false
+					})
+					swalWithBootstrapButtons.fire(
+						'Đổi mật khẩu thất bại!',
+						'',
+						'error'
+					)
+				}
+			});
+		});
+		function HuyDon(MaDonHang) {
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success mr-3',
+					cancelButton: 'btn btn-danger'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire({
+				title: 'Huỷ đơn hàng',
+				text: "Bạn có chắc chắn muốn huỷ?",
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonText: 'Có',
+				cancelButtonText: 'Không'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					$.ajax({
+						url: "/Manage/HuyDonHang?MaDonHang=" + MaDonHang,
+						type: "GET",
+						success: function (response) {
+							if (response.success != null) {
+								const swalWithBootstrapButtons = Swal.mixin({
+									customClass: {
+										confirmButton: 'btn btn-success',
+										cancelButton: 'btn btn-danger mr-3'
+									},
+									buttonsStyling: false
+								})
+								swalWithBootstrapButtons.fire(
+									'Huỷ đơn thành công!',
+									'',
+									'success'
+								)
+								var orderid = '#order' + MaDonHang;
+								var statusid = '#status' + MaDonHang;
+								var buttonid = '#button' + MaDonHang;
+								$(orderid).removeClass('bg-warning').addClass('bg-danger');
+								$(statusid).text('Đã huỷ');
+								$(buttonid).remove();
+							}
+						},
+						error: function (response) {
+							const swalWithBootstrapButtons = Swal.mixin({
+								customClass: {
+									confirmButton: 'btn btn-success',
+									cancelButton: 'btn btn-danger mr-3'
+								},
+								buttonsStyling: false
+							})
+							swalWithBootstrapButtons.fire(
+								'Huỷ đơn thất bại!',
+								'',
+								'error'
+							)
+						}
+					});
+				}
+			});
+		}
+		function chooseReview(MaSanPham, MaDonHang, DanhGia) {
+			$.ajax({
+				url: "/Manage/DanhGia?MaDonHang=" + MaDonHang + "&MaSanPham=" + MaSanPham + "&DanhGia=" + DanhGia,
+				type: "GET",
+				success: function (response) {
+					if (response.success != null) {
+						const swalWithBootstrapButtons = Swal.mixin({
+							customClass: {
+								confirmButton: 'btn btn-success',
+								cancelButton: 'btn btn-danger mr-3'
+							},
+							buttonsStyling: false
+						})
+						swalWithBootstrapButtons.fire(
+							'Đánh giá thành công!',
+							'',
+							'success'
+						)
+					}
+				},
+			});
+		}
+	</script>
+}

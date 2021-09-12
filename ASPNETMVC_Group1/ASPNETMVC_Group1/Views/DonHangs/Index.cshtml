@@ -1,0 +1,291 @@
+﻿@model PagedList.IPagedList<ASPNETMVC_Group1.Models.DonHang>
+@using PagedList.Mvc;
+@{
+	ViewBag.Title = "Danh sách đơn hàng";
+	Layout = "~/Views/Shared/_LayoutBackEnd.cshtml";
+}
+
+@section breadcumb{
+	<li class="breadcrumb-item"><a href="@Url.Action("Index","QuanLy")">Dashboard</a></li>
+	<li class="breadcrumb-item active">Đơn hàng</li>
+}
+<section class="content">
+	<div class="card">
+		<div class="card-header">
+			<div class="row">
+				<div class="col-12">
+					@using (Html.BeginForm("Index", "DonHangs", FormMethod.Get))
+					{
+						<div class="input-group rounded">
+							@Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { type = "search", @class = "form-control rounded", placeholder = "Tìm kiếm", autocomplete = "off" })
+							<button class="input-group-text border-0" id="search-addon"><i class="fas fa-search"></i></button>
+						</div>
+					}
+				</div>
+
+			</div>
+		</div>
+		<div class="card-body p-0" style="display:block">
+			<table class="table table-striped projects">
+				<thead>
+					<tr>
+						<th class="text-center">Mã đơn hàng</th>
+						<th>Họ tên</th>
+						<th>Số điện thoại</th>
+						<th>Địa chỉ</th>
+						<th>Ngày đặt</th>
+						<th>Trạng thái</th>
+						<th width="24%"></th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model)
+					{
+						<tr>
+							<td align="center">
+								<b>#@Html.DisplayFor(modelItem => item.MaDonHang)</b>
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.Ten)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.SDT)
+							</td>
+							<td>
+								@item.DiaChi, @item.QuanHuyen, @item.ThanhPho
+							</td>
+							<td>
+								@Convert.ToDateTime(item.NgayDat).ToString("dd-MM-yyyy")
+							</td>
+							<td>
+								@if (item.TrangThai == 1)
+								{
+									<span>Chờ xác nhận</span>
+								}
+								@if (item.TrangThai == 2)
+								{
+									<span>Đã xác nhận</span>
+								}
+								@if (item.TrangThai == 3)
+								{
+									<span>Hoàn thành</span>
+								}
+								@if (item.TrangThai == 4)
+								{
+									<span>Đã huỷ</span>
+								}
+							</td>
+							<td>
+								@if (item.TrangThai == 1)
+								{
+									<a href="@Url.Action("In","DonHangs",new { id = item.MaDonHang })" rel="noopener" target="_blank" class="btn btn-default btn-sm"><i class="fas fa-print"></i> In</a>
+									<a href="@Url.Action("Details","DonHangs", new { id = item.MaDonHang})" class="btn btn-primary btn-sm" target="_blank">
+										<i class="fas fa-folder">
+										</i>
+										Chi tiết
+									</a>
+									using (Html.BeginForm("XacNhan", "QuanLy/DonHang", new { id = item.MaDonHang }, FormMethod.Post, new { @class = "d-inline" }))
+									{
+										@Html.AntiForgeryToken()
+										<button type="submit" data-click="xn" class="btn btn-info btn-sm text-white">
+											<i class="far fa-check-circle"></i> Xác nhận
+										</button>
+									}
+									using (Html.BeginForm("Huy", "QuanLy/DonHang", new { id = item.MaDonHang }, FormMethod.Post, new { @class = "d-inline" }))
+									{
+										@Html.AntiForgeryToken()
+										<button type="submit" data-click="huy" class="btn btn-danger btn-sm text-white">
+											<i class="fas fa-ban"></i> Huỷ
+										</button>
+									}
+								}
+								@if (item.TrangThai == 2)
+								{
+									<a href="@Url.Action("In","DonHangs",new { id = item.MaDonHang })" rel="noopener" target="_blank" class="btn btn-default btn-sm"><i class="fas fa-print"></i> In</a>
+									<a href="@Url.Action("Details","DonHangs", new { id = item.MaDonHang})" class="btn btn-primary btn-sm" target="_blank">
+										<i class="fas fa-folder">
+										</i>
+										Chi tiết
+									</a>
+									using (Html.BeginForm("HoanThanh", "QuanLy/DonHang", new { id = item.MaDonHang }, FormMethod.Post, new { @class = "d-inline" }))
+									{
+										@Html.AntiForgeryToken()
+										<button type="submit" data-click="ht" class="btn btn-success btn-sm text-white">
+											<i class="fas fa-money-check"></i> Hoàn thành
+										</button>
+									}
+									using (Html.BeginForm("Huy", "QuanLy/DonHang", new { id = item.MaDonHang }, FormMethod.Post, new { @class = "d-inline" }))
+									{
+										@Html.AntiForgeryToken()
+										<button type="submit" data-click="huy" class="btn btn-danger btn-sm text-white">
+											<i class="fas fa-ban"></i> Huỷ
+										</button>
+									}
+								}
+								@if (item.TrangThai == 3)
+								{
+									<a href="@Url.Action("In","DonHangs",new { id = item.MaDonHang })" rel="noopener" target="_blank" class="btn btn-default btn-sm"><i class="fas fa-print"></i> In</a>
+									<a href="@Url.Action("Details","DonHangs", new { id = item.MaDonHang})" class="btn btn-primary btn-sm" target="_blank">
+										<i class="fas fa-folder">
+										</i>
+										Chi tiết
+									</a>
+								}
+							</td>
+						</tr>
+					}
+				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="7" align="right">
+							Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+							@Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+						</td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+	</div>
+</section>
+@section css{
+	<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+	<link href="~/Public/BackEnd/dist/css/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+}
+@section scripts{
+	<script src="~/Public/BackEnd/dist/js/sweetalert2.all.min.js"></script>
+	<script>
+		//Initialize
+		$('#donhang').addClass('active');
+	</script>
+	<script>
+		//Submit xn
+		$(document).ready(function () {
+			$('[data-click="xn"]').click(function (e) {
+				e.preventDefault();
+				var form = $(this).parents('form');
+				const swalWithBootstrapButtons = Swal.mixin({
+					customClass: {
+						confirmButton: 'btn btn-success mr-3',
+						cancelButton: 'btn btn-danger'
+					},
+					buttonsStyling: false
+				})
+				swalWithBootstrapButtons.fire({
+					title: 'Xác nhận đơn hàng',
+					text: "Xác nhận đơn hàng này?",
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonText: 'Có',
+					cancelButtonText: 'Không'
+				}).then((result) => {
+					if (result.isConfirmed) {
+						form.submit()
+					}
+				});
+			});
+		});
+		//Submit ht
+		$(document).ready(function () {
+			$('[data-click="ht"]').click(function (e) {
+				e.preventDefault();
+				var form = $(this).parents('form');
+				const swalWithBootstrapButtons = Swal.mixin({
+					customClass: {
+						confirmButton: 'btn btn-success mr-3',
+						cancelButton: 'btn btn-danger'
+					},
+					buttonsStyling: false
+				})
+				swalWithBootstrapButtons.fire({
+					title: 'Hoàn thành đơn hàng',
+					text: "Hoàn thành đơn hàng này?",
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonText: 'Có',
+					cancelButtonText: 'Không'
+				}).then((result) => {
+					if (result.isConfirmed) {
+						form.submit()
+					}
+				});
+			});
+		});
+		//Submit huy
+		$(document).ready(function () {
+			$('[data-click="huy"]').click(function (e) {
+				e.preventDefault();
+				var form = $(this).parents('form');
+				const swalWithBootstrapButtons = Swal.mixin({
+					customClass: {
+						confirmButton: 'btn btn-success mr-3',
+						cancelButton: 'btn btn-danger'
+					},
+					buttonsStyling: false
+				})
+				swalWithBootstrapButtons.fire({
+					title: 'Huỷ đơn hàng',
+					text: "Huỷ đơn hàng này?",
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonText: 'Có',
+					cancelButtonText: 'Không'
+				}).then((result) => {
+					if (result.isConfirmed) {
+						form.submit()
+					}
+				});
+			});
+		});
+	</script>
+	@if (ViewBag.HTSuccess != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Hoàn thành đơn hàng!',
+				'',
+				'success'
+			)
+		</script>
+	}
+	@if (ViewBag.XNSuccess != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Xác nhận thành công!',
+				'',
+				'success'
+			)
+		</script>
+	}
+	@if (ViewBag.HuySuccess != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Huỷ đơn hàng thành công!',
+				'',
+				'success'
+			)
+		</script>
+	}
+}

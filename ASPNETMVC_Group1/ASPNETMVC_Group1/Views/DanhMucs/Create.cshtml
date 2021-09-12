@@ -1,0 +1,115 @@
+﻿@model ASPNETMVC_Group1.Models.DanhMuc
+
+@{
+	ViewBag.Title = "Thêm mới danh mục";
+	Layout = "~/Views/Shared/_LayoutBackEnd.cshtml";
+}
+@section breadcumb{
+	<li class="breadcrumb-item"><a href="@Url.Action("Index","QuanLy")">Dashboard</a></li>
+	<li class="breadcrumb-item"><a href="@Url.Action("Index","DanhMucs")">Danh mục</a></li>
+	<li class="breadcrumb-item active">Thêm mới</li>
+}
+<div class="row">
+	<div class="col-md-12">
+		<div class="card card-primary">
+			<div class="card-header">
+				<h3 class="card-title">Thông tin danh mục</h3>
+			</div>
+			<div class="card-body">
+				@using (Html.BeginForm("Create", "DanhMucs", FormMethod.Post, new { id = "createForm" }))
+				{
+					@Html.AntiForgeryToken()
+					<div class="form-group">
+						@Html.LabelFor(model => model.TenDanhMuc, htmlAttributes: new { @class = "control-label col-md-2" })
+						@Html.EditorFor(model => model.TenDanhMuc, new { htmlAttributes = new { @class = "form-control" } })
+						@Html.ValidationMessageFor(model => model.TenDanhMuc, "", new { @class = "text-danger" })
+					</div>
+					<div class="form-group">
+						@Html.Label("Danh mục cha", htmlAttributes: new { @class = "control-label col-md-2" })
+						@Html.DropDownList("MaDanhMucCha", null, "Chọn danh mục cha", htmlAttributes: new { @class = "form-control custom-select" })
+						@Html.ValidationMessageFor(model => model.MaDanhMucCha, "", new { @class = "text-danger" })
+					</div>
+					<button class="btn btn-success" type="submit" id="submit">Lưu</button>
+				}
+			</div>
+			<!-- /.card-body -->
+		</div>
+		<!-- /.card -->
+	</div>
+</div>
+<div class="row">
+	<div class="col-12">
+		<a href="@Url.Action("Index")" class="btn btn-secondary">Trở về danh sách</a>
+	</div>
+</div>
+@section css{
+	<link href="~/Public/BackEnd/dist/css/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+}
+@section scripts{
+	<script src="~/Public/BackEnd/dist/js/sweetalert2.all.min.js"></script>
+	<script>
+		//Initialize
+		$('#danhmuc').addClass('active');
+	</script>
+	<script>
+		//Validate
+		$(document).ready(function () {
+			$('#submit').prop('disabled', true);
+			$('#createForm').keyup(function () {
+				if ($('#TenDanhMuc').val() != '' && $('#MaDanhMucCha').val() != '') {
+					$('#submit').prop('disabled', false);
+				} else {
+					$('#submit').prop('disabled', true);
+				}
+			});
+			$('#createForm').change(function () {
+				if ($('#TenDanhMuc').val() != '' && $('#MaDanhMucCha').val() != '') {
+					$('#submit').prop('disabled', false);
+				} else {
+					$('#submit').prop('disabled', true);
+				}
+			});
+			$('#TenDanhMuc').keyup(function () {
+				if ($('#TenDanhMuc').val().trim() == '')
+					$('span[data-valmsg-for="TenDanhMuc"]').text('Hãy nhập tên danh mục.');
+				else
+					$('span[data-valmsg-for="TenDanhMuc"]').text('');
+			});
+			$('#TenDanhMuc').keydown(function () {
+				if ($('#TenDanhMuc').val().trim() == '')
+					$('span[data-valmsg-for="TenDanhMuc"]').text('Hãy nhập tên danh mục.');
+				else
+					$('span[data-valmsg-for="TenDanhMuc"]').text('');
+			});
+			$('#MaDanhMucCha').keydown(function () {
+				if ($('#MaDanhMucCha').val() == '')
+					$('span[data-valmsg-for="MaDanhMucCha"]').text('Hãy chọn danh mục cha.');
+				else
+					$('span[data-valmsg-for="MaDanhMucCha"]').text('');
+			});
+			$('#MaDanhMucCha').change(function () {
+				if ($('#MaDanhMucCha').val() == '')
+					$('span[data-valmsg-for="MaDanhMucCha"]').text('Hãy chọn danh mục cha.');
+				else
+					$('span[data-valmsg-for="MaDanhMucCha"]').text('');
+			});
+		});
+	</script>
+	@if (ViewBag.Error != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Thêm thất bại!',
+				"",
+				'error'
+			)
+		</script>
+	}
+}

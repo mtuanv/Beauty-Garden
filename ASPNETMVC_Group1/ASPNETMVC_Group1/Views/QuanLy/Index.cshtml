@@ -1,0 +1,116 @@
+﻿@model IEnumerable<ASPNETMVC_Group1.Models.Top3DashboardViewModel>
+@{
+	ViewBag.Title = "Dashboard";
+	Layout = "~/Views/Shared/_LayoutBackEnd.cshtml";
+}
+<!-- Small boxes (Stat box) -->
+<div class="row">
+	<div class="col-lg-3 col-6">
+		<!-- small box -->
+		<div class="small-box bg-info">
+			<div class="inner">
+				<h3>@ViewBag.ChoXuLy</h3>
+
+				<p>Đơn hàng chờ xử lý</p>
+			</div>
+			<div class="icon">
+				<i class="ion ion-bag"></i>
+			</div>
+			<a href="@Url.Action("Index","DonHangs")" class="small-box-footer">Chi tiết <i class="fas fa-arrow-circle-right"></i></a>
+		</div>
+	</div>
+	<!-- ./col -->
+	<div class="col-lg-3 col-6">
+		<!-- small box -->
+		<div class="small-box bg-success">
+			<div class="inner">
+				<h3>@ViewBag.HoanThanh</h3>
+
+				<p>Đơn hàng hoàn thành</p>
+			</div>
+			<div class="icon">
+				<i class="ion ion-stats-bars"></i>
+			</div>
+			<a href="@Url.Action("Index","DonHangs")" class="small-box-footer">Chi tiết <i class="fas fa-arrow-circle-right"></i></a>
+		</div>
+	</div>
+	<!-- ./col -->
+	<div class="col-lg-3 col-6">
+		<!-- small box -->
+		<div class="small-box bg-danger">
+			<div class="inner">
+				<h3>@ViewBag.Huy</h3>
+
+				<p>Đơn hàng đã huỷ</p>
+			</div>
+			<div class="icon">
+				<i class="ion ion-pie-graph"></i>
+			</div>
+			<a href="@Url.Action("Index","DonHangs")" class="small-box-footer">Chi tiết <i class="fas fa-arrow-circle-right"></i></a>
+		</div>
+	</div>
+	<!-- ./col -->
+	<div class="col-lg-3 col-6">
+		<!-- small box -->
+		<div class="small-box bg-warning">
+			<div class="inner">
+				<h3>@ViewBag.KhachHang</h3>
+
+				<p>Khách hàng đăng ký</p>
+			</div>
+			<div class="icon">
+				<i class="ion ion-person-add"></i>
+			</div>
+			<a href="@Url.Action("Index","KhachHang")" class="small-box-footer">Chi tiết <i class="fas fa-arrow-circle-right"></i></a>
+		</div>
+	</div>
+	<!-- ./col -->
+</div>
+<!-- /.row -->
+<!-- Main row -->
+<div class="row">
+	<section class="col-lg-12 connectedSortable">
+		<!-- TO DO List -->
+		<div class="card">
+			<div class="card-header">
+				<h3 class="card-title">
+					<i class="ion ion-clipboard mr-1"></i>
+					Top 3 sản phẩm được mua nhiều nhất
+				</h3>
+			</div>
+			<!-- /.card-header -->
+			<div class="card-body">
+				<ul class="todo-list" data-widget="todo-list">
+					@foreach (var item in Model)
+					{
+						<li>
+							<div class="row">
+								<div class="col-2">
+									<figure>
+										<a class="cart_list_product_img" href="@Url.Action("Index", "SP", new { id = item.MaSanPham })" title="@item.TenSanPham ">
+											<img src="@Url.Content("~/wwwroot/Products/" + item.Anh)" alt="@item.TenSanPham " class="img-reponsive imds" style="width:68px;height:76px">
+										</a>
+									</figure>
+								</div>
+								<div class="col-10">
+									<a href="@Url.Action("Index", "SP", new { id = item.MaSanPham })" title="@item.TenSanPham " class="btn">
+										<span class="name-ps">@item.TenSanPham </span>
+									</a>
+									<p class="pl-3">Số lượng bán: @(item.SoLuongBan)</p>
+								</div>
+							</div>
+						</li>
+					}
+				</ul>
+			</div>
+			<!-- /.card-body -->
+		</div>
+		<!-- /.card -->
+	</section>
+</div>
+<!-- /.row (main row) -->
+@section scripts{
+	<script>
+		$('#dashboard').addClass('active');
+	</script>
+}

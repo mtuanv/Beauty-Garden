@@ -1,0 +1,174 @@
+﻿
+@{
+	ViewBag.Title = "Thanh toán & Vận chuyển";
+	Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
+}
+<main role="main" class="pb-3">
+
+	<div class="bracum">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<ol class="ol-non">
+						<li><a href="@Url.Action("Index","Home")">Trang chủ</a></li>
+						<li><a href="javascript:void(0);">@ViewBag.Title</a></li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-9 order-lg-last">
+					<div class="box-manugar">
+
+						<div class="my-content">
+							<div class="head-box">
+								<div class="title-box">
+									<h1>
+										<a href="javascript:void()" title="">
+											Thanh toán &amp; Vận chuyển
+										</a>
+									</h1>
+								</div>
+								<div class="clr"></div>
+							</div>
+							<div class="body-box">
+								<p>
+									<span style="font-size: 16px;"><span style="color: rgb(255, 0, 0);"><strong>I.&nbsp;<u>Thanh toán:</u></strong></span></span>
+								</p>
+								<p>
+									Nhằm giúp cho quá trình thanh toán được linh động, Beauty Garden cung cấp bạn 2 hình thức thanh toán như sau:&nbsp;
+								</p>
+								<p>
+									<strong style="color: rgb(0, 128, 0);">Hình thức COD:</strong>
+								</p>
+								<p>
+									Với hình thức này, quý khách hàng sẽ thanh toán tiền mặt trực tiếp cho nhân viên giao hàng khi đã nhận được sản phẩm.
+								</p>
+								<p style="text-align: center;">
+									&nbsp;
+								</p>
+								<p>
+									&nbsp;
+								</p>
+								<p>
+									<span style="font-size:16px;"><span style="color:#ff0000;"><strong>II. </strong></span></span><u><span style="font-size:16px;"><span style="color:#ff0000;"><strong>Thông tin vận chuyển:</strong></span></span></u>
+								</p>
+								<p>
+									<span style="color:#008000;"><strong>Phí vận chuyển từng khu vực như sau:</strong></span>
+								</p>
+								<div>
+									<div>
+										<strong>1. TP. HCM: Thời gian giao hàng từ 1 -2 ngày</strong>
+									</div>
+									<div>
+										&nbsp;
+									</div>
+									<div>
+										<strong>a. Đơn hàng nội thành TP.HCM</strong>
+									</div>
+									<div>
+										&nbsp;
+									</div>
+									<div>
+										Gồm các quận 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, Tân Bình, Tân Phú, Phú Nhuận, Bình Thạnh, Gò Vấp.
+									</div>
+									<div>
+										&nbsp;
+									</div>
+									<div>
+										&nbsp;- Phí vận chuyển là 15.000 đ với đơn hàng có trị giá dưới 200.000 đ
+									</div>
+									<div>
+										&nbsp;
+									</div>
+									<div>
+										&nbsp;- Miễn phí phí vận chuyển với đơn hàng trị giá trên 200.000 đ
+									</div>
+									<div>
+										&nbsp;
+									</div>
+									<div>
+										<strong>b. Đơn hàng ngoại thành TP.HCM</strong>
+									</div>
+									<div>
+										&nbsp;
+									</div>
+									<div>
+										Ngoại thành 1: Quận 9, 12, Thủ Đức, Bình Tân.
+									</div>
+									<div>
+										&nbsp;
+									</div>
+									<div>
+										- Phí vận chuyển là 25.000 đ với đơn hàng có trị giá dưới 500.000 đ
+									</div>
+									<div>
+										&nbsp;
+									</div>
+									<div>
+										- Miễn phí phí vận chuyển với đơn hàng trị giá trên 500.000 đ
+									</div>
+									<div>
+										&nbsp;
+									</div>
+									<div>
+										Ngoại thành 2: Hóc môn, Bình Chánh, Nhà Bè, Củ Chi.
+									</div>
+									<div>
+										&nbsp;
+									</div>
+									<div>
+										- Phí vận chuyển là 35.000 đ
+									</div>
+									<div>
+										&nbsp;
+									</div>
+									<div>
+										&nbsp;
+									</div>
+									<div>
+										<strong>2. Tỉnh Thành</strong>
+									</div>
+									<div>
+										&nbsp;
+									</div>
+									<div>
+										Áp dụng Giao hàng tận nơi với đơn hàng trị giá từ 175.000 đ trở lên
+									</div>
+									<div>
+										&nbsp;
+									</div>
+									<div>
+										Phí vận chuyển 30.000 đ- 40.000 đ tùy theo Khu vực, Thời gian giao hàng từ 2-4 ngày&nbsp;
+									</div>
+								</div>
+								<p>
+									&nbsp;
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3 order-lg-first">
+					<div class="box-left hidden-sm hidden-xs">
+						@{Html.RenderAction("DanhMucSanPham", "Partial");}
+					</div>
+					<div class="box-left hidden-sm hidden-xs">
+						@{Html.RenderAction("TinNoiBat", "Partial");}
+					</div>
+					<div class="box-left">
+						@{Html.RenderAction("SanPhamMoiVe", "Partial");}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+@section css{
+	<link href="~/Public/FrontEnd/css/category.css" rel="stylesheet" />
+	<link href="~/Public/FrontEnd/css/huongdan.css" rel="stylesheet" />
+}
+

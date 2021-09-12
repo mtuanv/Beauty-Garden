@@ -1,0 +1,23 @@
+﻿@model IEnumerable<ASPNETMVC_Group1.Models.DetailSanPhamViewModel>
+<div class="box-pdseen">
+	<a href="javascript:void(0);">
+		<i aria-hidden="true" class="fa fa-chevron-down"></i>
+		Sản phẩm bạn đã xem
+	</a>
+	<div class="box-after" id="load-seen">
+		@if (Model != null)
+		{
+			<div class="owl-carousel slider-productseen ul-pdseen">
+				@foreach (var item in Model)
+				{
+					<div class="item">
+						<a href="@Url.Action("Index","SP",new { id = item.sanPham.MaSanPham })" title="@item.sanPham.TenSanPham">
+							@{var ImagePath = "~/wwwroot/Products/" + item.anhs.Where(s => s.MaSanPham == item.sanPham.MaSanPham).FirstOrDefault().LinkAnh;}
+							<img src="@Url.Content(ImagePath)" alt="@item.sanPham.TenSanPham" class="img-reponsive" style="width:100px;height:100px">
+						</a>
+					</div>
+				}
+			</div>
+		}
+	</div>
+</div>

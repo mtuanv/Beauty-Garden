@@ -1,0 +1,14 @@
+﻿@model ASPNETMVC_Group1.Models.ListThuongHieuViewModel
+<div class="title-left">
+	<strong>THƯƠNG HIỆU NỔI BẬT</strong>
+</div>
+<div class="content-left">
+	<ul class="ul-non ul-left">
+		@foreach (var item in Model.nhanHieus)
+		{ 
+			<li>
+				<a href="@Url.Action("Index","NH",new { id = item.MaNhanHieu })" title="@item.TenNhanHieu">@item.TenNhanHieu (@Model.sanPhams.Where(s => s.MaNhanHieu == item.MaNhanHieu).Count())</a>
+			</li>
+		}
+	</ul>
+</div>

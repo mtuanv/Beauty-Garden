@@ -1,0 +1,51 @@
+﻿@model IEnumerable<ASPNETMVC_Group1.Models.NhanHieu>
+
+<li class="li-parent">
+	<a href="javascript:void(0);" class="a-parent">
+		Thương hiệu
+		<i class="fa fa-angle-down hidden-xs hidden-sm" aria-hidden="true"></i>
+	</a>
+	<i class="fa fa-angle-right hidden-md ase" aria-hidden="true"></i>
+	<div class="out-menu">
+		<div class="row">
+			@{
+				int oneRow = Model.Count() / 4;
+				int lastRow = oneRow + (Model.Count() % 4);
+				int skip = 0;
+				if ((lastRow - oneRow) % 4 != 0)
+				{
+					lastRow -= 3;
+					oneRow += 1;
+				}
+			}
+			@for (int i = 0; i < 4; i++)
+			{
+				if (i == 3)
+				{
+					<div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+						<div>
+							<ul class="ul-non ul-out">
+								@foreach (var b in Model.OrderBy(m => m.TenNhanHieu).Skip(skip).Take(lastRow))
+								{
+									<li><a href="@Url.Action("Index","NH",new { id = b.MaNhanHieu })">@b.TenNhanHieu</a></li>
+								}
+							</ul>
+						</div>
+					</div>
+					break;
+				}
+				<div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+					<div>
+						<ul class="ul-non ul-out">
+							@foreach (var b in Model.OrderBy(m => m.TenNhanHieu).Skip(skip).Take(oneRow))
+							{
+								<li><a href="@Url.Action("Index","NH",new { id = b.MaNhanHieu })">@b.TenNhanHieu</a></li>
+							}
+						</ul>
+					</div>
+				</div>
+				skip += oneRow;
+			}
+		</div>
+	</div>
+</li>

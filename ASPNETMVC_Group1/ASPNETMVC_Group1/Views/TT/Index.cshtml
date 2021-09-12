@@ -1,0 +1,128 @@
+﻿@model ASPNETMVC_Group1.Models.DetailsTinTucViewModel
+@{
+	ViewBag.Title = Model.tinTuc.TieuDe;
+	Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
+}
+
+<main role="main" class="pb-3">
+	<div class="bracum">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<ol class="ol-non">
+						<li><a href="@Url.Action("Index", "Home")">Trang chủ</a></li>
+						<li><a href="/review-san-pham">@Model.tinTuc.LoaiTinTuc</a></li>
+						<li><a href="javascript:void(0)">@Model.tinTuc.TieuDe</a></li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-9 order-lg-last">
+					<div class="back-content back-opp title-headtwo">
+						<h1 class="title-detail">@Model.tinTuc.TieuDe</h1>
+						@Html.Raw(Model.tinTuc.NoiDung)
+						<div class="">
+							<div class="box-litmit text-left loyt">
+								<span>Tin Khác:</span>
+								<div class="arrow-slider caner">
+									<a href="javascript:void(0)" class="news-pre btn-pre bnts">
+										<i class="fa fa-angle-left" aria-hidden="true"></i>
+									</a>
+									<a href="javascript:void(0)" class="news-nex btn-next bnts">
+										<i class="fa fa-angle-right" aria-hidden="true"></i>
+									</a>
+								</div>
+							</div>
+
+							<div class="box-tent">
+								<div class="owl-carousel box-tintuc">
+									@foreach (var tt in Model.ttKhacs)
+									{
+										<div class="item">
+											<div class="box-news">
+												<div class="bor-s">
+													<div class="news-img new-fix zoos">
+														<a href="@Url.Action("Index", "TT", new { id = tt.MaTinTuc })" title="@tt.TieuDe">
+															@{string ImagePath = "~/wwwroot/News/";}
+															@if (Model.anhs.Where(s => s.MaTinTuc == tt.MaTinTuc).FirstOrDefault() != null)
+															{
+																ImagePath += Model.anhs.Where(s => s.MaTinTuc == tt.MaTinTuc).FirstOrDefault().LinkAnh;
+															}
+															<img data-src="@Url.Content(ImagePath)" alt="@tt.TieuDe" class="img-reponsive owl-lazy" />
+														</a>
+													</div>
+													<div class="news-content news-astitile">
+														<a href="@Url.Action("Index", "TT", new { id = tt.MaTinTuc })" title="@tt.TieuDe">
+															@tt.TieuDe
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+																}
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<div class="col-lg-3 order-lg-first">
+
+					<div class="box-left hidden-sm hidden-xs">
+						@{Html.RenderAction("DanhMucSanPham", "Partial");}
+					</div>
+					<div class="box-left hidden-sm hidden-xs">
+						@{Html.RenderAction("TinNoiBat", "Partial", new { id = Model.tinTuc.MaTinTuc});}
+					</div>
+					<div class="box-left">
+						@{Html.RenderAction("SanPhamMoiVe", "Partial");}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</main>
+@section css{
+	<link href="~/Public/FrontEnd/css/category.css" rel="stylesheet" />
+}
+@section scripts {
+	<script>
+		var owlnews = $('.box-tintuc');
+		owlnews.owlCarousel({
+			margin: 5,
+			loop: true,
+			lazyLoad: true,
+			autoplayTimeout: 8000,
+			responsive: {
+				0: {
+					items: 1
+				},
+				375: {
+					items: 1
+				},
+				480: {
+					items: 2
+				},
+				600: {
+					items: 3
+				},
+				1000: {
+					items: 4
+				}
+			}
+		});
+
+		$('.news-nex').click(function () {
+			owlnews.trigger('next.owl.carousel');
+		});
+		$('.news-pre').click(function () {
+			owlnews.trigger('prev.owl.carousel');
+		});
+	</script>
+}

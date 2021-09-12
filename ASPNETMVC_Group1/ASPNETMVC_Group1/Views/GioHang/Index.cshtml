@@ -1,0 +1,230 @@
+﻿@model IEnumerable<ASPNETMVC_Group1.Models.CartView>
+@{
+	ViewBag.Title = "Giỏ hàng";
+	Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
+}
+<main role="main" class="pb-3">
+
+	<div class="bracum">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<ol class="ol-non">
+						<li><a href="@Url.Action("Index","Home")">Trang chủ</a></li>
+						<li><a href="javascript:void(0)">@ViewBag.Title</a></li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="">
+		<div class="container" id="load-card">
+			@if (Model.Count() != 0)
+			{
+				<div class="row titles">
+					<div class="col-lg-8 col-md-12 cart-col-1">
+						<div id="load-error">
+							@if (ViewBag.OverQuantity != null)
+							{
+								<div class="box-error">
+									<p>
+										<span>Giỏ hàng có sản phẩm không đủ tồn kho ! Vui lòng kiểm tra lại.</span>
+									</p>
+								</div>
+							}
+						</div>
+						<div class="row">
+							<div class="col-lg-6 col-md-6 col-12" style="padding-left:0; height:31px">
+								<span class="cart_index">Giỏ hàng <span>(@ViewBag.Quantity sản phẩm)</span></span>
+								<span class="badge"></span>
+							</div>
+							<div class="col-lg-2 col-md-2 hidden-xs">
+								<h6>&nbsp; Giá mua</h6>
+							</div>
+							<div class="col-lg-2 col-md-2 hidden-xs">
+								<h6> Số lượng</h6>
+							</div>
+							<div class="col-lg-2 col-md-2 hidden-xs">
+								<h6> Thành tiền</h6>
+							</div>
+						</div>
+						@functions
+											{
+							long RoundingTo(long myNum, long roundTo)
+							{
+								if (roundTo <= 0) return myNum;
+								return (myNum + roundTo / 2) / roundTo * roundTo;
+							}
+							long RoundingTo(long myNum, int roundTo)
+							{
+								return RoundingTo(myNum, (long)roundTo);
+							}
+							int RoundingTo(int myNum, int roundTo)
+							{
+								return (int)RoundingTo((long)myNum, (long)roundTo);
+							}
+						}
+						@{int ThanhTien = 0;}
+						@foreach (var item in Model)
+						{
+							int gb = (int)item.GiaBan;
+							int gtt = (int)item.GiaThiTruong;
+							int tk = gtt - gb;
+							string gb2 = "";
+							if (item.GiamGia != null || item.GiamGia > 0)
+							{
+								gb2 = double.Parse(gb.ToString()).ToString("#,###");
+								int gg = (int)item.GiamGia;
+								gb = (int)(gb - gb * ((double)gg / 100));
+								int digits = gb.ToString().Length;
+								gb = RoundingTo(gb, 1000);
+							}
+							ThanhTien += gb * (int)item.SoLuong;
+							string ttsp = double.Parse((item.SoLuong * gb).ToString()).ToString("#,###");
+							string giaban = double.Parse(gb.ToString()).ToString("#,###");
+							string giathitruong = double.Parse(gtt.ToString()).ToString("#,###");
+							string phantram = Math.Round(((double)(tk * 100) / gtt)).ToString();
+							<div class="shopping-cart-item">
+								<div class="row">
+									<div class="col-lg-2 col-md-2 col-3 img-thumnail-custom">
+										<div class="image">
+											<a class="top_zindex" href="@Url.Action("Index", "SP", new { id = item.MaSanPham })" title="@item.TenSanPham">
+												<img class="img-reponsive" src="@Url.Content("~/wwwroot/Products/" + item.Anh)" alt="@item.TenSanPham">
+											</a>
+										</div>
+									</div>
+									<div class="col-lg-4 col-md-4 c2 col-6">
+										<div class="name">
+											<a class="top_zindex" href="@Url.Action("Index", "SP", new { id = item.MaSanPham })" title="@item.TenSanPham"> @item.TenSanPham</a>
+										</div>
+										<div class="list-endow">
+											<span class="gift js-product-gift-icon hidden-sm hidden-xs">
+												<img src="~/Public/FrontEnd/img/icon-gift.svg" class="imgquatang">
+											</span>
+											<img src="~/Public/FrontEnd/img/icon-24h.svg" class="img24h hidden-sm hidden-xs" alt="Hỗ trợ giao hàng trong 24h tại HN" title="Hỗ trợ giao hàng trong 24h tại HN">
+										</div>
+										<p id="product-status">
+										</p>
+										<p class="action">
+											<a href="@Url.Action("DeleteProductInCart","GioHang",new { MaSP = item.MaSanPham})" class="btn btn-link btn-item-delete hidden-sm hidden-xs" title="Xóa"> Xóa </a>
+											@if (item.SoLuong > item.SoLuongCon)
+											{
+												<span style="color: red;"> Tồn kho chỉ còn <b>@item.SoLuongCon</b> sản phẩm!</span>}
+										</p>
+										<div class="clr"></div>
+									</div>
+									<div class="col-lg-2 col-md-2 col-3" style="position: inherit!important;">
+										<div class="mar-bot-mb">
+											<span class="price price-mb" style="color: #199427;">@giaban₫</span>
+											<span class="price price-mb oik ">@giathitruong₫</span>
+											@if (item.GiamGia != null || item.GiamGia > 0)
+											{
+												<span class="sale  hidden-sm hidden-xs">Giảm @item.GiamGia%</span>
+											}
+											else
+											{
+												<span class="sale  hidden-sm hidden-xs">Giảm @phantram%</span>
+											}
+										</div>
+									</div>
+									<div class="col-3 hidden-lg hidden-md"></div>
+
+									<div class="col-lg-2 col-md-2 col-6 ">
+										<!--Số lượng-->
+										<div class="form-group">
+											<div class="input-group wb-60">
+												@{var updateName = "update" + item.MaSanPham;
+												}
+												<input type="number" class="form-control input-qty" value="@item.SoLuong" id="@updateName" name="@updateName" min="1" max="99">
+												<div class="input-group-addon" style="border:0">
+													<a href="/" onclick="this.href = 'GioHang/UpdateProductInCart?MaSP=@item.MaSanPham&SoLuong=' + document.getElementById('@updateName').value" title="Lưu thay đổi">
+														<i class="fa fa-save"></i>
+													</a>
+												</div>
+											</div>
+											<a href="@Url.Action("DeleteProductInCart","GioHang",new { MaSP = item.MaSanPham})" class="btn btn-link btn-item-delete hidden-md btn-mbx" title="Xóa"> Xóa </a>
+										</div>
+									</div>
+									<div class="col-lg-2 col-md-2 col-3">
+										<!--thành tiền-->
+										<p class="price tt-mb" style="color: #199427;"> @ttsp₫ </p>
+									</div>
+									<div class="box-info-discount-mobile hidden-md hidden-lg"></div>
+								</div>
+							</div>
+						}
+						@{string TongTT = double.Parse(ThanhTien.ToString()).ToString("#,###");}
+					</div>
+					<div class="col-lg-4 col-md-12">
+						<div class="panel panel-default fee">
+							<div class="panel-body">
+								<p class="list-info-price" id="pricetotal">
+									<b>Tạm tính: </b> <span>@TongTT₫</span>
+								</p>
+								<div class="load-giamgia hide">
+								</div>
+								<p class="total2">Thành tiền: <span style="float: right" class="load-price">@TongTT₫ </span> </p>
+								<p class="text-right">
+									<i>(Chưa bao gồm phí vận chuyển)</i>
+								</p>
+							</div>
+						</div>
+						<button id="btn_submit_cart" onclick="location.href='@Url.Action("Index","ThanhToan")';" type="button" class="btn btn-large btn-block btn-default btn-checkout" @(ViewBag.OverQuantity != null ? "disabled" : "")> TIẾN HÀNH ĐẶT HÀNG </button>
+					</div>
+				</div>
+			}
+			else
+			{
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="box-none-card">
+							<img src="~/Public/FrontEnd/img/mascot@2x.png" class="img-reponsive" />
+							<p>Không có sản phẩm nào trong giỏ hàng của bạn.</p>
+							<a href="@Url.Action("Index","Home")">Tiếp tục mua sắm</a>
+						</div>
+					</div>
+				</div>
+			}
+		</div>
+	</div>
+
+	<div class="bk-opps">
+		<div class="lds-roller">
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
+	</div>
+
+
+</main>
+
+@section css{
+	<link href="~/Public/FrontEnd/css/category.css" rel="stylesheet" type="text/css" />
+	<link href="~/Public/FrontEnd/css/shopcard.css" rel="stylesheet" type="text/css" />
+}
+@section scripts{
+	@if (ViewBag.OrderSuccess != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Đặt hàng thành công!',
+				'Nhân viên sẽ sớm gọi điện xác nhận đơn hàng của bạn',
+				'success'
+			)
+		</script>
+	}
+}

@@ -1,0 +1,68 @@
+﻿@model IEnumerable<ASPNETMVC_Group1.Models.DanhMucSPViewModel>
+
+
+<div class="title-left">
+	<strong>SẢN PHẨM MỚI VỀ</strong>
+</div>
+<div class="content-left">
+	@functions
+											{
+		long RoundingTo(long myNum, long roundTo)
+		{
+			if (roundTo <= 0) return myNum;
+			return (myNum + roundTo / 2) / roundTo * roundTo;
+		}
+		long RoundingTo(long myNum, int roundTo)
+		{
+			return RoundingTo(myNum, (long)roundTo);
+		}
+		int RoundingTo(int myNum, int roundTo)
+		{
+			return (int)RoundingTo((long)myNum, (long)roundTo);
+		}
+	}
+	@{int count = 0;}
+	@foreach (var sp in Model)
+	{
+		count++;
+		<div class="box-shas">
+			<div class="box-imgs">
+				<a href="@Url.Action("Details","SP", new { id = sp.MaSanPham })">
+					@{
+						string ImagePath = "~/wwwroot/Products/" + sp.anh.LinkAnh;
+					}
+					<img width="92" height="102"
+						 src="@Url.Content(ImagePath)"
+						 data-src="@Url.Content(ImagePath)"
+						 alt="@sp.TenSanPham" data-id="lazy-t0" class="lazy img-reponsive" />
+				</a>
+			</div>
+			<div class="content-shas">
+				<a href="@Url.Action("Index","SP", new { id = sp.MaSanPham })" title="@sp.TenSanPham">
+					@sp.TenSanPham
+				</a>
+				@{
+
+					int gb = (int)sp.GiaBan;
+					string gb2 = "";
+					if (sp.GiamGia != null || sp.GiamGia > 0)
+					{
+						gb2 = double.Parse(gb.ToString()).ToString("#,###");
+						int gg = (int)sp.GiamGia;
+						gb = (int)(gb - gb * ((double)gg / 100));
+						int digits = gb.ToString().Length;
+						gb = RoundingTo(gb, 1000);
+					}
+					string giaban = double.Parse(gb.ToString()).ToString("#,###");
+
+				}
+				<span>@giaban₫</span>
+			</div>
+			<div class="clr"></div>
+		</div>
+		if (count == 5)
+		{
+			break;
+		}
+	}
+</div>

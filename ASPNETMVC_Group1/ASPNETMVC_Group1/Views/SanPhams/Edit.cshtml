@@ -1,0 +1,501 @@
+﻿@model ASPNETMVC_Group1.Models.EditSanPhamViewModel
+
+@{
+	ViewBag.Title = "Sửa sản phẩm";
+	Layout = "~/Views/Shared/_LayoutBackEnd.cshtml";
+}
+@section breadcumb{
+	<li class="breadcrumb-item"><a href="@Url.Action("Index","QuanLy")">Dashboard</a></li>
+	<li class="breadcrumb-item"><a href="@Url.Action("Index","SanPhams")">Sản phẩm</a></li>
+	<li class="breadcrumb-item active">Sửa</li>
+}
+<div class="row">
+	<div class="col-md-8">
+		<div class="card card-primary">
+			<div class="card-header">
+				<h3 class="card-title">Thông tin sản phẩm</h3>
+			</div>
+			<div class="card-body">
+				@using (Html.BeginForm("Edit", "QuanLy/SanPhams", new { id = Model.MaSanPham }, FormMethod.Post, new { id = "editForm", autocomplete = "off" }))
+				{
+					@Html.AntiForgeryToken()
+					@Html.HiddenFor(model => model.MaSanPham)
+					<div class="form-group">
+						<label for="TenSanPham" class="control-label col-md-4">
+							Tên sản phẩm <span style="font-size:12px" class="text-danger"><i class="fas fa-asterisk fa-xs"></i></span>
+						</label>
+						@Html.EditorFor(model => model.TenSanPham, new { htmlAttributes = new { @class = "form-control" } })
+						@Html.ValidationMessageFor(model => model.TenSanPham, "", new { @class = "text-danger" })
+					</div>
+					<div class="form-group">
+						<label for="GiaThiTruong" class="control-label col-md-4">
+							Giá thị trường <span style="font-size:12px" class="text-danger"><i class="fas fa-asterisk fa-xs"></i></span>
+						</label>
+						@Html.EditorFor(model => model.GiaThiTruong, new { htmlAttributes = new { @class = "form-control" } })
+						@Html.ValidationMessageFor(model => model.GiaThiTruong, "", new { @class = "text-danger" })
+					</div>
+					<div class="form-group">
+						<label for="GiaBan" class="control-label col-md-4">
+							Giá bán <span style="font-size:12px" class="text-danger"><i class="fas fa-asterisk fa-xs"></i></span>
+						</label>
+						@Html.EditorFor(model => model.GiaBan, new { htmlAttributes = new { @class = "form-control" } })
+						@Html.ValidationMessageFor(model => model.GiaBan, "", new { @class = "text-danger" })
+					</div>
+					<div class="form-group">
+						@Html.LabelFor(model => model.GiamGia, htmlAttributes: new { @class = "control-label col-md-4" })
+						@Html.EditorFor(model => model.GiamGia, new { htmlAttributes = new { @class = "form-control" } })
+						@Html.ValidationMessageFor(model => model.GiamGia, "", new { @class = "text-danger" })
+					</div>
+					<div class="form-group">
+						<label for="MaNhanHieu" class="control-label col-md-4">
+							Nhãn hiệu <span style="font-size:12px" class="text-danger"><i class="fas fa-asterisk fa-xs"></i></span>
+						</label>
+						@Html.DropDownList("MaNhanHieu", null, "Chọn nhãn hiệu", htmlAttributes: new { @class = "form-control custom-select" })
+						@Html.ValidationMessageFor(model => model.MaNhanHieu, "", new { @class = "text-danger" })
+					</div>
+					<div class="form-group">
+						<label for="MaDanhMuc" class="control-label col-md-4">
+							Danh mục <span style="font-size:12px" class="text-danger"><i class="fas fa-asterisk fa-xs"></i></span>
+						</label>
+						@Html.DropDownList("MaDanhMuc", null, "Chọn danh mục", htmlAttributes: new { @class = "form-control custom-select" })
+						@Html.ValidationMessageFor(model => model.MaDanhMuc, "", new { @class = "text-danger" })
+					</div>
+					<div class="form-group">
+						@Html.LabelFor(model => model.CongDung, htmlAttributes: new { @class = "control-label col-md-4" })
+						@Html.TextAreaFor(model => model.CongDung, new { htmlAttributes = new { @class = "form-control" } })
+						@Html.ValidationMessageFor(model => model.CongDung, "", new { @class = "text-danger" })
+					</div>
+					<div class="form-group">
+						<label for="MoTa" class="control-label col-md-4">
+							Mô tả <span style="font-size:12px" class="text-danger"><i class="fas fa-asterisk fa-xs"></i></span>
+						</label>
+						@Html.TextAreaFor(model => model.MoTa, new { htmlAttributes = new { @class = "form-control" } })
+						@Html.ValidationMessageFor(model => model.MoTa, "", new { @class = "text-danger" })
+					</div>
+					<button class="btn btn-success" type="submit" id="submitFrm1">Lưu</button>
+				}
+			</div>
+			<!-- /.card-body -->
+		</div>
+		<!-- /.card -->
+	</div>
+	<div class="col-md-4">
+		<div class="row">
+			<div class="col-12">
+				<div class="card card-primary">
+					<div class="card-header">
+						<h3 class="card-title">Tag</h3>
+					</div>
+					<div class="card-body">
+						@using (Html.BeginForm("EditTag", "QuanLy/SanPhams", new { id = Model.MaSanPham }, FormMethod.Post, new { id = "changeTag", @autocomplete = "off" }))
+						{
+							@Html.AntiForgeryToken()
+							@Html.HiddenFor(model => model.MaSanPham)
+							<div class="form-group">
+								@Html.ListBox("Tags", (MultiSelectList)null, htmlAttributes: new { @class = "form-control custom-select", multiple = "multiple" })
+								@Html.ValidationMessageFor(model => model.Tags, "", new { @class = "text-danger" })
+							</div>
+							<button class="btn btn-success" type="submit" id="submitFrm2">Lưu</button>
+						}
+					</div>
+					<!-- /.card-body -->
+				</div>
+				<!-- /.card -->
+			</div>
+			<div class="col-12">
+				<div class="card card-primary">
+					<div class="card-header">
+						<h3 class="card-title">Ảnh</h3>
+					</div>
+					<div class="card-body">
+						@using (Html.BeginForm("EditAnh", "QuanLy/SanPhams", new { id = Model.MaSanPham }, FormMethod.Post, new { id = "changeImage", enctype = "multipart/form-data", @class = "pb-3" }))
+						{
+							@Html.AntiForgeryToken()
+							@Html.HiddenFor(model => model.MaSanPham)
+							<div class="form-group">
+								<div class="custom-file">
+									@Html.TextBoxFor(model => model.Images, "", new { type = "file", multiple = "multiple", @class = "custom-file-input", @onchange = "loadFile(event)" })
+									<label class="custom-file-label" for="Images">Chọn ảnh</label>
+								</div>
+								@Html.ValidationMessageFor(model => model.Images, "", new { @class = "text-danger" })
+							</div>
+							<button class="btn btn-success" type="submit" id="submitFrm3">Lưu</button>
+						}
+						<div class="row" id="image-append">
+							@if (Model.Anhs != null)
+							{
+								foreach (var a in Model.Anhs)
+								{
+									string ImagePath = "~/wwwroot/Products/";
+									if (a.LinkAnh != null)
+									{
+										ImagePath += a.LinkAnh;
+									}
+									<div class="col-6 pb-3">
+										<img src="@Url.Content(ImagePath)" class="img-thumbnail" />
+									</div>
+								}
+							}
+						</div>
+					</div>
+					<!-- /.card-body -->
+				</div>
+				<!-- /.card -->
+			</div>
+			<div class="col-12">
+				<div class="row">
+					<div class="col-12">
+						<a href="@Url.Action("Index")" class="btn btn-secondary">Trở về danh sách</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+@section css{
+	<link href="~/Public/BackEnd/dist/css/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+	<link href="~/Public/BackEnd/plugins/summernote/summernote-bs4.min.css" rel="stylesheet" type="text/css" />
+}
+@section scripts{
+	<script src="~/Public/BackEnd/plugins/summernote/summernote-bs4.min.js"></script>
+	<script src="~/Public/BackEnd/dist/js/sweetalert2.all.min.js"></script>
+	<script src="~/Public/BackEnd/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+	<script>
+		$(function () {
+			bsCustomFileInput.init();
+		});
+	</script>
+	<script>
+		//Initialize
+		$('#sanpham').addClass('active');
+		$('#CongDung').summernote();
+		$('#MoTa').summernote();
+	</script>
+	<script>
+		//Validate
+		var allowed = [".jpg", ".png", ".gif", ".jpeg", ".jfif"];
+		var regexImage = new RegExp(
+			"([a-zA-Z0-9s_\\.-:()])+(" + allowed.join("|") + ")$"
+		);
+		$(document).ready(function () {
+			$('#editForm').keyup(function () {
+				if ($('#TenSanPham').val().trim() != '' && $('#GiaThiTruong').val() != '' && $('#GiaBan').val() != '' && $('#NhanHieu').val() != '' && $('#DanhMuc').val() != ''
+					&& $('#MoTa').val().trim() != '') {
+					if ((!regexGG() || parseInt($('#GiaThiTruong').val()) <= parseInt($('#GiaBan').val()))) {
+						$('#submitFrm1').prop('disabled', true);
+					} else {
+						$('#submitFrm1').prop('disabled', false);
+					}
+				} else {
+					$('#submitFrm1').prop('disabled', true);
+				}
+			});
+			$('#editForm').change(function () {
+				if ($('#TenSanPham').val().trim() != '' && $('#GiaThiTruong').val() != '' && $('#GiaBan').val() != '' && $('#NhanHieu').val() != '' && $('#DanhMuc').val() != ''
+					&& $('#MoTa').val().trim() != '') {
+					if ((!regexGG() || parseInt($('#GiaThiTruong').val()) <= parseInt($('#GiaBan').val()))) {
+						$('#submitFrm1').prop('disabled', true);
+					} else {
+						$('#submitFrm1').prop('disabled', false);
+					}
+				} else {
+					$('#submitFrm1').prop('disabled', true);
+				}
+			});
+			$('#TenSanPham').keyup(function () {
+				if ($('#TenSanPham').val().trim() == '')
+					$('span[data-valmsg-for="TenSanPham"]').text('Hãy nhập tên sản phẩm.');
+				else
+					$('span[data-valmsg-for="TenSanPham"]').text('');
+			});
+			$('#TenSanPham').keydown(function () {
+				if ($('#TenSanPham').val().trim() == '')
+					$('span[data-valmsg-for="TenSanPham"]').text('Hãy nhập tên sản phẩm.');
+				else
+					$('span[data-valmsg-for="TenSanPham"]').text('');
+			});
+			$('#GiaThiTruong').keyup(function () {
+				if ($('#GiaThiTruong').val() == '')
+					$('span[data-valmsg-for="GiaThiTruong"]').text('Hãy nhập giá thị trường.');
+				else {
+					if ($('#GiaBan').val() != '' && parseInt($('#GiaThiTruong').val()) <= parseInt($('#GiaBan').val()))
+						$('span[data-valmsg-for="GiaThiTruong"]').text('Giá thị trường cần cao hơn giá bán');
+					else
+						$('span[data-valmsg-for="GiaThiTruong"]').text('');
+				}
+			});
+			$('#GiaThiTruong').keydown(function () {
+				if ($('#GiaThiTruong').val() == '')
+					$('span[data-valmsg-for="GiaThiTruong"]').text('Hãy nhập giá thị trường.');
+				else {
+					if ($('#GiaBan').val() != '' && parseInt($('#GiaThiTruong').val()) <= parseInt($('#GiaBan').val()))
+						$('span[data-valmsg-for="GiaThiTruong"]').text('Giá thị trường cần cao hơn giá bán');
+					else
+						$('span[data-valmsg-for="GiaThiTruong"]').text('');
+				}
+			});
+			$('#GiaBan').keyup(function () {
+				if ($('#GiaBan').val() == '')
+					$('span[data-valmsg-for="GiaBan"]').text('Hãy nhập giá bán.');
+				else {
+					if ($('#GiaThiTruong').val() != '' && parseInt($('#GiaThiTruong').val()) <= parseInt($('#GiaBan').val()))
+						$('span[data-valmsg-for="GiaBan"]').text('Giá bán cần thấp hơn giá thị trường');
+					else
+						$('span[data-valmsg-for="GiaBan"]').text('');
+				}
+			});
+			$('#GiaBan').keydown(function () {
+				if ($('#GiaBan').val() == '')
+					$('span[data-valmsg-for="GiaBan"]').text('Hãy nhập giá bán.');
+				else {
+					if ($('#GiaThiTruong').val() != '' && parseInt($('#GiaThiTruong').val()) <= parseInt($('#GiaBan').val()))
+						$('span[data-valmsg-for="GiaBan"]').text('Giá bán cần thấp hơn giá thị trường');
+					else
+						$('span[data-valmsg-for="GiaBan"]').text('');
+				}
+			});
+			$('#MaNhanHieu').keydown(function () {
+				if ($('#MaNhanHieu').val() == '')
+					$('span[data-valmsg-for="MaNhanHieu"]').text('Hãy chọn nhãn hiệu.');
+				else
+					$('span[data-valmsg-for="MaNhanHieu"]').text('');
+			});
+			$('#MaNhanHieu').change(function () {
+				if ($('#MaNhanHieu').val() == '')
+					$('span[data-valmsg-for="MaNhanHieu"]').text('Hãy chọn nhãn hiệu.');
+				else
+					$('span[data-valmsg-for="MaNhanHieu"]').text('');
+			});
+			$('#MaDanhMuc').keydown(function () {
+				if ($('#MaDanhMuc').val() == '')
+					$('span[data-valmsg-for="MaDanhMuc"]').text('Hãy chọn danh mục.');
+				else
+					$('span[data-valmsg-for="MaDanhMuc"]').text('');
+			});
+			$('#MaDanhMuc').change(function () {
+				if ($('#MaDanhMuc').val() == '')
+					$('span[data-valmsg-for="MaDanhMuc"]').text('Hãy chọn danh mục.');
+				else
+					$('span[data-valmsg-for="MaDanhMuc"]').text('');
+			});
+			$('#submitFrm3').prop('disabled', true);
+			$('#changeImage').keydown(function () {
+				if ($('#Images').val() != '') {
+					if (!regexImages) {
+						$('#submitFrm3').prop('disabled', true);
+					} else {
+						$('#submitFrm3').prop('disabled', false);
+					}
+				} else {
+					$('#submitFrm3').prop('disabled', true);
+				}
+			});
+			$('#changeImage').change(function () {
+				if ($('#Images').val() != '') {
+					if (!regexImages) {
+						$('#submitFrm3').prop('disabled', true);
+					} else {
+						$('#submitFrm3').prop('disabled', false);
+					}
+				} else {
+					$('#submitFrm3').prop('disabled', true);
+				}
+			});
+			$('#Images').keydown(function () {
+				if ($("#Images").val() == "") {
+					$('span[data-valmsg-for="Images"]').text("Hãy chọn ảnh");
+				} else {
+					if (regexImages()) {
+						$('span[data-valmsg-for="Images"]').text("");
+					} else {
+						$('span[data-valmsg-for="Images"]').text("Định dạng ảnh không phù hợp.");
+					}
+				}
+			});
+			$('#Images').change(function () {
+				if ($("#Images").val() == "") {
+					$('span[data-valmsg-for="Images"]').text("Hãy chọn ảnh");
+				} else {
+					if (regexImages()) {
+						$('span[data-valmsg-for="Images"]').text("");
+					} else {
+						$('span[data-valmsg-for="Images"]').text("Định dạng ảnh không phù hợp.");
+					}
+				}
+			});
+			$('#GiamGia').keyup(function () {
+				if ($('#GiamGia').val() != '') {
+					if (regexGG()) {
+						$('span[data-valmsg-for="GiamGia"]').text('');
+					} else {
+						$('span[data-valmsg-for="GiamGia"]').text('Giảm giá từ 0 đến 100%.');
+					}
+				}
+				else
+					$('span[data-valmsg-for="GiamGia"]').text('');
+			});
+			$('#MoTa').on('summernote.keyup', function (we, e) {
+				if ($('#MoTa').val().trim() == '')
+					$('span[data-valmsg-for="MoTa"]').text('Hãy nhập mô tả.');
+				else
+					$('span[data-valmsg-for="MoTa"]').text('');
+			});
+			$('#MoTa').on('summernote.keydown', function (we, e) {
+				if ($('#MoTa').val().trim() == '')
+					$('span[data-valmsg-for="MoTa"]').text('Hãy nhập mô tả.');
+				else
+					$('span[data-valmsg-for="MoTa"]').text('');
+			});
+		});
+		function regexGG() {
+			if ($('#GiamGia').val() != '') {
+				if (parseInt($('#GiamGia').val()) > 100 || parseInt($('#GiamGia').val()) < 0) {
+					return false;
+				} else {
+					return true;
+				}
+			} else {
+				return true;
+			}
+		}
+		function regexImages() {
+			var flag = true;
+			var files = document.getElementById("Images").files;
+			for (var i = 0; i < files.length; i++) {
+				if (files[i].name == "") {
+					flag = false;
+				} else {
+					if (!regexImage.test(files[i].name.toLowerCase())) {
+						flag = false;
+					}
+				}
+			}
+			return flag;
+		}
+		var loadFile = function (event) {
+			$("#image-append").html('');
+			var flag = true;
+			var files = document.getElementById("Images").files;
+			for (var i = 0; i < files.length; i++) {
+				if (files[i].name == "") {
+					flag = false;
+				} else {
+					if (!regexImage.test(files[i].name.toLowerCase())) {
+						flag = false;
+					}
+				}
+			}
+			if (flag) {
+				for (var i = 0; i < files.length; i++) {
+					$("#image-append").append(
+						'<div class="col-6 pb-3">' +
+						'<img src="' + URL.createObjectURL(event.target.files[i]) + '" class="img-thumbnail" />' +
+						'</div>'
+					);
+				}
+			}
+		};
+	</script>
+	@if (ViewBag.EditSuccess != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Sửa thành công!',
+				'',
+				'success'
+			)
+		</script>
+	}
+	@if (ViewBag.EditError != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Sửa thất bại!',
+				"",
+				'error'
+			)
+		</script>
+	}
+	@if (ViewBag.EditTagSuccess != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Sửa Tag thành công!',
+				'',
+				'success'
+			)
+		</script>
+	}
+	@if (ViewBag.EditTagError != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Sửa Tag thất bại!',
+				"",
+				'error'
+			)
+		</script>
+	}
+	@if (ViewBag.EditAnhSuccess != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Sửa ảnh thành công!',
+				'',
+				'success'
+			)
+		</script>
+	}
+	@if (ViewBag.EditAnhError != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Sửa ảnh thất bại!',
+				"",
+				'error'
+			)
+		</script>
+	}
+}

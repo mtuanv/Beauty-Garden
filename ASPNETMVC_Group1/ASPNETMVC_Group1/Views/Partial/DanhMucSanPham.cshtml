@@ -1,0 +1,71 @@
+﻿@model ASPNETMVC_Group1.Models.ListDanhMucViewModel
+<div class="title-left">
+	<strong>DANH MỤC SẢN PHẨM</strong>
+</div>
+<div class="content-left">
+	<ul class="ul-non ul-left">
+		@foreach (var d in Model.danhMucs.Where(s => !s.MaDanhMucCha.HasValue))
+		{
+			if (d.MaDanhMuc == 1 || d.MaDanhMuc == 2)
+			{
+				<li class=" ">
+					<a href="@Url.Action("Index","DM", new { id = d.MaDanhMuc })" title="@d.TenDanhMuc">
+						<i class="fa fa-angle-right" aria-hidden="true"></i>
+						@{int tong1 = 0;}
+						@foreach (var dmc in Model.danhMucs.Where(s => s.MaDanhMucCha == d.MaDanhMuc))
+						{
+							int tong2 = 0;
+							foreach (var dml3 in Model.danhMucs.Where(s => s.MaDanhMucCha == dmc.MaDanhMuc))
+							{
+								tong2 += Model.sanPhams.Where(s => s.MaDanhMuc == dml3.MaDanhMuc).Count();
+							}
+							tong1 += tong2;
+						}
+						@d.TenDanhMuc (@tong1)
+					</a>
+					<ul class="ul-non ul-childs">
+						@foreach (var dmc in Model.danhMucs.Where(s => s.MaDanhMucCha == d.MaDanhMuc))
+						{
+							int tong2 = 0;
+							<li>
+								<a href="@Url.Action("Index","DM", new { id = dmc.MaDanhMuc })" title="@dmc.TenDanhMuc" class="">
+									<i class="fa fa-caret-right" aria-hidden="true"></i>
+									@foreach (var dml3 in Model.danhMucs.Where(s => s.MaDanhMucCha == dmc.MaDanhMuc))
+									{
+										tong2 += Model.sanPhams.Where(s => s.MaDanhMuc == dml3.MaDanhMuc).Count();
+									}
+									@dmc.TenDanhMuc (@tong2)
+								</a>
+							</li>
+						}
+					</ul>
+				</li>
+			}
+			else
+			{
+				<li class=" ">
+					<a href="@Url.Action("Index","DM", new { id = d.MaDanhMuc })" title="@d.TenDanhMuc">
+						<i class="fa fa-angle-right" aria-hidden="true"></i>
+						@{int tong3 = 0;}
+						@foreach (var dmc in Model.danhMucs.Where(s => s.MaDanhMucCha == d.MaDanhMuc))
+						{
+							tong3 += @Model.sanPhams.Where(s => s.MaDanhMuc == dmc.MaDanhMuc).Count();
+						}
+						@d.TenDanhMuc (@tong3)
+					</a>
+					<ul class="ul-non ul-childs">
+						@foreach (var dmc in Model.danhMucs.Where(s => s.MaDanhMucCha == d.MaDanhMuc))
+						{
+							<li>
+								<a href="@Url.Action("Index","DM", new { id = dmc.MaDanhMuc })" title="@dmc.TenDanhMuc" class="">
+									<i class="fa fa-caret-right" aria-hidden="true"></i>
+									@dmc.TenDanhMuc (@Model.sanPhams.Where(s => s.MaDanhMuc == dmc.MaDanhMuc).Count())
+								</a>
+							</li>
+						}
+					</ul>
+				</li>
+			}
+		}
+	</ul>
+</div>

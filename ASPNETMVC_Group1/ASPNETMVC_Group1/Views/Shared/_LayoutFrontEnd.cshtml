@@ -1,0 +1,742 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewBag.Title</title>
+	<meta name="keywords" content="Beauty Garden - Mỹ phẩm chính hãng" />
+	<meta name="description" content="@ViewBag.Title" />
+	<meta name="og:title" content="@ViewBag.Title" />
+	<meta name="og:type" content="website" />
+	<meta property="og:site_name" content="beautygarden.vn | Beauty Garden - Mỹ phẩm chính hãng" />
+	<meta property="og:description" content="@ViewBag.Title" />
+	<meta property="og:image" content="https://adminbeauty.hvnet.vn/images/logomoi.png" />
+	<meta name="robots" content="index, follow, noodp, noydir" />
+	<link rel="canonical" href="https://beautygarden.vn/">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta property="fb:app_id" content="1071737652879858" />
+	<meta property="fb:admins" content="100003298980591" />
+	<meta property="fb:admins" content="100000138045258" />
+	<link rel="amphtml" href="">
+	<meta name="google-site-verification" content="k2S2Cr4PfQXiRsJ3MiKjGSAgGLbHxTJ8MM2Ul_O7mtM" />
+	<link rel="stylesheet" href="~/Public/FrontEnd/css/site.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+	<link rel="stylesheet" href="~/Public/FrontEnd/css/sweetalert2.min.css" />
+	@RenderSection("css", required: false)
+</head>
+<body>
+	<header>
+		<div class="head-first">
+			<div class="container">
+				<div class="box-social hidden-xs">
+					<ul class="ul-non ul-social">
+						<li class=""><a href="https://www.facebook.com/BeautyGardenCosmetics/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+						<li class="hidden-sm"><a href="https://www.instagram.com/beautygarden.vn" target="_blank"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+						<li class="hidden-sm"><a href="https://www.pinterest.com/BeautyGardenvn/" target="_blank"><i class="fa fa-pinterest-p" aria-hidden="true"></i></a></li>
+						<li class="hidden-sm"><a href="https://plus.google.com/u/4/101900698437907415834" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+					</ul>
+					@{Html.RenderAction("Seen", "Partial");}
+					<div class="clr"></div>
+				</div>
+				<div class="box-hotline">
+					<ul class="ul-non ul-hotline">
+						<li class="">
+							<a href="javascript:void(0);" class="pixen-lg just-hl"><span id="location">Miền Bắc</span> <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+							<ul class="ul-non ul-lg">
+								<li><a href="javascript:SetBranh('Miền Nam')">Miền Nam</a></li>
+								<li><a href="javascript:SetBranh('Miền Trung')">Miền Trung</a></li>
+								<li><a href="javascript:SetBranh('Miền Bắc')">Miền Bắc</a></li>
+							</ul>
+						</li>
+						<li><a href="tel:0911384114" class="just-hl"><span>Hotline:</span> 0911 384 114</a></li>
+						<li class="hidden-xs"><a href="tel:19007013" class="just-hl"><span>Tổng đài tư vấn:</span> 1900 7013</a></li>
+						@Html.Partial("_LoginPartial")
+					</ul>
+				</div>
+				<div class="clr"></div>
+			</div>
+
+		</div>
+		<div class="head-second">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-4 col-md-12">
+						<div class="box-logo">
+							<a href="@Url.Action("Index", "Home")">
+								<img width="320" height="80" src="@Url.Content("~/Public/FrontEnd/img/logomoi-compressor.png")" alt="Logo beautygarden.vn" class="img-reponsive" />
+							</a>
+						</div>
+					</div>
+					<div class="col-lg-4 order-lg-first col-md-6">
+						<div class="box-Sform">
+							<form class="form-inline" action="@Url.Action("Index", "TimKiem")">
+								<input type="text" class="form-control my-form" id="keyword" placeholder="Tìm kiếm..." value="@ViewBag.CurrentKeyWord" autocomplete="off" name="keyword" onkeyup="boxSearch()">
+								<select class="custom-select my-form" id="type" name="type">
+									<option value="0" @(ViewBag.CurrentType == 0 ? "selected" : "")>Sản phẩm</option>
+									<option value="1" @(ViewBag.CurrentType == 1 ? "selected" : "")>Tin tức</option>
+								</select>
+								<button type="submit" class="btn btn-search"><i class="fa fa-search" aria-hidden="true"></i></button>
+							</form>
+						</div>
+					</div>
+					<div class="col-lg-4 order-lg-last col-md-6 order-md-last hidden-xs">
+						<div class="box-card">
+							<ul class="ul-non ul-card">
+								<li>
+									<a href="@Url.Action("Index","YeuThich")" class="like-pd" title="Sản phẩm yêu thích">
+										<i class="fa fa-heart-o" aria-hidden="true"></i>
+										Yêu thích
+										<span id="numberLike" data-id="0">0</span>
+									</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Index","GioHang")" class="shop_cart" title="Giỏ hàng">
+										<i class="fa fa-shopping-cart "></i>
+										Giỏ hàng
+										<span id="numberCart">0</span>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="clr"></div>
+				</div>
+			</div>
+		</div>
+		<div class="head-three">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="box-menu">
+							<div class="hidden-md">
+								<ul class="ul-non menu-mb">
+									<li>
+										<a href="@Url.Action("Index","GioHang")" class="shop_cart_mb" title="Giỏ hàng">
+											<i class="fa fa-shopping-cart "></i>
+											<span id="numberCart2">0</span>
+										</a>
+									</li>
+									<li>
+										<a href="@Url.Action("Index","YeuThich")" class="like-pd-mb" title="Sản phẩm yêu thích">
+											<i class="fa fa-heart-o" aria-hidden="true"></i>
+											<span id="numberLike2">0</span>
+										</a>
+									</li>
+								</ul>
+								<a href="tel:0911384114" class="hl-pd-mb" title="Tổng đài">
+									<i class="fa fa-phone"></i>
+									CSKH: 0911.384.114
+								</a>
+								<button type="button" class="btn-pd-mb hidden-xs" onclick="showmenutt()">
+									<i class="fa fa-bars" aria-hidden="true"></i>
+								</button>
+								<button type="button" class="btn-mn-mb" onclick="showmenu()">
+									<i class="fa fa-bars" aria-hidden="true"></i>
+								</button>
+								<div class="clr"></div>
+							</div>
+							<ul class="ul-non ul-menu" id="menu">
+								<li class="hidden-md first-li"><button type="button" class="btn-remove" onclick="showmenu()"><i class="fa fa-times" aria-hidden="true"></i></button></li>
+								<li class="li-parent-first hidden-xs hidden-sm">
+									<a href="javascript:void(0)" class="a-parent" id="megaloger" data-show="false"><i class="fa fa-bars" aria-hidden="true"></i></a>
+									<ul class="ul-non ul-menu-lagi" id="ul-megaloger">
+										<li>
+											<a href="javascript:void(0);" class="">
+												<div class="img-luna img-icon img-tt"></div>
+												<span>Thông tin</span>
+												<i class="fa fa-angle-right" aria-hidden="true"></i>
+											</a>
+											<ul class="ul-non ul-mega">
+												<li><a href="@Url.Action("Index","ThongTin",new { id = "Sự kiện khuyến mãi"})">Sự kiện khuyến mãi</a></li>
+												<li><a href="@Url.Action("Index","ThongTin",new { id = "Bí quyết làm đẹp"})">Bí quyết làm đẹp</a></li>
+												<li><a href="@Url.Action("Index","ThongTin",new { id = "Review sản phẩm"})">Review sản phẩm</a></li>
+											</ul>
+										</li>
+										<li>
+											<a href="javascript:void(0);" class="">
+												<div class="img-luna img-icon img-about"></div>
+												<span>Về chúng tôi</span>
+												<i class="fa fa-angle-right" aria-hidden="true"></i>
+											</a>
+											<ul class="ul-non ul-mega">
+												<li><a href="@Url.Action("GioiThieu","ThongTin")">Giới thiệu Beautygarden</a></li>
+												<li><a href="@Url.Action("HeThong","ThongTin")">Hệ thống cửa hàng</a></li>
+												<li><a href="@Url.Action("ChuongTrinh","ThongTin")">Chương trình tích điểm</a></li>
+												<li><a href="@Url.Action("ChinhSach","ThongTin")">Bảo mật thông tin</a></li>
+												<li><a href="@Url.Action("DieuKhoan","ThongTin")">Điều khoản sử dụng</a></li>
+											</ul>
+										</li>
+										<li>
+											<a href="javascript:void(0);" class="">
+												<div class="img-luna img-icon img-support"></div>
+												<span>Hỗ trợ</span>
+												<i class="fa fa-angle-right" aria-hidden="true"></i>
+											</a>
+											<ul class="ul-non ul-mega">
+												<li><a href="@Url.Action("HuongDanMuaHang","ThongTin")">Hướng dẫn mua hàng</a></li>
+												<li><a href="@Url.Action("ThanhToanVanChuyen","ThongTin")">Thanh toán vận chuyển</a></li>
+												<li><a href="@Url.Action("ChinhSachDoiTra","ThongTin")">Chính sách đổi trả</a></li>
+												<li><a href="@Url.Action("FAQs","ThongTin")">Giải đáp thắc mắc</a></li>
+											</ul>
+										</li>
+										<li>
+											<a href="@Url.Action("Contact","Home")" class="">
+												<div class="img-luna img-icon img-contact"></div>
+												<span>Liên hệ</span>
+											</a>
+										</li>
+										<li>
+											<a href="@Url.Action("Index","DM",new { id = "75" })" class="">
+												<div class="img-luna img-icon img-thucpham"></div>
+												<span>Thực phẩm chức năng</span>
+											</a>
+										</li>
+									</ul>
+								</li>
+								@{Html.RenderAction("DisplayDanhMuc", "Partial");}
+								<li class="li-parent">
+									<a href="@Url.Action("Index","KhuyenMai")" class="a-parent">
+										Khuyến mãi
+										<i class="fa fas" aria-hidden="true"></i>
+										<span class="pos-kam">Hot</span>
+									</a>
+								</li>
+								@{Html.RenderAction("DisplayThuongHieu", "Partial");}
+							</ul>
+							<ul class="ul-non ul-right hidden-xs hidden-sm">
+								<li>
+									<a><i class="fa fa-search" aria-hidden="true"></i></a>
+									<div class="searcf-s">
+										<form class="form-inline" action="@Url.Action("Index","TimKiem")">
+											<input type="text" class="form-control my-form" id="" placeholder="Tìm kiếm..." value="@ViewBag.CurrentKeyword" autocomplete="off" name="keyword">
+											<button type="submit" class="btn btn-search"><i class="fa fa-search" aria-hidden="true"></i></button>
+										</form>
+									</div>
+								</li>
+								<li>
+									<a href="@Url.Action("Index","GioHang")">
+										<i class="fa fa-shopping-cart "></i>
+									</a>
+								</li>
+							</ul>
+							<ul class="ul-non ul-menu-lagi hidden-md" id="ul-megaloger-mb">
+								<li>
+									<a href="javascript:void(0);" class="">
+										<div class="img-luna img-icon img-tt"></div>
+										<span>Thông tin</span>
+										<i class="fa fa-angle-right" aria-hidden="true"></i>
+									</a>
+									<ul class="ul-non ul-mega">
+										<li><a href="@Url.Action("Index","ThongTin",new { id = "Sự kiện khuyến mãi"})">Sự kiện khuyến mãi</a></li>
+										<li><a href="@Url.Action("Index","ThongTin",new { id = "Bí quyết làm đẹp"})">Bí quyết làm đẹp</a></li>
+										<li><a href="@Url.Action("Index","ThongTin",new { id = "Review sản phẩm"})">Review sản phẩm</a></li>
+									</ul>
+								</li>
+								<li>
+									<a href="javascript:void(0);" class="">
+										<div class="img-luna img-icon img-about"></div>
+										<span>Về chúng tôi</span>
+										<i class="fa fa-angle-right" aria-hidden="true"></i>
+									</a>
+									<ul class="ul-non ul-mega">
+										<li><a href="@Url.Action("GioiThieu","ThongTin")">Giới thiệu Beautygarden</a></li>
+										<li><a href="@Url.Action("HeThong","ThongTin")">Hệ thống cửa hàng</a></li>
+										<li><a href="@Url.Action("ChuongTrinh","ThongTin")">Chương trình tích điểm</a></li>
+										<li><a href="@Url.Action("ChinhSach","ThongTin")">Bảo mật thông tin</a></li>
+										<li><a href="@Url.Action("DieuKhoan","ThongTin")">Điều khoản sử dụng</a></li>
+									</ul>
+								</li>
+								<li>
+									<a href="javascript:void(0);" class="">
+										<div class="img-luna img-icon img-support"></div>
+										<span>Hỗ trợ</span>
+										<i class="fa fa-angle-right" aria-hidden="true"></i>
+									</a>
+									<ul class="ul-non ul-mega">
+										<li><a href="@Url.Action("HuongDanMuaHang","ThongTin")">Hướng dẫn mua hàng</a></li>
+										<li><a href="@Url.Action("ThanhToanVanChuyen","ThongTin")">Thanh toán vận chuyển</a></li>
+										<li><a href="@Url.Action("ChinhSachDoiTra","ThongTin")">Chính sách đổi trả</a></li>
+										<li><a href="@Url.Action("FAQs","ThongTin")">Giải đáp thắc mắc</a></li>
+									</ul>
+								</li>
+								<li>
+									<a href="@Url.Action("Contact","Home")" class="">
+										<div class="img-luna img-icon img-contact"></div>
+										<span>Liên hệ</span>
+									</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Index","DM",new { id = "75" })" class="">
+										<div class="img-luna img-icon img-thucpham"></div>
+										<span>Thực phẩm chức năng</span>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+	@RenderBody()
+
+	<footer class="border-top footer text-muted">
+		<div class="footer-first">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-5 col-md-12">
+						<div class="box-info">
+							<span> HỆ THỐNG CỬA HÀNG</span>
+							<ul class="ul-non ul-info">
+								<li>
+									<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.506146063703!2d106.67983231483649!3d10.772492462211874!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f2168dde56b%3A0x6ae5a065a26dccde!2sBeauty%20Garden!5e0!3m2!1svi!2s!4v1586850406286!5m2!1svi!2s" onclick="OpenMoal(this)">
+										<b>
+											<i class="fa fa-map-marker" aria-hidden="true"></i>
+											Quận 3 Tp.HCM
+										</b>
+										- Số 71, Đường số 3, Cư Xá Đô Thành, P4, Q3 - 0911 784 114
+										<div class="map-mages img-luna"></div>
+									</a>
+								</li>
+								<li>
+									<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.181426292888!2d106.67897581469529!3d10.797412592307257!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317528d6c415c955%3A0x1528b3de647ab027!2zMjgwIFBoYW4gxJDDrG5oIFBow7luZywgUGjGsOG7nW5nIDEsIFBow7ogTmh14bqtbiwgSOG7kyBDaMOtIE1pbmgsIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1587613114689!5m2!1svi!2s" onclick="OpenMoal(this)">
+										<b>
+											<i class="fa fa-map-marker" aria-hidden="true"></i>
+											Q.Phú Nhuận Tp.HCM
+										</b>
+										- 280 Phan Đình Phùng, P.3, Q.Phú Nhuận - 0911 384 114
+										<div class="map-mages img-luna"></div>
+									</a>
+								</li>
+								<li>
+									<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7837.118984785582!2d106.79197800000001!3d10.844984!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x37fb819462e9c33b!2zQmVhdXR5IEdhcmRlbiAoSOG7hyBUaOG7kW5nIE3hu7kgUGjhuqltIENow61uaCBow6NuZyAp!5e0!3m2!1sen!2sus!4v1586851454403!5m2!1sen!2sus" onclick="OpenMoal(this)">
+										<b>
+											<i class="fa fa-map-marker" aria-hidden="true"></i>
+											Q.9 Tp.HCM
+										</b>
+										- 435 Lê Văn Việt, Tăng Nhơn Phú A, Q.9 - 0911.484.114
+										<div class="map-mages img-luna"></div>
+									</a>
+								</li>
+								<li>
+									<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7838.796294140641!2d106.632957!3d10.780787!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f0dfa4d3a4f%3A0x472bcdd9525c3fd7!2sBeauty%20Garden%20-%20T%C3%A2n%20Ph%C3%BA!5e0!3m2!1svi!2sus!4v1586851550998!5m2!1svi!2sus" onclick="OpenMoal(this)">
+										<b>
+											<i class="fa fa-map-marker" aria-hidden="true"></i>
+											Q.Tân Phú Tp.HCM
+										</b>
+										- 17 Nguyễn Sơn, Phú Thạnh, Q.Tân Phú 0911.174.114
+										<div class="map-mages img-luna"></div>
+									</a>
+								</li>
+								<li>
+									<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7449.167865570996!2d105.82476!3d21.009309!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ac81dd101bfd%3A0x6921dcee87047a3b!2sBeauty%20Garden!5e0!3m2!1svi!2sus!4v1586851632428!5m2!1svi!2sus" onclick="OpenMoal(this)">
+										<b>
+											<i class="fa fa-map-marker" aria-hidden="true"></i>
+											Hà Nội
+										</b>
+										- 152 Chùa Bộc, Đống Đa, Hà Nội - 0911 584 114
+										<div class="map-mages img-luna"></div>
+									</a>
+								</li>
+								<li>
+									<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.9120606482597!2d105.78411161482066!3d21.0362043929002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab4a748ee167%3A0x4d8a95bdb7a8a30!2zTmfDtSAxNjVDLCBYdcOibiBUaOG7p3ksIEThu4tjaCBW4buNbmcgSOG6rXUsIEPhuqd1IEdp4bqleSwgSMOgIE7hu5lpLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1592129556282!5m2!1svi!2s" onclick="OpenMoal(this)">
+										<b>
+											<i class="fa fa-map-marker" aria-hidden="true"></i>
+											Hà Nội
+										</b>
+										- 165C Xuân Thủy, Cầu Giấy, Hà Nội - 0911.464.114
+										<div class="map-mages img-luna"></div>
+									</a>
+								</li>
+								<li>
+									<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7668.437362101784!2d108.219277!3d16.054138!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xaaf85194723f8da0!2sBeauty%20Garden!5e0!3m2!1svi!2sus!4v1586851719328!5m2!1svi!2sus" onclick="OpenMoal(this)">
+										<b>
+											<i class="fa fa-map-marker" aria-hidden="true"></i>
+											Đà Nẵng
+										</b>
+										- 268 Trưng Nữ Vương, P.Bình Thuận, Q.Hải Châu - 0911 684 114
+										<div class="map-mages img-luna"></div>
+									</a>
+								</li>
+								<li>
+									<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7667.797888151916!2d108.14820200000001!3d16.070733!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3142190b6f039953%3A0x6f63baf0fc4f133d!2zQmVhdXR5IEdhcmRlbiAoSOG7hyBUaOG7kW5nIE3hu7kgUGjhuqltIENow61uaCBIw6NuZyk!5e0!3m2!1svi!2sus!4v1586851763324!5m2!1svi!2sus" onclick="OpenMoal(this)">
+										<b>
+											<i class="fa fa-map-marker" aria-hidden="true"></i>
+											Đà Nẵng
+										</b>
+										- 94 Âu Cơ, P.Hòa Khánh Bắc, Q.Liên Chiểu, TP. Đà Nẵng - 0911.794.114
+										<div class="map-mages img-luna"></div>
+									</a>
+								</li>
+								<li>
+									<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7743.299855649141!2d107.994139!3d13.979431!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x316c1f2a95123ddf%3A0x165c680e2d90bcbf!2sBeauty%20Garden%20(chi%20nh%C3%A1nh%20Gia%20Lai)!5e0!3m2!1sen!2sus!4v1586851872004!5m2!1sen!2sus" onclick="OpenMoal(this)">
+										<b>
+											<i class="fa fa-map-marker" aria-hidden="true"></i>
+											Gia Lai
+										</b>
+										- 79 Hai Bà Trưng, P.Diên Hồng, Tp.Pleiku - 0911.520.114
+										<div class="map-mages img-luna"></div>
+									</a>
+								</li>
+								<li>
+									<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3892.449104911124!2d108.044288!3d12.684084!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x88ad5f499d631d80!2sBeauty%20Garden%20-%20Bu%C3%B4n%20Ma%20Thu%E1%BB%99t!5e0!3m2!1svi!2sus!4v1586851943823!5m2!1svi!2sus" onclick="OpenMoal(this)">
+										<b>
+											<i class="fa fa-map-marker" aria-hidden="true"></i>
+											Đắk Lắk
+										</b>
+										- 87 Hai Bà Trưng, P.Thắng Lợi, TP.Buôn Ma Thuột - 0911.074.114
+										<div class="map-mages img-luna"></div>
+									</a>
+								</li>
+								<li>
+									<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3928.835329599595!2d105.77405951471812!3d10.03044397526167!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31a088218097e8ad%3A0x9d8ae3002404b305!2zMTU0IE5ndXnhu4VuIFZp4buHdCBI4buTbmcsIFh1w6JuIEtow6FuaCwgTmluaCBLaeG7gXUsIEPhuqduIFRoxqEsIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1592129658474!5m2!1svi!2s" onclick="OpenMoal(this)">
+										<b>
+											<i class="fa fa-map-marker" aria-hidden="true"></i>
+											Cần Thơ
+										</b>
+										- 154 Nguyễn Việt Hồng, P.An Phú, Ninh Kiều, Cần Thơ - 0911.504.114
+										<div class="map-mages img-luna"></div>
+									</a>
+								</li>
+								<li>
+									<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3917.197072840642!2d106.81767041483745!3d10.948481058988!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3174dead1c56497b%3A0x7ae97cbaa860aabc!2zMzkgSMawbmcgxJDhuqFvIFbGsMahbmcsIFF1eeG6v3QgVGjhuq9uZywgVGjDoG5oIHBo4buRIEJpw6puIEjDsmEsIMSQ4buTbmcgTmFpLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1606872171234!5m2!1svi!2s" onclick="OpenMoal(this)">
+										<b>
+											<i class="fa fa-map-marker" aria-hidden="true"></i>
+											Đồng Nai
+										</b>
+										- 39 Hưng Đạo Vương, TP. Biên Hòa - 0911.974.114
+										<div class="map-mages img-luna"></div>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-2 col-md-6">
+						<div class="box-info">
+							<span> VỀ CHÚNG TÔI</span>
+							<ul class="ul-non ul-infos">
+								<li><a href="@Url.Action("HeThong","ThongTin")">Hệ thống cửa hàng</a></li>
+								<li><a href="@Url.Action("GioiThieu","ThongTin")">Giới thiệu Beautygarden</a></li>
+								<li><a href="@Url.Action("LienKet","ThongTin")">Liên kết</a></li>
+								<li><a href="@Url.Action("ChinhSach","ThongTin")">Bảo mật thông tin</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-2 col-md-6">
+						<div class="box-info">
+							<span> HỖ TRỢ</span>
+							<ul class="ul-non ul-info ul-infos">
+								<li><a href="@Url.Action("FAQs","ThongTin")">Giải đáp thắc mắc</a></li>
+								<li><a href="@Url.Action("HuongDanMuaHang","ThongTin")">Hướng dẫn mua hàng</a></li>
+								<li><a href="@Url.Action("ThanhToanVanChuyen","ThongTin")">Thanh toán vận chuyển</a></li>
+								<li><a href="@Url.Action("ChinhSachDoiTra","ThongTin")">Chính sách đổi trả hàng</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-6">
+						<div class="box-info">
+							<span> ĐĂNG KÝ NHẬN THÔNG TIN KHUYẾN MÃI</span>
+							<div>
+								<form class="example form-inline">
+									<input type="text" class="form-control ip-send" id="sendmail" placeholder="Vui lòng nhập email..." name="search2">
+									<button type="button" class="btn btn-send" onclick="SendMailGetEvent()">GỬI</button>
+								</form>
+							</div>
+							<span class="non-back"> LIÊN KẾT</span>
+							<ul class="ul-non ul-sofooter">
+								<li><a href="https://www.facebook.com/BeautyGardenCosmetics/" target="_blank" class="a-fb"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+								<li><a href="https://www.instagram.com/beautygarden.vn/" target="_blank" class="a-it"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+								<li><a href="https://www.pinterest.com/BeautyGardenvn/" target="_blank" class="a-pn"><i class="fa fa-pinterest-p" aria-hidden="true"></i></a></li>
+								<li><a href="https://plus.google.com/u/4/101900698437907415834" target="_blank" class="a-gg"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+							</ul>
+							<div class="clr"></div>
+							<div class="mar-top-10">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-5 col-md-6 ">
+						<div class="box-info">
+							<span> WEBSITE THUỘC QUYỀN</span>
+							<ul class="ul-non ul-infos">
+								<li>CÔNG TY CỔ PHẦN BEAUTY GARDEN</li>
+								<li>ĐKKD số: 0314635748</li>
+								<li>Do Sở KH&ĐT Tp. HCM Cấp ngày 21/09/2017</li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-4 col-md-6">
+						<div class="box-info">
+							<span> TRỤ SỞ CHÍNH</span>
+							<ul class="ul-non ul-infos">
+								<li><a>Địa chỉ: 255 Bình Lợi, P. 13, Q. Bình Thạnh. Tp.HCM</a></li>
+								<li><a>Tel: 02 873 000 283 - Email: info@beautygarden.vn</a></li>
+								<li><a>Website: www.beautygarden.vn</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-12">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="footer-second">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-6">
+						<p class="p-naio">Copyright 2021 © All Rights Reserved</p>
+					</div>
+					<div class="col-lg-6">
+						<p class="p-naio">Hệ Thống Phân Phối Mỹ Phẩm Chính Hãng</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
+	<div class="overlay"></div>
+	<div class="overlay-tt"></div>
+	<!-- The Modal -->
+	<div class="modal fade" id="myModal">
+		<div class="modal-dialog modal-lg modal-dialog-centered">
+			<div class="modal-content">
+				<!-- Modal body -->
+				<div class="modal-body">
+					<button type="button" class="btn-res" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i></button>
+					<div id="load-iframe">
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="ModalBranh" data-keyboard="false" data-backdrop="static">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<!-- Modal body -->
+				<div class="modal-body">
+					<div id="load-branh">
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="~/Public/FrontEnd/js/site.js"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.plugins.min.js"></script>
+	<script src="https://kit.fontawesome.com/6b76ce7f78.js" crossorigin="anonymous"></script>
+	<link rel="preload" as="script" href="~/Public/FrontEnd/js/countdow.js" />
+	<script src="~/Public/FrontEnd/js/countdow.js"></script>
+	<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js" type="text/javascript"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" type="text/javascript"></script>
+	<script src="~/Public/FrontEnd/js/sweetalert2.all.min.js"></script>
+	<script>
+		window.onload = function (e) {
+			CheckBrand();
+		};
+		$('.slider-productseen').owlCarousel({
+			margin: 5,
+			//loop: true,
+			autoplayTimeout: 5000,
+			lazyLoad: false,
+			responsive: {
+				0: {
+					items: 2
+				},
+				600: {
+					items: 3
+				},
+				1000: {
+					items: 12
+				}
+			}
+		});
+		$(function () {
+			$('.lazy').lazy({
+				effect: "fadeIn",
+				effectTime: 1500,
+				threshold: 0,
+			});
+
+			$('.lazy-img').lazy({
+				effect: "fadeIn",
+				effectTime: 1500,
+				threshold: 0,
+				delay: 5000
+			});
+		});
+		$(".box-pdseen").hover(function () {
+			$('.box-after').css("display", "block").css("visibility", "visible");
+		}, function () {
+			$('.box-after').css("display", "none").css("visibility", "hidden");
+		});
+		function boxSearch() {
+			var n = $("#keyword").val();
+			n.length >= 2 &&
+				($("#keyword")
+					.autocomplete({
+						source: function (t, i) {
+							$.ajax({
+								url: "/TimKiem/BoxSanPham?keyword="+n,
+								type: "GET",
+								success: function (n) {
+									i(n);
+								},
+							});
+						},
+						minLength: 2,
+						select: function (n, t) {
+							return (window.location.href = "/SanPham/" + t.item.MaSanPham), !1;
+						},
+					})
+					.data("ui-autocomplete")._renderItem = function (n, t) {
+						return $("<li></li>")
+							.data("item.autocomplete", t)
+							.append(
+								'<div class="box-auto"><img src="' +
+								t.anh.LinkAnh +
+								'" class="img-reponsive" /><div class="auto-content"><span class="title-auto">' +
+								t.TenSanPham +
+								'</span><div class="pric-max"><span>' +
+								t.GBJS +
+								"₫</span><span>" +
+								t.GTTJS +
+								'₫</span></div></div><div class="clr"></div></div>'
+							)
+							.appendTo(n);
+					});
+		}
+		/*hàm chọn vùng miền*/
+		function CheckBrand() {
+			if (localStorage.getItem('location') != null)
+				document.getElementById('location').innerHTML = localStorage.getItem('location');
+			else {
+				$("#ModalBranh").modal('show');
+				var _rs = HtmlBranh();
+				$("#load-branh").html(_rs);
+			}
+		}
+		function SetBranh(e) {
+			document.getElementById('location').innerHTML = e;
+			localStorage.setItem('location', e);
+			$("#ModalBranh").modal('hide');
+		}
+		function HtmlBranh() {
+			var html = "";
+			html += "<div class=\"branh-box\">";
+			html += "<div class=\"title-btans\"><span><b>CHỌN KHU VỰC GẦN BẠN NHẤT</b></span></div>";
+			html += "<div class=\"ties-oi\"><span>Bạn có thể chọn lại khu vực ở đầu trang</span></div>";
+			html += "<button type=\"button\" onclick=\"SetBranh('Miền Nam')\">Miền Nam</button>";
+			html += "<button type=\"button\" onclick=\"SetBranh('Miền Trung')\">Miền Trung </button>";
+			html += "<button type=\"button\" onclick=\"SetBranh('Miền Bắc ')\">Miền Bắc </button>";
+			html += "</div>";
+			return html;
+		}
+		function SendMailGetEvent() {
+			var obj = {
+				Mail: $('#sendmail').val()
+			}
+			Swal.showLoading()
+			$.ajax({
+				url: "/Home/SendMailGetEvent",
+				type: "POST",
+				data: JSON.stringify(obj),
+				contentType: "application/json; charset=utf-8",
+				success: function (response) {
+					if (response) {
+						const swalWithBootstrapButtons = Swal.mixin({
+							customClass: {
+								confirmButton: 'btn btn-success',
+								cancelButton: 'btn btn-danger mr-3'
+							},
+							buttonsStyling: false
+						})
+						swalWithBootstrapButtons.fire(
+							'Thành công',
+							'Gửi email thành công',
+							'success'
+						)
+					} else {
+						const swalWithBootstrapButtons = Swal.mixin({
+							customClass: {
+								confirmButton: 'btn btn-success',
+								cancelButton: 'btn btn-danger mr-3'
+							},
+							buttonsStyling: false
+						})
+						swalWithBootstrapButtons.fire(
+							'Thất bại!',
+							'Gửi email thất bại',
+							'error'
+						)
+					}
+				},
+				error: function (response) {
+					const swalWithBootstrapButtons = Swal.mixin({
+						customClass: {
+							confirmButton: 'btn btn-success',
+							cancelButton: 'btn btn-danger mr-3'
+						},
+						buttonsStyling: false
+					})
+					swalWithBootstrapButtons.fire(
+						'Thất bại!',
+						'Gửi email thất bại',
+						'error'
+					)
+				}
+			});
+		}
+		$.ajax({
+			url: "/YeuThich/CountYeuThich",
+			type: "POST",
+			async: true,
+			success: function (response) {
+				$('#numberLike').text(response)
+				$('#numberLike2').text(response)
+			}
+		});
+		$.ajax({
+			url: "/GioHang/CountCart",
+			type: "POST",
+			async: true,
+			success: function (response) {
+				$('#numberCart').text(response)
+				$('#numberCart2').text(response)
+			}
+		});
+		function AddLike(e) {
+			var data = {
+				MaSP: e
+			}
+			$.ajax({
+				url: "/YeuThich/AddOrDeleteYeuThich",
+				type: "POST",
+				data: JSON.stringify(data),
+				contentType: "application/json; charset=utf-8",
+				async: true,
+				success: function (response) {
+					if (response.isRedirect) {
+						window.location.href = response.redirectUrl;
+					}
+					else {
+						console.log(response);
+						toastr.success('', response);
+						$.ajax({
+							url: "/YeuThich/CountYeuThich",
+							type: "POST",
+							async: true,
+							success: function (response) {
+								$('#numberLike').text(response)
+								$('#numberLike2').text(response)
+							}
+						});
+					}
+				}
+			});
+		}
+	</script>
+	@RenderSection("scripts", required: false)
+</body>
+</html>

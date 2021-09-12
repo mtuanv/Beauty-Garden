@@ -1,0 +1,152 @@
+﻿@model PagedList.IPagedList<ASPNETMVC_Group1.Models.SanPham>
+@using PagedList.Mvc;
+@{
+	ViewBag.Title = "Nhập hàng ngày " + DateTime.UtcNow.AddHours(7).ToString("dd/MM/yyyy");
+	Layout = "~/Views/Shared/_LayoutBackEnd.cshtml";
+}
+@section breadcumb{
+	<li class="breadcrumb-item"><a href="@Url.Action("Index","QuanLy")">Dashboard</a></li>
+	<li class="breadcrumb-item active">Nhập hàng</li>
+}
+<section class="content">
+	<div class="card">
+		<div class="card-header">
+			<div class="row">
+				<div class="col-12">
+					@using (Html.BeginForm("Index", "NhapHang", FormMethod.Get))
+					{
+						<div class="input-group rounded">
+							@Html.TextBox("SearchString", ViewBag.SearchString as string, new { type = "search", @class = "form-control rounded", placeholder = "Tìm kiếm", autocomplete = "off" })
+							<button class="input-group-text border-0" id="search-addon"><i class="fas fa-search"></i></button>
+						</div>
+					}
+				</div>
+
+			</div>
+		</div>
+		<div class="card-body p-0" style="display:block">
+			<table class="table table-striped projects">
+				<thead>
+					<tr>
+						<th style="width: 40%">
+							Tên sản phẩm
+						</th>
+						<th style="width: 10%">
+							Số lượng còn
+						</th>
+						<th>Nhập hàng</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model)
+					{
+						<tr>
+							<td>
+								@item.TenSanPham
+							</td>
+							<td>
+								@item.SoLuong
+							</td>
+							<td class="text-center">
+								<form class="form-inline" action="@Url.Action("Nhap", "NhapHang", new { id = item.MaSanPham })" method="post">
+									@Html.AntiForgeryToken()
+									<input type="hidden" name="MaSanPham" value="@item.MaSanPham" />
+									<div class="form-group mx-sm-3 mb-2">
+										<input type="number" class="form-control" name="SoLuong" id="SoLuong" placeholder="Số lượng" required>
+									</div>
+									<div class="form-group mx-sm-3 mb-2">
+										<input type="number" class="form-control" name="GiaNhap" id="GiaNhap" placeholder="Giá nhập" required>
+									</div>
+									<input type="hidden" name="page" value="@ViewBag.Page" />
+									<input type="hidden" name="search" value="@ViewBag.SearchString" />
+									<button type="submit" data-click="nhap" class="btn btn-success mb-2">Thêm</button>
+								</form>
+							</td>
+						</tr>
+					}
+				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="10" align="right">
+							Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+							@Html.PagedListPager(Model, page => Url.Action("Index", new { page, searchString = ViewBag.SearchString }))
+						</td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+	</div>
+</section>
+@section css{
+	<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+	<link href="~/Public/BackEnd/dist/css/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+}
+@section scripts{
+	<script src="~/Public/BackEnd/dist/js/sweetalert2.all.min.js"></script>
+	<script>
+		//Initialize
+		$('#nhaphang').addClass('active');
+	</script>
+	<script>
+		//Submit nhap
+		$(document).ready(function () {
+			$('[data-click="nhap"]').click(function (e) {
+				e.preventDefault();
+				var form = $(this).parents('form');
+				const swalWithBootstrapButtons = Swal.mixin({
+					customClass: {
+						confirmButton: 'btn btn-success mr-3',
+						cancelButton: 'btn btn-danger'
+					},
+					buttonsStyling: false
+				})
+				swalWithBootstrapButtons.fire({
+					title: 'Nhập sản phẩm',
+					text: "Bạn có chắc chắn muốn nhập?",
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonText: 'Có',
+					cancelButtonText: 'Không'
+				}).then((result) => {
+					if (result.isConfirmed) {
+						form.submit()
+					}
+				});
+			});
+		});
+	</script>
+	@if (ViewBag.NhapSuccess != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Nhập thành công!',
+				'',
+				'success'
+			)
+		</script>
+	}
+	@if (ViewBag.NhapError != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Nhập thất bại!',
+				"Hãy thử lại sau",
+				'error'
+			)
+		</script>
+	}
+}

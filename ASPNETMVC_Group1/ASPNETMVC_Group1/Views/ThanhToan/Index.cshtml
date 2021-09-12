@@ -1,0 +1,405 @@
+﻿@model ASPNETMVC_Group1.Models.ThanhToanView
+@{
+	ViewBag.Title = "Thanh toán đơn hàng";
+	Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
+}
+
+<main role="main" class="pb-3">
+	<div class="bracum">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<ol class="ol-non">
+						<li><a href="@Url.Action("Index","Home")">Trang chủ</a></li>
+						<li><a href="javascript:void(0)">@ViewBag.Title</a></li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="pad-tab-40">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-7">
+					@if (ViewBag.OverQuantity != null)
+					{
+						<div id="load-error"><div class="box-error"><p>Giỏ hàng có sản phẩm không đủ tồn kho ! Vui lòng kiểm tra lại.</p></div></div>
+					}
+					<h2 class="h2-fiead">Địa chỉ nhận hàng</h2>
+					<form action="@Url.Action("Index","ThanhToan")" method="post" class="payment-order">
+						@Html.AntiForgeryToken()
+						<div class="form-group row">
+							<label for="inputPassword" class="col-sm-3 col-form-label text-rights opsize"><b>Họ tên</b></label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control opsize" id="txtName" name="HoTen" value="@Model.HoTen" placeholder="VD: Nguyễn Văn A (*)">
+								<div class="invalid-feedback" id="val-txtName">
+
+								</div>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="inputPassword" class="col-sm-3 col-form-label text-rights opsize"><b>Số điện thoại</b></label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control opsize" id="txtPhone" name="SDT" value="@Model.SDT" placeholder="VD: 0909 099 099 (*)">
+								<div class="invalid-feedback" id="val-txtPhone">
+
+								</div>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="inputPassword" class="col-sm-3 col-form-label text-rights opsize"><b>Tỉnh/Thành phố</b></label>
+							<div class="col-sm-9">
+								<select id="RegionId" class="form-control opsize" name="ThanhPho">
+								</select>
+								<div class="invalid-feedback" id="val-RegionId">
+
+								</div>
+							</div>
+							<input type="hidden" id="TP" value="@Model.ThanhPho" />
+						</div>
+						<div class="form-group row">
+							<label for="inputPassword" class="col-sm-3 col-form-label text-rights opsize"><b>Quận/Huyện</b></label>
+							<div class="col-sm-9">
+								<select id="DistristId" class="form-control opsize" name="QuanHuyen">
+								</select>
+								<div class="invalid-feedback" id="val-DistristId">
+
+								</div>
+							</div>
+							<input type="hidden" id="QH" value="@Model.QuanHuyen" />
+						</div>
+						<div class="form-group row">
+							<label for="inputPassword" class="col-sm-3 col-form-label text-rights opsize"><b>Địa chỉ</b></label>
+							<div class="col-sm-9">
+								<textarea id="txtAdress" class="form-control opsize" name="DiaChi" placeholder="Số nhà, đường, phường xã...">@Model.DiaChi</textarea>
+								<div class="invalid-feedback" id="val-txtAdress">
+
+								</div>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="inputPassword" class="col-sm-3 col-form-label text-rights opsize"><b>Ghi chú</b></label>
+							<div class="col-sm-9">
+								<textarea id="txtNote" name="GhiChu" class="form-control opsize" placeholder="VD: Giao hàng vào buổi chiều"></textarea>
+							</div>
+						</div>
+						<div class="form-group row hidden-sm hidden-xs">
+							<div class="col-sm-6 col-7">
+								<a class="btn btn-light pull-left opsize" href="@Url.Action("Index","GioHang")">QUAY LẠI GIỎ HÀNG</a>
+							</div>
+							<div class="col-sm-6 col-5">
+								<button class="btn btn-thanhtoan pull-right opsize" type="submit" id="btn-tt" @(ViewBag.OverQuantity != null ? "disabled" : "")>THANH TOÁN</button>
+							</div>
+						</div>
+						<script>
+							localStorage.setItem('QH', document.getElementById("QH").value);
+							localStorage.setItem('TP', document.getElementById("TP").value);
+						</script>
+					</form>
+				</div>
+				<div class="col-lg-5">
+					<div id="load-casf" class="order">
+						<style>
+							.salever {
+								width: 50px;
+								margin-left: 10px;
+								padding: 2px 20px 2px 5px;
+							}
+
+								.salever:after {
+									border-color: transparent #fafafa !important;
+								}
+						</style>
+						<div id="cart-info" class="cart-info">
+							<h2 class="title-secres">Giỏ Hàng</h2>
+							<ul class="list-unstyled">
+								@functions
+											{
+									long RoundingTo(long myNum, long roundTo)
+									{
+										if (roundTo <= 0) return myNum;
+										return (myNum + roundTo / 2) / roundTo * roundTo;
+									}
+									long RoundingTo(long myNum, int roundTo)
+									{
+										return RoundingTo(myNum, (long)roundTo);
+									}
+									int RoundingTo(int myNum, int roundTo)
+									{
+										return (int)RoundingTo((long)myNum, (long)roundTo);
+									}
+								}
+								@{int ThanhTien = 0;}
+								@foreach (var item in Model.cart)
+								{
+									int gb = (int)item.GiaBan;
+									int gtt = (int)item.GiaThiTruong;
+									int tk = gtt - gb;
+									string gb2 = "";
+									if (item.GiamGia != null || item.GiamGia > 0)
+									{
+										gb2 = double.Parse(gb.ToString()).ToString("#,###");
+										int gg = (int)item.GiamGia;
+										gb = (int)(gb - gb * ((double)gg / 100));
+										int digits = gb.ToString().Length;
+										gb = RoundingTo(gb, 1000);
+									}
+									ThanhTien += gb * (int)item.SoLuong;
+									string ttsp = double.Parse((item.SoLuong * gb).ToString()).ToString("#,###");
+									string giaban = double.Parse(gb.ToString()).ToString("#,###");
+									string giathitruong = double.Parse(gtt.ToString()).ToString("#,###");
+									<li>
+										<figure>
+											<a class="cart_list_product_img" href="@Url.Action("Index", "SP", new { id = item.MaSanPham })" title="@item.TenSanPham ">
+												<img src="@Url.Content("~/wwwroot/Products/" + item.Anh)" alt="@item.TenSanPham " class="img-reponsive imds" style="width:68px;height:76px">
+											</a>
+										</figure>
+										<div class="list_content">
+											<h5>
+												<a href="@Url.Action("Index", "SP", new { id = item.MaSanPham })" title="@item.TenSanPham ">
+													<span class="name-ps">@item.TenSanPham </span>
+												</a>
+
+											</h5>
+											<div class="quantity">
+												@item.SoLuong x
+												<span class="amount">
+													<span class="money" style="color: #199427; font-size: 14px !important;">
+														@giaban₫
+													</span>
+													<span class="" style="text-decoration: line-through; font-size: 12px; padding-left: 12px;">
+														@giathitruong₫
+													</span>
+													@if (item.GiamGia != null || item.GiamGia > 0)
+													{
+														<span class="sale salever">-@item.GiamGia%</span>
+													}
+												</span>
+												<div class="pull-right tt">
+													@ttsp₫
+												</div>
+											</div>
+											@if (item.SoLuong > item.SoLuongCon)
+											{
+												<div class="iserror">
+													<span style="color: red;"> Tồn kho chỉ còn <b>@item.SoLuongCon</b> sản phẩm!</span>
+												</div>}
+										</div>
+										<div class="clr"></div>
+									</li>
+								}
+								@{string TongTT = double.Parse(ThanhTien.ToString()).ToString("#,###");}
+							</ul>
+							<div class="load-lead">
+								<div class="box-coupon">
+									<p class="list-info-price" id="price-before">
+										<small class="color-black">Tạm tính: </small> <span style="color:green">@TongTT₫</span>
+									</p>
+								</div>
+							</div>
+							<!--Tổng số tiền-->
+							<div class="load-ship">
+								<div class="box-coupon">
+									<p class="list-info-price" id="priceship" data-id="0">
+										<small class="color-black">Phí vận chuyển: </small> <span>Chưa xác định!</span>
+									</p>
+								</div>
+							</div>
+							<div class="subtotal">
+								Thành tiền:
+								<span>
+									<span class="amount">
+										<strong class="money lucal" style="color: #e54d42;"> @TongTT₫ </strong>
+									</span>
+								</span>
+							</div>
+							<div class="pttt">
+								<span style="display:block;">* Những sản phẩm khuyến mãi sẽ không được hỗ trợ Freeship</span>
+								<span>* Phương thức thanh toán: Nhận hàng &amp; thanh toán tiền mặt tại nhà</span>
+							</div>
+						</div>
+					</div>
+					<form class="hidden-md">
+						<div class="form-group row">
+							<div class="col-sm-6 col-7">
+								<a class="btn btn-light pull-left opsize" href="@Url.Action("Index","GioHang")">QUAY LẠI GIỎ HÀNG</a>
+							</div>
+							<div class="col-sm-6 col-5">
+								<button class="btn btn-thanhtoan pull-right opsize" type="button" id="btn-tt2" @(ViewBag.OverQuantity != null ? "disabled" : "")>THANH TOÁN</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="bk-opps">
+		<div class="lds-roller">
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
+	</div>
+
+
+</main>
+@section css{
+	<link href="~/Public/FrontEnd/css/category.css" rel="stylesheet" type="text/css" />
+	<link href="~/Public/FrontEnd/css/shopcard.css" rel="stylesheet" type="text/css" />
+}
+@section scripts{
+	<script src="~/Public/FrontEnd/js/district.min.js"></script>
+	<script>
+		//Initialize
+		$('select[name="ThanhPho"]').each(function () {
+			var $this = $(this),
+				stc = ''
+			c.forEach(function (i, e) {
+				e += +1
+				stc += '<option value="' + i + '">' + i + '</option>'
+				$this.html('<option value="">Chọn tỉnh thành phố</option>' + stc)
+				$this.on('change', function (i) {
+					i = $this.children('option:selected').index() - 1
+					var str = '',
+						r = $this.val()
+					if (r != '') {
+						arr[i].forEach(function (el) {
+							str += '<option value="' + el + '">' + el + '</option>'
+							$('select[name="QuanHuyen"]').html('<option value="">Chọn quận huyện</option>' + str)
+						})
+						$('select[name="QuanHuyen"]').on('change', function () {
+							var target = $(this).children('option:selected')
+							target.attr('selected', '')
+							$('select[name="QuanHuyen"] option').not(target).removeAttr('selected')
+							district = $('select[name="QuanHuyen"]').html()
+						})
+					} else {
+						$('select[name="QuanHuyen"]').html('<option value="">Chọn quận huyện</option>')
+						district = $('select[name="QuanHuyen"]').html()
+					}
+				})
+			})
+		});
+		$('#RegionId').val(localStorage.getItem('TP')).change();
+		$('#DistristId').val(localStorage.getItem('QH')).change();
+	</script>
+	<script>
+		//Validate
+		$("#txtName").keyup(function () {
+			var val = $(this).val();
+			validateName(val);
+		});
+		$("#txtPhone").keyup(function () {
+			var val = $(this).val();
+			validatePhone(val);
+		});
+		function validateName(val) {
+			if (val.length == 0) {
+				$("#txtName").addClass('is-invalid');
+				$("#val-txtName").html("Vui lòng nhập đầy đủ thông tin!");
+				return 0;
+			}
+			else {
+				$("#txtName").removeClass('is-invalid');
+				$("#val-txtName").html("");
+				return 1;
+			}
+		}
+		function validatePhone(val) {
+			if (val.length == 0) {
+				$("#txtPhone").addClass('is-invalid');
+				$("#val-txtPhone").html("Vui lòng nhập đầy đủ thông tin!");
+				return 0;
+			}
+			else if (val[0] != 0) {
+				$("#txtPhone").addClass('is-invalid');
+				$("#val-txtPhone").html("Vui lòng nhập số điện thoại bắt đầu từ 0.");
+				return 0;
+			}
+			else if (val.length < 10) {
+				$("#txtPhone").addClass('is-invalid');
+				$("#val-txtPhone").html("Số điện thoại không hợp lệ!");
+				return 0;
+			}
+			else {
+				$("#txtPhone").removeClass('is-invalid');
+				$("#val-txtPhone").html("");
+				return 1;
+			}
+		}
+		function validateAddress(val) {
+			if (val.length == 0) {
+				$("#txtAdress").addClass('is-invalid');
+				$("#val-txtAdress").html("Vui lòng nhập đầy đủ thông tin!");
+				return 0;
+			}
+			else {
+				$("#txtAdress").removeClass('is-invalid');
+				$("#val-txtAdress").html("");
+				return 1;
+			}
+		}
+		function validateSelectRegion(val) {
+			if (val == 0) {
+				$("#RegionId").addClass('is-invalid');
+				$("#val-RegionId").html("Bạn vui lòng chọn Tỉnh/Thành Phố!");
+				$("#DistristId").addClass('is-invalid');
+				$("#val-DistristId").html("Bạn vui lòng chọn Quận/Huyện!");
+				return 0;
+			}
+			else {
+				$("#RegionId").removeClass('is-invalid');
+				$("#val-RegionId").html("");
+				return 1;
+			}
+		}
+		function validateSelectDistrist(val) {
+			if (val == 0) {
+				$("#DistristId").addClass('is-invalid');
+				$("#val-DistristId").html("Bạn vui lòng chọn Quận/Huyện!");
+				return 0;
+			}
+			else {
+				$("#DistristId").removeClass('is-invalid');
+				$("#val-DistristId").html("");
+				return 1;
+			}
+		}
+		$(document).ready(function () {
+			$("#btn-tt2").click(function () {
+				$("form.payment-order").submit();
+			});
+			$("form.payment-order").submit(function (e) {
+				
+				$('.bk-opps').addClass('opps');
+				/*param*/
+				var phone = $("#txtPhone").val();
+				var name = $("#txtName").val();
+				var address = $("#txtAdress").val();
+				var region = $("#RegionId option:selected").val();
+				var distric = $("#DistristId option:selected").val();
+
+				var phoneVal = validatePhone(phone);
+				var nameVal = validateName(name);
+				var addressVal = validateAddress(address);
+				var regionVal = validateSelectRegion(region);
+				var districVal = validateSelectDistrist(distric);
+				if (nameVal == 0) { $("#txtName").focus(); $('.bk-opps').removeClass('opps'); e.preventDefault(); }
+				if (phoneVal == 0) { $("#txtPhone").focus(); $('.bk-opps').removeClass('opps'); e.preventDefault(); }
+				if (regionVal == 0) { $("#RegionId").focus(); $('.bk-opps').removeClass('opps'); e.preventDefault(); }
+				if (districVal == 0) { $("#DistristId").focus(); $('.bk-opps').removeClass('opps'); e.preventDefault(); }
+				if (addressVal == 0) { $("#txtAdress").focus(); $('.bk-opps').removeClass('opps'); e.preventDefault(); }
+				if (phoneVal == 0 || nameVal == 0 || addressVal == 0 || regionVal == 0 || districVal == 0) {
+					$('.bk-opps').removeClass('opps');
+					e.preventDefault(); 
+				}
+			});
+		});
+	</script>
+}

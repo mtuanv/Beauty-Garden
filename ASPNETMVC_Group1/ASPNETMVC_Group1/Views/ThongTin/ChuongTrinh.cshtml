@@ -1,0 +1,79 @@
+﻿
+@{
+	ViewBag.Title = "Chương trình tích điểm";
+	Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
+}
+<main role="main" class="pb-3">
+
+	<div class="bracum">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<ol class="ol-non">
+						<li><a href="@Url.Action("Index","Home")">Trang chủ</a></li>
+						<li><a href="javascript:void(0);">@ViewBag.Title</a></li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-9 order-lg-last">
+					<div class="box-manugar">
+
+						<div class="my-content">
+							<div class="head-box">
+								<div class="title-box">
+									<h1>
+										<a href="javascript:void()" title="">
+											Ch&#x1B0;&#x1A1;ng tr&#xEC;nh t&#xED;ch &#x111;i&#x1EC3;m
+										</a>
+									</h1>
+								</div>
+								<div class="clr"></div>
+							</div>
+							<div class="body-box">
+								<p>
+									&nbsp;
+								</p>
+								<p>
+									<em>Nhằm tri &acirc;n kh&aacute;ch h&agrave;ng </em>đ&atilde; lu&ocirc;n tin tưởng v&agrave; ủng hộ Beauty Garden trong suốt thời gian quan. Ch&uacute;ng t&ocirc;i mang đến cho kh&aacute;ch h&agrave;ng sự tiện lợi khi mua sắm c&ugrave;ng chương tr&igrave;nh t&iacute;ch điểm đối với th&agrave;nh vi&ecirc;n như sau:
+								</p>
+								<p>
+									<br />
+									Th&agrave;nh vi&ecirc;n khi mua h&agrave;ng sẽ được t&iacute;ch lũy điểm với mỗi <strong>100.000 đồng</strong> tương đương với <span style="color:#ff0000;">1 điểm</span>. Khi t&iacute;ch lũy đủ 10 điểm qu&yacute; kh&aacute;ch h&agrave;ng sẽ được quy đổi th&agrave;nh phiếu mua h&agrave;ng trị gi&aacute; <span style="color:#ff0000;">100.000 đồng</span> c&oacute; thời hạn vĩnh viễn tại Beauty Garden. Hy vọng đ&acirc;y sẽ l&agrave; chương tr&igrave;nh ưu đ&atilde;i hợp l&yacute; nhất d&agrave;nh cho những kh&aacute;ch h&agrave;ng đ&atilde; lu&ocirc;n tin tưởng v&agrave; ủng hộ ch&uacute;ng t&ocirc;i.
+								</p>
+								<p>
+									&nbsp;
+								</p>
+								<p style="text-align: center;">
+									<img alt="chương trình tích điểm" src="/Files/Uploads/chuong-trinh-tich-diem-beauty.jpg" style="width: 799px; height: 533px;" title="chương trình tích điểm" />
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3 order-lg-first">
+					<div class="box-left hidden-sm hidden-xs">
+						@{Html.RenderAction("DanhMucSanPham", "Partial");}
+					</div>
+					<div class="box-left hidden-sm hidden-xs">
+						@{Html.RenderAction("TinNoiBat", "Partial");}
+					</div>
+					<div class="box-left">
+						@{Html.RenderAction("SanPhamMoiVe", "Partial");}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</main>
+@section css{
+	<link href="~/Public/FrontEnd/css/category.css" rel="stylesheet" />
+	<link href="~/Public/FrontEnd/css/huongdan.css" rel="stylesheet" />
+}
+

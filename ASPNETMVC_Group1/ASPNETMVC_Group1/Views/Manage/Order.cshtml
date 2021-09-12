@@ -1,0 +1,339 @@
+﻿@model IEnumerable<ASPNETMVC_Group1.Models.DonHangViewModel>
+@functions
+											{
+	long RoundingTo(long myNum, long roundTo)
+	{
+		if (roundTo <= 0) return myNum;
+		return (myNum + roundTo / 2) / roundTo * roundTo;
+	}
+	long RoundingTo(long myNum, int roundTo)
+	{
+		return RoundingTo(myNum, (long)roundTo);
+	}
+	int RoundingTo(int myNum, int roundTo)
+	{
+		return (int)RoundingTo((long)myNum, (long)roundTo);
+	}
+}
+<div class="tab-pane" id="order">
+	<h6>Đơn hàng của bạn</h6>
+	<hr>
+	<div id="accordion">
+		@foreach (var item in Model)
+		{
+			var orderid = "order" + item.MaDonHang;
+			var heading = "heading" + item.MaDonHang;
+			var collapse = "collapse" + item.MaDonHang;
+			var status = "status" + item.MaDonHang;
+			var button = "button" + item.MaDonHang;
+			if (item.TrangThai == 3)
+			{
+				<div class="card bg-success mb-3" id="@orderid">
+					<div class="card-header" id="@heading">
+						<div class="row">
+							<div class="col-9">
+								<h5 class="mb-0">
+									<button class="btn text-white text-left" data-toggle="collapse" data-target="#@collapse" aria-expanded="false" aria-controls="collapse">
+										Đơn hàng(@Convert.ToDateTime(item.NgayDat).ToString("dd-MM-yyyy HH:mm"))
+									</button>
+								</h5>
+							</div>
+							<div class="col-3">
+								<h6 class="text-white text-right" id="@status">Đã hoàn thành</h6>
+							</div>
+						</div>
+					</div>
+					<div id="@collapse" class="collapse" aria-labelledby="@heading" data-parent="#accordion">
+						<ul class="list-group list-group-flush">
+							@{int ThanhTien = 0;}
+							@foreach (var sp in item.detailDonHangs)
+							{
+								int gb = (int)sp.DonGia;
+								string gb2 = "";
+								if (sp.GiamGia != null || sp.GiamGia > 0)
+								{
+									gb2 = double.Parse(gb.ToString()).ToString("#,###");
+									int gg = (int)sp.GiamGia;
+									gb = (int)(gb - gb * ((double)gg / 100));
+									int digits = gb.ToString().Length;
+									gb = RoundingTo(gb, 1000);
+								}
+								ThanhTien += gb * (int)sp.SoLuong;
+								string giaban = double.Parse(gb.ToString()).ToString("#,###");
+								<li class="list-group-item">
+									<div class="row">
+										<div class="col-2">
+											<figure>
+												<a class="cart_list_product_img" href="@Url.Action("Index", "SP", new { id = sp.MaSanPham })" title="@sp.TenSanPham ">
+													<img src="@Url.Content("~/wwwroot/Products/" + sp.Anh)" alt="@sp.TenSanPham " class="img-reponsive imds" style="width:68px;height:76px">
+												</a>
+											</figure>
+											@*<img src="@Url.Content("~/wwwroot/Products/" + sp.Anh)" width="80" height="80" class="img-thumbnail" />*@
+										</div>
+										<div class="col-8">
+											<a href="@Url.Action("Index", "SP", new { id = sp.MaSanPham })" title="@sp.TenSanPham " class="btn">
+												<span class="name-ps">@sp.TenSanPham </span>
+											</a>
+											<p class="pl-3">x@(sp.SoLuong)</p>
+											<div class="rate-star">
+												<div class="rating-stars" data-star="1">
+													<ul id="stars">
+														<li class="star @(sp.DanhGia != null && sp.DanhGia >= 1 ? "selected" : "")" title="Tệ" data-value="1" onclick="chooseReview(@sp.MaSanPham,@item.MaDonHang,1)">
+															<i class="fa fa-star fa-fw"></i>
+														</li>
+														<li class="star @(sp.DanhGia != null && sp.DanhGia >= 2 ? "selected" : "")" title="Tạm được" data-value="2" onclick="chooseReview(@sp.MaSanPham,@item.MaDonHang,2)">
+															<i class="fa fa-star fa-fw"></i>
+														</li>
+														<li class="star @(sp.DanhGia != null && sp.DanhGia >= 3 ? "selected" : "")" title="Tốt" data-value="3" onclick="chooseReview(@sp.MaSanPham,@item.MaDonHang,3)">
+															<i class="fa fa-star fa-fw"></i>
+														</li>
+														<li class="star @(sp.DanhGia != null && sp.DanhGia >= 4 ? "selected" : "")" title="Rất tốt" data-value="4" onclick="chooseReview(@sp.MaSanPham,@item.MaDonHang,4)">
+															<i class="fa fa-star fa-fw"></i>
+														</li>
+														<li class="star @(sp.DanhGia != null && sp.DanhGia == 5 ? "selected" : "")" title="Tuyệt vời" data-value="5" onclick="chooseReview(@sp.MaSanPham,@item.MaDonHang,5)">
+															<i class="fa fa-star fa-fw"></i>
+														</li>
+													</ul>
+												</div>
+											</div>
+										</div>
+										<div class="col-2">
+											<p class="text-right">
+												<span>@giaban₫</span>
+											</p>
+										</div>
+									</div>
+								</li>
+							}
+							@{string TongTT = double.Parse(ThanhTien.ToString()).ToString("#,###");}
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-12">
+										<p class="text-right">Thành tiền: <span class="text-danger h4">@TongTT₫</span></p>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			}
+			else if (item.TrangThai == 2)
+			{
+				<div class="card bg-info mb-3" id="@orderid">
+					<div class="card-header" id="@heading">
+						<div class="row">
+							<div class="col-9">
+								<h5 class="mb-0">
+									<button class="btn text-white text-left" data-toggle="collapse" data-target="#@collapse" aria-expanded="false" aria-controls="collapse">
+										Đơn hàng(@Convert.ToDateTime(item.NgayDat).ToString("dd-MM-yyyy HH:mm"))
+									</button>
+								</h5>
+							</div>
+							<div class="col-3">
+								<h6 class="text-white text-right" id="@status">Đã xác nhận</h6>
+							</div>
+						</div>
+					</div>
+					<div id="@collapse" class="collapse" aria-labelledby="@heading" data-parent="#accordion">
+						<ul class="list-group list-group-flush">
+							@{int ThanhTien = 0;}
+							@foreach (var sp in item.detailDonHangs)
+							{
+								int gb = (int)sp.DonGia;
+								string gb2 = "";
+								if (sp.GiamGia != null || sp.GiamGia > 0)
+								{
+									gb2 = double.Parse(gb.ToString()).ToString("#,###");
+									int gg = (int)sp.GiamGia;
+									gb = (int)(gb - gb * ((double)gg / 100));
+									int digits = gb.ToString().Length;
+									gb = RoundingTo(gb, 1000);
+								}
+								ThanhTien += gb * (int)sp.SoLuong;
+								string giaban = double.Parse(gb.ToString()).ToString("#,###");
+								<li class="list-group-item">
+									<div class="row">
+										<div class="col-2">
+											<figure>
+												<a class="cart_list_product_img" href="@Url.Action("Index", "SP", new { id = sp.MaSanPham })" title="@sp.TenSanPham ">
+													<img src="@Url.Content("~/wwwroot/Products/" + sp.Anh)" alt="@sp.TenSanPham " class="img-reponsive imds" style="width:68px;height:76px">
+												</a>
+											</figure>
+											@*<img src="@Url.Content("~/wwwroot/Products/" + sp.Anh)" width="80" height="80" class="img-thumbnail" />*@
+										</div>
+										<div class="col-8">
+											<a href="@Url.Action("Index", "SP", new { id = sp.MaSanPham })" title="@sp.TenSanPham " class="btn">
+												<span class="name-ps">@sp.TenSanPham </span>
+											</a>
+											<p class="pl-3">x@(sp.SoLuong)</p>
+										</div>
+										<div class="col-2">
+											<p class="text-right">
+												<span>@giaban₫</span>
+											</p>
+										</div>
+									</div>
+								</li>
+							}
+							@{string TongTT = double.Parse(ThanhTien.ToString()).ToString("#,###");}
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-12">
+										<p class="text-right">Thành tiền: <span class="text-danger h4">@TongTT₫</span></p>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			}
+			else if (item.TrangThai == 1)
+			{
+				<div class="card bg-warning mb-3" id="@orderid">
+					<div class="card-header" id="@heading">
+						<div class="row">
+							<div class="col-9">
+								<h5 class="mb-0">
+									<button class="btn text-white text-left" data-toggle="collapse" data-target="#@collapse" aria-expanded="false" aria-controls="collapse">
+										Đơn hàng(@Convert.ToDateTime(item.NgayDat).ToString("dd-MM-yyyy HH:mm"))
+									</button>
+								</h5>
+							</div>
+							<div class="col-3">
+								<h6 class="text-white text-right" id="@status">Chờ xác nhận</h6>
+							</div>
+						</div>
+					</div>
+					<div id="@collapse" class="collapse" aria-labelledby="@heading" data-parent="#accordion">
+						<ul class="list-group list-group-flush">
+							@{int ThanhTien = 0;}
+							@foreach (var sp in item.detailDonHangs)
+							{
+								int gb = (int)sp.DonGia;
+								string gb2 = "";
+								if (sp.GiamGia != null || sp.GiamGia > 0)
+								{
+									gb2 = double.Parse(gb.ToString()).ToString("#,###");
+									int gg = (int)sp.GiamGia;
+									gb = (int)(gb - gb * ((double)gg / 100));
+									int digits = gb.ToString().Length;
+									gb = RoundingTo(gb, 1000);
+								}
+								ThanhTien += gb * (int)sp.SoLuong;
+								string giaban = double.Parse(gb.ToString()).ToString("#,###");
+								<li class="list-group-item">
+									<div class="row">
+										<div class="col-2">
+											<figure>
+												<a class="cart_list_product_img" href="@Url.Action("Index", "SP", new { id = sp.MaSanPham })" title="@sp.TenSanPham ">
+													<img src="@Url.Content("~/wwwroot/Products/" + sp.Anh)" alt="@sp.TenSanPham " class="img-reponsive imds" style="width:68px;height:76px">
+												</a>
+											</figure>
+											@*<img src="@Url.Content("~/wwwroot/Products/" + sp.Anh)" width="80" height="80" class="img-thumbnail" />*@
+										</div>
+										<div class="col-8">
+											<a href="@Url.Action("Index", "SP", new { id = sp.MaSanPham })" title="@sp.TenSanPham " class="btn">
+												<span class="name-ps">@sp.TenSanPham </span>
+											</a>
+											<p class="pl-3">x@(sp.SoLuong)</p>
+										</div>
+										<div class="col-2">
+											<p class="text-right">
+												<span>@giaban₫</span>
+											</p>
+										</div>
+									</div>
+								</li>
+							}
+							@{string TongTT = double.Parse(ThanhTien.ToString()).ToString("#,###");}
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-4">
+										<button class="btn btn-danger" type="button" onclick="HuyDon(@item.MaDonHang)" id="@button">Huỷ đơn hàng</button>
+									</div>
+									<div class="col-8">
+										<p class="text-right">Thành tiền: <span class="text-danger h4">@TongTT₫</span></p>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			}
+			else if (item.TrangThai == 4)
+			{
+				<div class="card bg-danger mb-3" id="@orderid">
+					<div class="card-header" id="@heading">
+						<div class="row">
+							<div class="col-9">
+								<h5 class="mb-0">
+									<button class="btn text-white text-left" data-toggle="collapse" data-target="#@collapse" aria-expanded="false" aria-controls="collapse">
+										Đơn hàng(@Convert.ToDateTime(item.NgayDat).ToString("dd-MM-yyyy HH:mm"))
+									</button>
+								</h5>
+							</div>
+							<div class="col-3">
+								<h6 class="text-white text-right" id="@status">Đã huỷ</h6>
+							</div>
+						</div>
+					</div>
+					<div id="@collapse" class="collapse" aria-labelledby="@heading" data-parent="#accordion">
+						<ul class="list-group list-group-flush">
+							@{int ThanhTien = 0;}
+							@foreach (var sp in item.detailDonHangs)
+							{
+								int gb = (int)sp.DonGia;
+								string gb2 = "";
+								if (sp.GiamGia != null || sp.GiamGia > 0)
+								{
+									gb2 = double.Parse(gb.ToString()).ToString("#,###");
+									int gg = (int)sp.GiamGia;
+									gb = (int)(gb - gb * ((double)gg / 100));
+									int digits = gb.ToString().Length;
+									gb = RoundingTo(gb, 1000);
+								}
+								ThanhTien += gb * (int)sp.SoLuong;
+								string giaban = double.Parse(gb.ToString()).ToString("#,###");
+								<li class="list-group-item">
+									<div class="row">
+										<div class="col-2">
+											<figure>
+												<a class="cart_list_product_img" href="@Url.Action("Index", "SP", new { id = sp.MaSanPham })" title="@sp.TenSanPham ">
+													<img src="@Url.Content("~/wwwroot/Products/" + sp.Anh)" alt="@sp.TenSanPham " class="img-reponsive imds" style="width:68px;height:76px">
+												</a>
+											</figure>
+											@*<img src="@Url.Content("~/wwwroot/Products/" + sp.Anh)" width="80" height="80" class="img-thumbnail" />*@
+										</div>
+										<div class="col-8">
+											<a href="@Url.Action("Index", "SP", new { id = sp.MaSanPham })" title="@sp.TenSanPham " class="btn">
+												<span class="name-ps">@sp.TenSanPham </span>
+											</a>
+											<p class="pl-3">x@(sp.SoLuong)</p>
+										</div>
+										<div class="col-2">
+											<p class="text-right">
+												<span>@giaban₫</span>
+											</p>
+										</div>
+									</div>
+								</li>
+							}
+							@{string TongTT = double.Parse(ThanhTien.ToString()).ToString("#,###");}
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-12">
+										<p class="text-right">Thành tiền: <span class="text-danger h4">@TongTT₫</span></p>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			}
+		}
+
+
+
+
+	</div>
+</div>

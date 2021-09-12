@@ -1,0 +1,31 @@
+﻿@model IEnumerable<ASPNETMVC_Group1.Models.DanhMucTTViewModel>
+<div class="title-left">
+	<strong>TIN NỔI BẬT</strong>
+</div>
+<div class="content-left">
+	@{int count = 0;}
+	@foreach (var item in Model)
+	{
+		count++;
+		<div class="box-shas newx">
+			<a href="@Url.Action("Index", "TT", new { id = item.MaTinTuc })" title="@item.TieuDe" class="boxage-new">
+				@{
+					string ImagePath = "~/wwwroot/News/" + item.anh.LinkAnh;
+				}
+				<img data-src="@Url.Content(ImagePath)" alt="@item.TieuDe" class="img-reponsive lazy new-img" data-id="lazy-n0" />
+			</a>
+			<div class="content-shas news-title">
+				<a href="@Url.Action("Index", "TT", new { id = item.MaTinTuc })" title="@item.TieuDe">
+					@item.TieuDe
+				</a>
+				<span>(@Convert.ToDateTime(item.CreatedDate).ToString("dd/MM/yyyy"))</span>
+			</div>
+			<div class="clr"></div>
+		</div>
+		if (count == 5)
+		{
+			count = 0;
+			break;
+		}
+	}
+</div>

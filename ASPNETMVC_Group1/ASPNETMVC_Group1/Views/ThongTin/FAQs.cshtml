@@ -1,0 +1,63 @@
+﻿
+@{
+	ViewBag.Title = "Giải đáp thắc mắc";
+	Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
+}
+<main role="main" class="pb-3">
+
+	<div class="bracum">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<ol class="ol-non">
+						<li><a href="@Url.Action("Index","Home")">Trang chủ</a></li>
+						<li><a href="javascript:void(0);">@ViewBag.Title</a></li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-9 order-lg-last">
+					<div class="box-manugar">
+
+						<div class="my-content">
+							<div class="head-box">
+								<div class="title-box">
+									<h1>
+										<a href="javascript:void()" title="">
+											Giải đáp thắc mắc
+										</a>
+									</h1>
+								</div>
+								<div class="clr"></div>
+							</div>
+							<div class="body-box">
+								<p>
+									Nội dung đang được cập nhật...
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3 order-lg-first">
+					<div class="box-left hidden-sm hidden-xs">
+						@{Html.RenderAction("DanhMucSanPham", "Partial");}
+					</div>
+					<div class="box-left hidden-sm hidden-xs">
+						@{Html.RenderAction("TinNoiBat", "Partial");}
+					</div>
+					<div class="box-left">
+						@{Html.RenderAction("SanPhamMoiVe", "Partial");}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+@section css{
+	<link href="~/Public/FrontEnd/css/category.css" rel="stylesheet" />
+	<link href="~/Public/FrontEnd/css/huongdan.css" rel="stylesheet" />
+}

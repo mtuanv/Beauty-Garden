@@ -1,0 +1,192 @@
+﻿@{
+	ViewBag.Title = "Liên hệ";
+	Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
+}
+
+<main role="main" class="pb-3">
+
+	<div class="bracum">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<ol class="ol-non">
+						<li><a href="@Url.Action("Index","Home")">Trang chủ</a></li>
+						<li><a href="javascript:void(0);">@ViewBag.Title</a></li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<h1 class="title-detail color-orange">
+					GỬI THÔNG TIN LIÊN HỆ
+				</h1>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-6">
+				<div class="box-contact">
+					<h2>BEAUTY GARDEN - HỆ THỐNG PHÂN PHỐI MỸ PHẨM CHÍNH HÃNG</h2>
+					<form class="form-bg" autocomplete="off" id="contactFrm">
+						<div class="form-group">
+							<label for="Ten">Họ tên <span>(*)</span></label>
+							<input type="text" class="form-control" id="Ten" name="Ten" placeholder="Vui lòng nhập họ và tên (*)" required>
+						</div>
+						<div class="form-group">
+							<label for="SDT">Số điện thoại <span>(*)</span></label>
+							<input type="text" class="form-control" id="SDT" name="SDT" placeholder="Vui lòng nhập số điện thoại (*)" required>
+						</div>
+						<div class="form-group">
+							<label for="Mail">Email <span>(*)</span></label>
+							<input type="email" class="form-control" id="Mail" name="Mail" aria-describedby="emailHelp" placeholder="Vui lòng nhập email (*)" required>
+						</div>
+						<div class="form-group">
+							<label for="DiaChi">Địa chỉ</label>
+							<input type="text" class="form-control" id="DiaChi" name="DiaChi" placeholder="">
+						</div>
+						<div class="form-group">
+							<label for="NoiDung">Nội dung</label>
+							<textarea class="form-control" id="NoiDung" name="NoiDung" placeholder=""></textarea>
+						</div>
+						<button type="button" class="btn btn-success" onclick="SendContact()">Gửi</button>
+					</form>
+				</div>
+			</div>
+			<div class="col-lg-6">
+				<div class="box-contact mar-bot-20">
+					<h3>VĂN PHÒNG GIAO DỊCH</h3>
+					<ul class="store_info ul-non">
+						<li><i class="fa fa-home"></i>255 Bình Lợi, P.13, Q.Bình Thạnh, Tp.HCM</li>
+						<li><i class="fa fa-phone"></i><span>Tổng đài: 1900 7013</span> </li>
+						<li><i class="fa fa-phone"></i><span>Hotline: 02 873 000 283 </span></li>
+						<li><i class="fa fa-envelope"></i>Email: <span><a href="mailto:info@beautygarden.vn" title="Email">info@beautygarden.vn</a></span></li>
+						<li><i class="fa fa-phone"></i><span>Website: <a href="https://beautygarden.vn/">www.beautygarden.vn </a></span></li>
+					</ul>
+				</div>
+				<div class="box-contact ">
+					<h3>HỆ THỐNG CỬA HÀNG</h3>
+					<ul class="store_info ul-non">
+						<li><i class="fa fa-home"></i>Quận 3 Tp HCM: số 71, đường số 3, Cư Xá Đô Thành, P4, Q3</li>
+						<li><i class="fa fa-phone"></i><span style="color: green;">0911 784 114</span></li>
+					</ul>
+					<ul class="store_info ul-non">
+						<li><i class="fa fa-home"></i>Q.Phú Nhuận Tp HCM: 280 Phan Đình Phùng, P.3, Q.Phú Nhuận </li>
+						<li><i class="fa fa-phone"></i><span style="color: green;">0911 384 114</span></li>
+					</ul>
+					<ul class="store_info ul-non">
+						<li><i class="fa fa-home"></i>Quận 9 Tp HCM: 435 Lê Văn Việt, Tăng Nhơn Phú A, Q.9 </li>
+						<li><i class="fa fa-phone"></i><span style="color: green;">0911 484 114</span></li>
+					</ul>
+					<ul class="store_info ul-non">
+						<li><i class="fa fa-home"></i>Q.Tân Phú Tp HCM: 17 Nguyễn Sơn, Phú Thạnh, Q.Tân Phú </li>
+						<li><i class="fa fa-phone"></i><span style="color: green;">0911 174 114</span></li>
+					</ul>
+					<ul class="store_info ul-non">
+						<li><i class="fa fa-home"></i>Hà Nội: 152 Chùa Bộc, Đống Đa, Hà Nội</li>
+						<li><i class="fa fa-phone"></i><span style="color: green;">0911 584 114</span></li>
+					</ul>
+					<ul class="store_info ul-non">
+						<li><i class="fa fa-home"></i>Đà Nẵng: 268 Trưng Nữ Vương, P.Bình Thuận, Q.Hải Châu</li>
+						<li><i class="fa fa-phone"></i><span style="color: green;">0911 684 114</span></li>
+					</ul>
+					<ul class="store_info ul-non">
+						<li><i class="fa fa-home"></i>Đà Nẵng: 94 Âu Cơ, P.Hòa Khánh Bắc, Q.Liên Chiểu, TP. Đà Nẵng</li>
+						<li><i class="fa fa-phone"></i><span style="color: green;">0911 684 114</span></li>
+					</ul>
+					<ul class="store_info ul-non">
+						<li><i class="fa fa-home"></i>Gia Lai: 79 Hai Bà Trưng, P.Diên Hồng, Tp.Pleiku</li>
+						<li><i class="fa fa-phone"></i><span style="color: green;">0911 520 114</span></li>
+					</ul>
+					<ul class="store_info ul-non">
+						<li><i class="fa fa-home"></i>Đắk Lắk: 87 Hai Bà Trưng, P.Thắng Lợi, TP.Buôn Ma Thuột</li>
+						<li><i class="fa fa-phone"></i><span style="color: green;">0911 074 114</span></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="bk-opps">
+		<div class="lds-roller">
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
+	</div>
+
+</main>
+
+@section css{
+	<link rel="stylesheet" href="~/Public/FrontEnd/css/category.css" />
+	<link rel="stylesheet" href="~/Public/FrontEnd/css/contact.css" />
+	<link rel="stylesheet" href="~/Public/FrontEnd/css/shopcard.css" />
+}
+@section scripts{
+	<script>
+		function SendContact() {
+			var obj = {
+				Ten: $('#Ten').val(),
+				SDT: $('#SDT').val(),
+				Mail: $('#Mail').val(),
+				DiaChi: $('#DiaChi').val(),
+				NoiDung: $('#NoiDung').val()
+			}
+			Swal.showLoading()
+			$.ajax({
+				url: "/Home/SendMailContact",
+				type: "POST",
+				data: JSON.stringify(obj),
+				contentType: "application/json; charset=utf-8",
+				success: function (response) {
+					if (response) {
+						const swalWithBootstrapButtons = Swal.mixin({
+							customClass: {
+								confirmButton: 'btn btn-success',
+								cancelButton: 'btn btn-danger mr-3'
+							},
+							buttonsStyling: false
+						})
+						swalWithBootstrapButtons.fire(
+							'Thành công',
+							'Gửi email thành công',
+							'success'
+						)
+					} else {
+						const swalWithBootstrapButtons = Swal.mixin({
+							customClass: {
+								confirmButton: 'btn btn-success',
+								cancelButton: 'btn btn-danger mr-3'
+							},
+							buttonsStyling: false
+						})
+						swalWithBootstrapButtons.fire(
+							'Thất bại!',
+							'Gửi email thất bại',
+							'error'
+						)
+					}
+				},
+				error: function (response) {
+					const swalWithBootstrapButtons = Swal.mixin({
+						customClass: {
+							confirmButton: 'btn btn-success',
+							cancelButton: 'btn btn-danger mr-3'
+						},
+						buttonsStyling: false
+					})
+					swalWithBootstrapButtons.fire(
+						'Thất bại!',
+						'Gửi email thất bại',
+						'error'
+					)
+				}
+			});
+		}
+	</script>
+}

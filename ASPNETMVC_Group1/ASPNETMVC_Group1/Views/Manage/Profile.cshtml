@@ -1,0 +1,57 @@
+﻿@model ASPNETMVC_Group1.Models.AspNetUser
+
+<div class="tab-pane active" id="profile">
+	<h6>Thông tin tài khoản</h6>
+	<hr>
+	<form action="#" id="changeProfile">
+		<div class="form-group">
+			<label for="Ten">Họ tên</label>
+			<input type="text" class="form-control" id="Ten" name="Ten" value="@Model.Ten">
+			<small id="ten-valid" class="text-danger"></small>
+		</div>
+		<div class="form-group">
+			<label for="PhoneNumber">Số điện thoại</label>
+			<input type="text" class="form-control" id="PhoneNumber" name="PhoneNumber" value="@Model.PhoneNumber">
+			<small id="phone-valid" class="text-danger"></small>
+		</div>
+		<div class="form-group">
+			<label for="GioiTinh">Giới tính</label>
+			<select id="GioiTinh" class="form-control" name="GioiTinh">
+				<option value="">Chọn giới tính</option>
+				<option value="Nam" @(Model.GioiTinh.Equals("Nam") ? "selected" : "")>Nam</option>
+				<option value="Nữ" @(Model.GioiTinh.Equals("Nữ") ? "selected" : "")>Nữ</option>
+				<option value="Khác" @(Model.GioiTinh.Equals("Khác") ? "selected" : "")>Khác</option>
+			</select>
+			<small id="gt-valid" class="text-danger"></small>
+		</div>
+		<div class="form-group">
+			<label for="NgaySinh">Ngày sinh</label>
+			<input type="text" class="form-control" id="NgaySinh" name="NgaySinh" value="@Convert.ToDateTime(Model.NgaySinh).ToString("yyyy-MM-dd")">
+			<small id="ns-valid" class="text-danger"></small>
+		</div>
+		<div class="form-group">
+			<label for="ThanhPho">Thành Phố</label>
+			<select id="ThanhPho" class="form-control" name="ThanhPho">
+			</select>
+			<small id="tp-valid" class="text-danger"></small>
+			<input type="hidden" id="TP" value="@Model.ThanhPho" />
+		</div>
+		<div class="form-group">
+			<label for="NgaySinh">Quận Huyện</label>
+			<select id="QuanHuyen" class="form-control" name="QuanHuyen">
+			</select>
+			<small id="qh-valid" class="text-danger"></small>
+			<input type="hidden" id="QH" value="@Model.QuanHuyen" />
+		</div>
+		<div class="form-group">
+			<label for="DiaChi">Địa chỉ</label>
+			<textarea class="form-control autosize" id="DiaChi" name="DiaChi" style="overflow: hidden; overflow-wrap: break-word; resize: none; height: 62px;">@Model.DiaChi</textarea>
+			<small id="dc-valid" class="text-danger"></small>
+		</div>
+		<button type="button" class="btn btn-primary" id="updateProfile">Cập nhật thông tin</button>
+	</form>
+	<script>
+		localStorage.setItem('QH', document.getElementById("QH").value);
+		localStorage.setItem('TP', document.getElementById("TP").value);
+	</script>
+</div>

@@ -1,0 +1,112 @@
+﻿@using ASPNETMVC_Group1.Models
+@model LoginViewModel
+@{
+	ViewBag.Title = "Đăng nhập";
+	Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
+}
+<div class="bracum">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<ol class="ol-non">
+					<li><a href="@Url.Action("Index","Home")">Trang chủ</a></li>
+					<li><a href="javascript:void(0)">Đăng nhập </a></li>
+				</ol>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Register Section Begin -->
+<div class="register-login-section spad">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-6 offset-lg-3">
+				<div class="login-form" id="loginForm">
+					<h2>Đăng nhập</h2>
+					@using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+					{
+						@Html.AntiForgeryToken()
+						@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+						<div class="group-input">
+							@Html.LabelFor(m => m.Email, new { @class = "col-md-3 control-label" })
+							@Html.TextBoxFor(m => m.Email, new { @class = "" })
+							@Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+						</div>
+						<div class="group-input">
+							@Html.LabelFor(m => m.Password, new { @class = "col-md-3 control-label" })
+							@Html.PasswordFor(m => m.Password, new { @class = "" })
+							@Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+						</div>
+						<div class="group-input gi-check">
+							<div class="gi-more">
+								<label for="save-pass">
+									Nhớ tài khoản
+									@Html.CheckBoxFor(m => m.RememberMe, new { @id = "save-pass" })
+									<span class="checkmark"></span>
+								</label>
+								@Html.ActionLink("Quên mật khẩu?", "ForgotPassword", null, new { @class = "forget-pass" })
+							</div>
+						</div>
+						<input type="submit" value="Đăng nhập" class="btn site-btn login-btn text-white" id="btnSubmit" />
+					}
+					<div class="switch-login">
+						@Html.ActionLink("Đăng ký tài khoản", "Register", null, new { @class = "or-login" })
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Register Form Section End -->
+@section Scripts{
+	<script>
+		const re = /^(([^<>()[\]\\.,;:\s@@"]+(\.[^<>()[\]\\.,;:\s@@"]+)*)|(".+"))@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		$(document).ready(function () {
+			$('#btnSubmit').prop('disabled', true);
+			$('#loginForm').keyup(function () {
+				if ($('#Email').val() != '' && $('#Password').val() != '') {
+					if (!re.test($('#Email').val())) {
+						$('#btnSubmit').prop('disabled', true);
+					} else {
+						$('#btnSubmit').prop('disabled', false);
+					}
+				} else {
+					$('#btnSubmit').prop('disabled', true);
+				}
+			});
+		});
+	</script>
+	@if (Session["Register"] != null)
+	{
+		Session.Remove("Register");
+		<script>
+			toastr.options.progressBar = true;
+			toastr.success('Hãy kiếm tra email và xác thực tài khoản.', 'Đăng ký thành công', { timeOut: 20000 });
+		</script>
+	}
+	@if (Session["ForgotPassword"] != null)
+	{
+		Session.Remove("ForgotPassword");
+		<script>
+			toastr.options.progressBar = true;
+			toastr.success('Hãy kiếm tra email và thay đổi mật khẩu.', 'Gửi email thành công', { timeOut: 20000 });
+		</script>
+	}
+	@if (Session["ResetPassword"] != null)
+	{
+		Session.Remove("ResetPassword");
+		<script>
+			toastr.options.progressBar = true;
+			toastr.success('Hãy đăng nhập tài khoản của bạn.', 'Đặt lại mật khẩu thành công', { timeOut: 20000 });
+		</script>
+	}
+	@if (Session["ConfirmEmail"] != null)
+	{
+		Session.Remove("ConfirmEmail");
+		<script>
+			toastr.options.progressBar = true;
+			toastr.success('Hãy đăng nhập tài khoản của bạn.', 'Xác thực tài khoản thành công', { timeOut: 20000 });
+		</script>
+	}
+}
+

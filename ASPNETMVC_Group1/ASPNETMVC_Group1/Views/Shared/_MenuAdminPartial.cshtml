@@ -1,0 +1,103 @@
+﻿@using Microsoft.AspNet.Identity
+@if (User.IsInRole("Admin"))
+{
+	<li class="nav-item">
+		<a href="@Url.Action("Index","QuanLy")" class="nav-link" id="dashboard">
+			<i class="nav-icon fas fa-tachometer-alt"></i>
+			<p>
+				Dashboard
+			</p>
+		</a>
+	</li>
+	<li class="nav-item">
+		<a href="@Url.Action("Index","NhanVien")" class="nav-link" id="nhanvien">
+			<i class="nav-icon fas fa-user-lock"></i>
+			<p>
+				Nhân viên
+			</p>
+		</a>
+	</li>
+	<li class="nav-item">
+		<a href="@Url.Action("Index","KhachHang")" class="nav-link" id="khachhang">
+			<i class="nav-icon fas fa-users"></i>
+			<p>
+				Khách hàng
+			</p>
+		</a>
+	</li>
+	<li class="nav-item">
+		<a href="@Url.Action("Index","NhanHieus")" class="nav-link" id="nhanhieu">
+			<i class="nav-icon far fa-copyright"></i>
+			<p>
+				Nhãn hiệu
+			</p>
+		</a>
+	</li>
+	<li class="nav-item">
+		<a href="@Url.Action("Index","DanhMucs")" class="nav-link" id="danhmuc">
+			<i class="nav-icon fas fa-stream"></i>
+			<p>
+				Danh mục
+			</p>
+		</a>
+	</li>
+	<li class="nav-item">
+		<a href="@Url.Action("Index","Tags")" class="nav-link" id="tag">
+			<i class="nav-icon fas fa-tags"></i>
+			<p>
+				Tag
+			</p>
+		</a>
+	</li>
+	<li class="nav-item">
+		<a href="@Url.Action("Index","SanPhams")" class="nav-link" id="sanpham">
+			<i class="nav-icon fas fa-mask"></i>
+			<p>
+				Sản phẩm
+			</p>
+		</a>
+	</li>
+	<li class="nav-item">
+		<a href="@Url.Action("Index","DonHangs")" class="nav-link" id="donhang">
+			<i class="nav-icon fas fa-box"></i>
+			<p id="title-donhang">
+				Đơn hàng
+			</p>
+		</a>
+	</li>
+	<li class="nav-item">
+		<a href="@Url.Action("Index","TinTucs")" class="nav-link" id="tintuc">
+			<i class="nav-icon fab fa-blogger"></i>
+			<p>
+				Tin tức
+			</p>
+		</a>
+	</li>
+	<li class="nav-item">
+		<a href="@Url.Action("Index","NhapHang")" class="nav-link" id="nhaphang">
+			<i class="nav-icon fas fa-cart-arrow-down"></i>
+			<p>
+				Nhập hàng
+			</p>
+		</a>
+	</li>
+}
+else
+{
+	<li class="nav-item">
+		<a href="@Url.Action("Index","QuanLy")" class="nav-link" id="dashboard">
+			<i class="nav-icon fas fa-tachometer-alt"></i>
+			<p>
+				Dashboard
+			</p>
+		</a>
+	</li>
+	<li class="nav-item">
+		<a href="@Url.Action("Index","DonHangs")" class="nav-link" id="donhang">
+			<i class="nav-icon fas fa-box"></i>
+			<p id="title-donhang">
+				Đơn hàng
+			</p>
+		</a>
+	</li>
+}

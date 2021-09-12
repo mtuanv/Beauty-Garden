@@ -1,0 +1,402 @@
+﻿
+@{
+	ViewBag.Title = "Hệ thống cửa hàng";
+	Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
+}
+<main role="main" class="pb-3">
+
+	<div class="bracum">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<ol class="ol-non">
+						<li><a href="@Url.Action("Index","Home")">Trang chủ</a></li>
+						<li><a href="javascript:void(0);">@ViewBag.Title</a></li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-9 order-lg-last">
+					<div class="box-manugar">
+
+						<div class="my-content">
+							<div class="head-box">
+								<div class="title-box">
+									<h1>
+										<a href="/noi-dung/he-thong-cua-hang.html" title="">
+											Hệ thống cửa hàng
+										</a>
+									</h1>
+								</div>
+								<div class="clr"></div>
+							</div>
+							<div class="body-box">
+								<div class="item-news">
+									<div class="row">
+										<div class="col-lg-4">
+											<div class="box-news">
+												<div class="bor-s bor-ht">
+													<div class="news-img htch-img">
+														<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3917.197072840642!2d106.81767041483745!3d10.948481058988!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3174dead1c56497b%3A0x7ae97cbaa860aabc!2zMzkgSMawbmcgxJDhuqFvIFbGsMahbmcsIFF1eeG6v3QgVGjhuq9uZywgVGjDoG5oIHBo4buRIEJpw6puIEjDsmEsIMSQ4buTbmcgTmFpLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1606872171234!5m2!1svi!2s" onclick="OpenMoal(this)">
+															<img src="https://adminbeauty.hvnet.vn/Upload/Files/banner/beautygarden-bienhoa-cuahang.jpg?width=268&height=178&v=17042020" alt="Chi Nh&#xE1;nh Bi&#xEA;n H&#xF2;a" class="img-reponsive" />
+															<div class="map-eage">
+																<i class="fa fa-map-marker"></i>
+																<p>39 H&#x1B0;ng &#x110;&#x1EA1;o V&#x1B0;&#x1A1;ng, Th&#xE0;nh ph&#x1ED1; Bi&#xEA;n H&#xF2;a, &#x110;&#x1ED3;ng Nai</p>
+															</div>
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-8">
+											<div class="content-right h2-ht">
+												<h2>
+													<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3917.197072840642!2d106.81767041483745!3d10.948481058988!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3174dead1c56497b%3A0x7ae97cbaa860aabc!2zMzkgSMawbmcgxJDhuqFvIFbGsMahbmcsIFF1eeG6v3QgVGjhuq9uZywgVGjDoG5oIHBo4buRIEJpw6puIEjDsmEsIMSQ4buTbmcgTmFpLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1606872171234!5m2!1svi!2s" onclick="OpenMoal(this)" title="Chi Nh&#xE1;nh Bi&#xEA;n H&#xF2;a">Chi Nh&#xE1;nh Bi&#xEA;n H&#xF2;a</a>
+												</h2>
+												<p>Địa chỉ: <b>39 H&#x1B0;ng &#x110;&#x1EA1;o V&#x1B0;&#x1A1;ng, Th&#xE0;nh ph&#x1ED1; Bi&#xEA;n H&#xF2;a, &#x110;&#x1ED3;ng Nai</b></p>
+												<p>Hotline: <b>0911 974 114</b></p>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="item-news">
+									<div class="row">
+										<div class="col-lg-4">
+											<div class="box-news">
+												<div class="bor-s bor-ht">
+													<div class="news-img htch-img">
+														<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3928.835329599595!2d105.77405951471812!3d10.03044397526167!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31a088218097e8ad%3A0x9d8ae3002404b305!2zMTU0IE5ndXnhu4VuIFZp4buHdCBI4buTbmcsIFh1w6JuIEtow6FuaCwgTmluaCBLaeG7gXUsIEPhuqduIFRoxqEsIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1592129658474!5m2!1svi!2s" onclick="OpenMoal(this)">
+															<img src="https://adminbeauty.hvnet.vn/Upload/Files/banner/cuahangcantho.jpg?width=268&height=178&v=17042020" alt="Chi Nh&#xE1;nh C&#x1EA7;n Th&#x1A1;" class="img-reponsive" />
+															<div class="map-eage">
+																<i class="fa fa-map-marker"></i>
+																<p>154 Nguy&#x1EC5;n Vi&#x1EC7;t H&#x1ED3;ng, P.An Ph&#xFA;, Ninh Ki&#x1EC1;u, C&#x1EA7;n Th&#x1A1;</p>
+															</div>
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-8">
+											<div class="content-right h2-ht">
+												<h2>
+													<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3928.835329599595!2d105.77405951471812!3d10.03044397526167!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31a088218097e8ad%3A0x9d8ae3002404b305!2zMTU0IE5ndXnhu4VuIFZp4buHdCBI4buTbmcsIFh1w6JuIEtow6FuaCwgTmluaCBLaeG7gXUsIEPhuqduIFRoxqEsIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1592129658474!5m2!1svi!2s" onclick="OpenMoal(this)" title="Chi Nh&#xE1;nh C&#x1EA7;n Th&#x1A1;">Chi Nh&#xE1;nh C&#x1EA7;n Th&#x1A1;</a>
+												</h2>
+												<p>Địa chỉ: <b>154 Nguy&#x1EC5;n Vi&#x1EC7;t H&#x1ED3;ng, P.An Ph&#xFA;, Ninh Ki&#x1EC1;u, C&#x1EA7;n Th&#x1A1;</b></p>
+												<p>Hotline: <b>0911 504 114</b></p>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="item-news">
+									<div class="row">
+										<div class="col-lg-4">
+											<div class="box-news">
+												<div class="bor-s bor-ht">
+													<div class="news-img htch-img">
+														<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.9120606482597!2d105.78411161482066!3d21.0362043929002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab4a748ee167%3A0x4d8a95bdb7a8a30!2zTmfDtSAxNjVDLCBYdcOibiBUaOG7p3ksIEThu4tjaCBW4buNbmcgSOG6rXUsIEPhuqd1IEdp4bqleSwgSMOgIE7hu5lpLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1592129556282!5m2!1svi!2s" onclick="OpenMoal(this)">
+															<img src="https://adminbeauty.hvnet.vn/Upload/Files/banner/cuahangxuanthuy.jpg?width=268&height=178&v=17042020" alt="Chi Nh&#xE1;nh Xu&#xE2;n Th&#x1EE7;y H&#xE0; N&#x1ED9;i " class="img-reponsive" />
+															<div class="map-eage">
+																<i class="fa fa-map-marker"></i>
+																<p>165C Xu&#xE2;n Th&#x1EE7;y, C&#x1EA7;u Gi&#x1EA5;y, H&#xE0; N&#x1ED9;i</p>
+															</div>
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-8">
+											<div class="content-right h2-ht">
+												<h2>
+													<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.9120606482597!2d105.78411161482066!3d21.0362043929002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab4a748ee167%3A0x4d8a95bdb7a8a30!2zTmfDtSAxNjVDLCBYdcOibiBUaOG7p3ksIEThu4tjaCBW4buNbmcgSOG6rXUsIEPhuqd1IEdp4bqleSwgSMOgIE7hu5lpLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1592129556282!5m2!1svi!2s" onclick="OpenMoal(this)" title="Chi Nh&#xE1;nh Xu&#xE2;n Th&#x1EE7;y H&#xE0; N&#x1ED9;i ">Chi Nh&#xE1;nh Xu&#xE2;n Th&#x1EE7;y H&#xE0; N&#x1ED9;i </a>
+												</h2>
+												<p>Địa chỉ: <b>165C Xu&#xE2;n Th&#x1EE7;y, C&#x1EA7;u Gi&#x1EA5;y, H&#xE0; N&#x1ED9;i</b></p>
+												<p>Hotline: <b>0911 464 114</b></p>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="item-news">
+									<div class="row">
+										<div class="col-lg-4">
+											<div class="box-news">
+												<div class="bor-s bor-ht">
+													<div class="news-img htch-img">
+														<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3892.449104911124!2d108.044288!3d12.684084!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x88ad5f499d631d80!2sBeauty%20Garden%20-%20Bu%C3%B4n%20Ma%20Thu%E1%BB%99t!5e0!3m2!1svi!2sus!4v1586851943823!5m2!1svi!2sus" onclick="OpenMoal(this)">
+															<img src="https://adminbeauty.hvnet.vn/Upload/Files/St-bmt.jpg?width=268&height=178&v=17042020" alt="Chi Nh&#xE1;nh Bu&#xF4;n Ma Thu&#x1ED9;t - &#x110;&#x103;kL&#x103;k" class="img-reponsive" />
+															<div class="map-eage">
+																<i class="fa fa-map-marker"></i>
+																<p>87 Hai B&#xE0; Tr&#x1B0;ng, P.Th&#x1EAF;ng L&#x1EE3;i, Tp.Bu&#xF4;n Ma Thu&#x1ED9;t</p>
+															</div>
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-8">
+											<div class="content-right h2-ht">
+												<h2>
+													<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3892.449104911124!2d108.044288!3d12.684084!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x88ad5f499d631d80!2sBeauty%20Garden%20-%20Bu%C3%B4n%20Ma%20Thu%E1%BB%99t!5e0!3m2!1svi!2sus!4v1586851943823!5m2!1svi!2sus" onclick="OpenMoal(this)" title="Chi Nh&#xE1;nh Bu&#xF4;n Ma Thu&#x1ED9;t - &#x110;&#x103;kL&#x103;k">Chi Nh&#xE1;nh Bu&#xF4;n Ma Thu&#x1ED9;t - &#x110;&#x103;kL&#x103;k</a>
+												</h2>
+												<p>Địa chỉ: <b>87 Hai B&#xE0; Tr&#x1B0;ng, P.Th&#x1EAF;ng L&#x1EE3;i, Tp.Bu&#xF4;n Ma Thu&#x1ED9;t</b></p>
+												<p>Hotline: <b>0911 074 114</b></p>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="item-news">
+									<div class="row">
+										<div class="col-lg-4">
+											<div class="box-news">
+												<div class="bor-s bor-ht">
+													<div class="news-img htch-img">
+														<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7838.796294140641!2d106.632957!3d10.780787!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f0dfa4d3a4f%3A0x472bcdd9525c3fd7!2sBeauty%20Garden%20-%20T%C3%A2n%20Ph%C3%BA!5e0!3m2!1svi!2sus!4v1586851550998!5m2!1svi!2sus" onclick="OpenMoal(this)">
+															<img src="https://adminbeauty.hvnet.vn/Upload/Files/st-tp-hcm.jpg?width=268&height=178&v=17042020" alt="Chi Nh&#xE1;nh T&#xE2;n Ph&#xFA; - TP H&#x1ED3; Ch&#xED; Minh" class="img-reponsive" />
+															<div class="map-eage">
+																<i class="fa fa-map-marker"></i>
+																<p>17 Nguy&#x1EC5;n S&#x1A1;n, P.Ph&#xFA; Th&#x1EA1;nh, Q.T&#xE2;n Ph&#xFA;, TP H&#x1ED3; Ch&#xED; Minh</p>
+															</div>
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-8">
+											<div class="content-right h2-ht">
+												<h2>
+													<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7838.796294140641!2d106.632957!3d10.780787!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f0dfa4d3a4f%3A0x472bcdd9525c3fd7!2sBeauty%20Garden%20-%20T%C3%A2n%20Ph%C3%BA!5e0!3m2!1svi!2sus!4v1586851550998!5m2!1svi!2sus" onclick="OpenMoal(this)" title="Chi Nh&#xE1;nh T&#xE2;n Ph&#xFA; - TP H&#x1ED3; Ch&#xED; Minh">Chi Nh&#xE1;nh T&#xE2;n Ph&#xFA; - TP H&#x1ED3; Ch&#xED; Minh</a>
+												</h2>
+												<p>Địa chỉ: <b>17 Nguy&#x1EC5;n S&#x1A1;n, P.Ph&#xFA; Th&#x1EA1;nh, Q.T&#xE2;n Ph&#xFA;, TP H&#x1ED3; Ch&#xED; Minh</b></p>
+												<p>Hotline: <b>0911 174 114</b></p>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="item-news">
+									<div class="row">
+										<div class="col-lg-4">
+											<div class="box-news">
+												<div class="bor-s bor-ht">
+													<div class="news-img htch-img">
+														<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7667.797888151916!2d108.14820200000001!3d16.070733!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3142190b6f039953%3A0x6f63baf0fc4f133d!2zQmVhdXR5IEdhcmRlbiAoSOG7hyBUaOG7kW5nIE3hu7kgUGjhuqltIENow61uaCBIw6NuZyk!5e0!3m2!1svi!2sus!4v1586851763324!5m2!1svi!2sus" onclick="OpenMoal(this)">
+															<img src="https://adminbeauty.hvnet.vn/Upload/Files/da-2.jpg?width=268&height=178&v=17042020" alt="Chi Nh&#xE1;nh &#x110;&#xE0; N&#x1EB5;ng 2" class="img-reponsive" />
+															<div class="map-eage">
+																<i class="fa fa-map-marker"></i>
+																<p>94 &#xC2;u C&#x1A1;, P.H&#xF2;a Kh&#xE1;nh B&#x1EAF;c, Q.Li&#xEA;n Chi&#x1EC3;u, TP. &#x110;&#xE0; N&#x1EB5;ng</p>
+															</div>
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-8">
+											<div class="content-right h2-ht">
+												<h2>
+													<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7667.797888151916!2d108.14820200000001!3d16.070733!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3142190b6f039953%3A0x6f63baf0fc4f133d!2zQmVhdXR5IEdhcmRlbiAoSOG7hyBUaOG7kW5nIE3hu7kgUGjhuqltIENow61uaCBIw6NuZyk!5e0!3m2!1svi!2sus!4v1586851763324!5m2!1svi!2sus" onclick="OpenMoal(this)" title="Chi Nh&#xE1;nh &#x110;&#xE0; N&#x1EB5;ng 2">Chi Nh&#xE1;nh &#x110;&#xE0; N&#x1EB5;ng 2</a>
+												</h2>
+												<p>Địa chỉ: <b>94 &#xC2;u C&#x1A1;, P.H&#xF2;a Kh&#xE1;nh B&#x1EAF;c, Q.Li&#xEA;n Chi&#x1EC3;u, TP. &#x110;&#xE0; N&#x1EB5;ng</b></p>
+												<p>Hotline: <b>0911 794 114</b></p>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="item-news">
+									<div class="row">
+										<div class="col-lg-4">
+											<div class="box-news">
+												<div class="bor-s bor-ht">
+													<div class="news-img htch-img">
+														<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7837.118984785582!2d106.79197800000001!3d10.844984!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x37fb819462e9c33b!2zQmVhdXR5IEdhcmRlbiAoSOG7hyBUaOG7kW5nIE3hu7kgUGjhuqltIENow61uaCBow6NuZyAp!5e0!3m2!1sen!2sus!4v1586851454403!5m2!1sen!2sus" onclick="OpenMoal(this)">
+															<img src="https://adminbeauty.hvnet.vn/Upload/Files/beautygardenquan9.jpg?width=268&height=178&v=17042020" alt="Chi Nh&#xE1;nh Qu&#x1EAD;n 9 - TP H&#x1ED3; Ch&#xED; Minh" class="img-reponsive" />
+															<div class="map-eage">
+																<i class="fa fa-map-marker"></i>
+																<p>435 L&#xEA; V&#x103;n Vi&#x1EC7;t, T&#x103;ng Nh&#x1A1;n Ph&#xFA; A, Qu&#x1EAD;n 9, TP H&#x1ED3; Ch&#xED; Minh</p>
+															</div>
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-8">
+											<div class="content-right h2-ht">
+												<h2>
+													<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7837.118984785582!2d106.79197800000001!3d10.844984!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x37fb819462e9c33b!2zQmVhdXR5IEdhcmRlbiAoSOG7hyBUaOG7kW5nIE3hu7kgUGjhuqltIENow61uaCBow6NuZyAp!5e0!3m2!1sen!2sus!4v1586851454403!5m2!1sen!2sus" onclick="OpenMoal(this)" title="Chi Nh&#xE1;nh Qu&#x1EAD;n 9 - TP H&#x1ED3; Ch&#xED; Minh">Chi Nh&#xE1;nh Qu&#x1EAD;n 9 - TP H&#x1ED3; Ch&#xED; Minh</a>
+												</h2>
+												<p>Địa chỉ: <b>435 L&#xEA; V&#x103;n Vi&#x1EC7;t, T&#x103;ng Nh&#x1A1;n Ph&#xFA; A, Qu&#x1EAD;n 9, TP H&#x1ED3; Ch&#xED; Minh</b></p>
+												<p>Hotline: <b>0911 484 114</b></p>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="item-news">
+									<div class="row">
+										<div class="col-lg-4">
+											<div class="box-news">
+												<div class="bor-s bor-ht">
+													<div class="news-img htch-img">
+														<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7743.299855649141!2d107.994139!3d13.979431!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x316c1f2a95123ddf%3A0x165c680e2d90bcbf!2sBeauty%20Garden%20(chi%20nh%C3%A1nh%20Gia%20Lai)!5e0!3m2!1sen!2sus!4v1586851872004!5m2!1sen!2sus" onclick="OpenMoal(this)">
+															<img src="https://adminbeauty.hvnet.vn/Upload/Files/beautygardenpleiku.jpg?width=268&height=178&v=17042020" alt="Chi Nh&#xE1;nh Pleiku - Gia Lai" class="img-reponsive" />
+															<div class="map-eage">
+																<i class="fa fa-map-marker"></i>
+																<p>79 Hai B&#xE0; Tr&#x1B0;ng, Ph&#x1B0;&#x1EDD;ng Di&#xEA;n H&#x1ED3;ng, TP Pleiku, Gia Lai</p>
+															</div>
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-8">
+											<div class="content-right h2-ht">
+												<h2>
+													<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7743.299855649141!2d107.994139!3d13.979431!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x316c1f2a95123ddf%3A0x165c680e2d90bcbf!2sBeauty%20Garden%20(chi%20nh%C3%A1nh%20Gia%20Lai)!5e0!3m2!1sen!2sus!4v1586851872004!5m2!1sen!2sus" onclick="OpenMoal(this)" title="Chi Nh&#xE1;nh Pleiku - Gia Lai">Chi Nh&#xE1;nh Pleiku - Gia Lai</a>
+												</h2>
+												<p>Địa chỉ: <b>79 Hai B&#xE0; Tr&#x1B0;ng, Ph&#x1B0;&#x1EDD;ng Di&#xEA;n H&#x1ED3;ng, TP Pleiku, Gia Lai</b></p>
+												<p>Hotline: <b>0911 520 114</b></p>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="item-news">
+									<div class="row">
+										<div class="col-lg-4">
+											<div class="box-news">
+												<div class="bor-s bor-ht">
+													<div class="news-img htch-img">
+														<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7449.167865570996!2d105.82476!3d21.009309!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ac81dd101bfd%3A0x6921dcee87047a3b!2sBeauty%20Garden!5e0!3m2!1svi!2sus!4v1586851632428!5m2!1svi!2sus" onclick="OpenMoal(this)">
+															<img src="https://adminbeauty.hvnet.vn/Upload/Files/hanoi.jpg?width=268&height=178&v=17042020" alt="Chi Nh&#xE1;nh H&#xE0; N&#x1ED9;i" class="img-reponsive" />
+															<div class="map-eage">
+																<i class="fa fa-map-marker"></i>
+																<p>152 Ch&#xF9;a B&#x1ED9;c, &#x110;&#x1ED1;ng &#x110;a, H&#xE0; N&#x1ED9;i </p>
+															</div>
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-8">
+											<div class="content-right h2-ht">
+												<h2>
+													<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7449.167865570996!2d105.82476!3d21.009309!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ac81dd101bfd%3A0x6921dcee87047a3b!2sBeauty%20Garden!5e0!3m2!1svi!2sus!4v1586851632428!5m2!1svi!2sus" onclick="OpenMoal(this)" title="Chi Nh&#xE1;nh H&#xE0; N&#x1ED9;i">Chi Nh&#xE1;nh H&#xE0; N&#x1ED9;i</a>
+												</h2>
+												<p>Địa chỉ: <b>152 Ch&#xF9;a B&#x1ED9;c, &#x110;&#x1ED1;ng &#x110;a, H&#xE0; N&#x1ED9;i </b></p>
+												<p>Hotline: <b>0911 584 114</b></p>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="item-news">
+									<div class="row">
+										<div class="col-lg-4">
+											<div class="box-news">
+												<div class="bor-s bor-ht">
+													<div class="news-img htch-img">
+														<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7668.437362101784!2d108.219277!3d16.054138!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xaaf85194723f8da0!2sBeauty%20Garden!5e0!3m2!1svi!2sus!4v1586851719328!5m2!1svi!2sus" onclick="OpenMoal(this)">
+															<img src="https://adminbeauty.hvnet.vn/Upload/Files/danang.jpg?width=268&height=178&v=17042020" alt="Chi Nh&#xE1;nh &#x110;&#xE0; N&#x1EB5;ng" class="img-reponsive" />
+															<div class="map-eage">
+																<i class="fa fa-map-marker"></i>
+																<p>268 Tr&#x1B0;ng N&#x1EEF; V&#x1B0;&#x1A1;ng, Ph&#x1B0;&#x1EDD;ng B&#xEC;nh Thu&#x1EAD;n, H&#x1EA3;i Ch&#xE2;u, TP &#x110;&#xE0; N&#x1EB5;ng</p>
+															</div>
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-8">
+											<div class="content-right h2-ht">
+												<h2>
+													<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7668.437362101784!2d108.219277!3d16.054138!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xaaf85194723f8da0!2sBeauty%20Garden!5e0!3m2!1svi!2sus!4v1586851719328!5m2!1svi!2sus" onclick="OpenMoal(this)" title="Chi Nh&#xE1;nh &#x110;&#xE0; N&#x1EB5;ng">Chi Nh&#xE1;nh &#x110;&#xE0; N&#x1EB5;ng</a>
+												</h2>
+												<p>Địa chỉ: <b>268 Tr&#x1B0;ng N&#x1EEF; V&#x1B0;&#x1A1;ng, Ph&#x1B0;&#x1EDD;ng B&#xEC;nh Thu&#x1EAD;n, H&#x1EA3;i Ch&#xE2;u, TP &#x110;&#xE0; N&#x1EB5;ng</b></p>
+												<p>Hotline: <b>0911 794 114</b></p>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="item-news">
+									<div class="row">
+										<div class="col-lg-4">
+											<div class="box-news">
+												<div class="bor-s bor-ht">
+													<div class="news-img htch-img">
+														<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.181426292888!2d106.67897581469529!3d10.797412592307257!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317528d6c415c955%3A0x1528b3de647ab027!2zMjgwIFBoYW4gxJDDrG5oIFBow7luZywgUGjGsOG7nW5nIDEsIFBow7ogTmh14bqtbiwgSOG7kyBDaMOtIE1pbmgsIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1587613114689!5m2!1svi!2s" onclick="OpenMoal(this)">
+															<img src="https://adminbeauty.hvnet.vn/Upload/Files/z1836977083715_be8ac288c8aafd85a3a9fe2e9c8057a5.jpg?width=268&height=178&v=17042020" alt="Chi Nh&#xE1;nh Ph&#xFA; Nhu&#x1EAD;n - TP H&#x1ED3; Ch&#xED; Minh" class="img-reponsive" />
+															<div class="map-eage">
+																<i class="fa fa-map-marker"></i>
+																<p>280 Phan &#x110;&#xEC;nh Ph&#xF9;ng, Ph&#x1B0;&#x1EDD;ng 1, Ph&#xFA; Nhu&#x1EAD;n, TP H&#x1ED3; Ch&#xED; Minh</p>
+															</div>
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-8">
+											<div class="content-right h2-ht">
+												<h2>
+													<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.181426292888!2d106.67897581469529!3d10.797412592307257!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317528d6c415c955%3A0x1528b3de647ab027!2zMjgwIFBoYW4gxJDDrG5oIFBow7luZywgUGjGsOG7nW5nIDEsIFBow7ogTmh14bqtbiwgSOG7kyBDaMOtIE1pbmgsIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1587613114689!5m2!1svi!2s" onclick="OpenMoal(this)" title="Chi Nh&#xE1;nh Ph&#xFA; Nhu&#x1EAD;n - TP H&#x1ED3; Ch&#xED; Minh">Chi Nh&#xE1;nh Ph&#xFA; Nhu&#x1EAD;n - TP H&#x1ED3; Ch&#xED; Minh</a>
+												</h2>
+												<p>Địa chỉ: <b>280 Phan &#x110;&#xEC;nh Ph&#xF9;ng, Ph&#x1B0;&#x1EDD;ng 1, Ph&#xFA; Nhu&#x1EAD;n, TP H&#x1ED3; Ch&#xED; Minh</b></p>
+												<p>Hotline: <b>0911 384 114</b></p>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="item-news">
+									<div class="row">
+										<div class="col-lg-4">
+											<div class="box-news">
+												<div class="bor-s bor-ht">
+													<div class="news-img htch-img">
+														<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.506146063703!2d106.67983231483649!3d10.772492462211874!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f2168dde56b%3A0x6ae5a065a26dccde!2sBeauty%20Garden!5e0!3m2!1svi!2s!4v1586850406286!5m2!1svi!2s" onclick="OpenMoal(this)">
+															<img src="https://adminbeauty.hvnet.vn/Upload/Files/shop%20q3.jpg?width=268&height=178&v=17042020" alt="Chi Nh&#xE1;nh Qu&#x1EAD;n 3 - TP H&#x1ED3; Ch&#xED; Minh" class="img-reponsive" />
+															<div class="map-eage">
+																<i class="fa fa-map-marker"></i>
+																<p>S&#x1ED1; 71, &#x110;&#x1B0;&#x1EDD;ng s&#x1ED1; 3, C&#x1B0; X&#xE1; &#x110;&#xF4; Th&#xE0;nh, Ph&#x1B0;&#x1EDD;ng 4, Qu&#x1EAD;n 3, TP H&#x1ED3; Ch&#xED; Minh </p>
+															</div>
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-8">
+											<div class="content-right h2-ht">
+												<h2>
+													<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.506146063703!2d106.67983231483649!3d10.772492462211874!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f2168dde56b%3A0x6ae5a065a26dccde!2sBeauty%20Garden!5e0!3m2!1svi!2s!4v1586850406286!5m2!1svi!2s" onclick="OpenMoal(this)" title="Chi Nh&#xE1;nh Qu&#x1EAD;n 3 - TP H&#x1ED3; Ch&#xED; Minh">Chi Nh&#xE1;nh Qu&#x1EAD;n 3 - TP H&#x1ED3; Ch&#xED; Minh</a>
+												</h2>
+												<p>Địa chỉ: <b>S&#x1ED1; 71, &#x110;&#x1B0;&#x1EDD;ng s&#x1ED1; 3, C&#x1B0; X&#xE1; &#x110;&#xF4; Th&#xE0;nh, Ph&#x1B0;&#x1EDD;ng 4, Qu&#x1EAD;n 3, TP H&#x1ED3; Ch&#xED; Minh </b></p>
+												<p>Hotline: <b>0911 784 114</b></p>
+											</div>
+										</div>
+									</div>
+								</div>
+
+
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3 order-lg-first">
+					<div class="box-left hidden-sm hidden-xs">
+						@{Html.RenderAction("DanhMucSanPham", "Partial");}
+					</div>
+					<div class="box-left hidden-sm hidden-xs">
+						@{Html.RenderAction("TinNoiBat", "Partial");}
+					</div>
+					<div class="box-left">
+						@{Html.RenderAction("SanPhamMoiVe", "Partial");}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+</main>
+@section css{
+	<link href="~/Public/FrontEnd/css/category.css" rel="stylesheet" />
+}
+
+

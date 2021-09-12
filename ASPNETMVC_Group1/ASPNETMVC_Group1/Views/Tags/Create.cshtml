@@ -1,0 +1,91 @@
+﻿@model ASPNETMVC_Group1.Models.Tag
+
+@{
+	ViewBag.Title = "Thêm mới tag";
+	Layout = "~/Views/Shared/_LayoutBackEnd.cshtml";
+}
+@section breadcumb{
+	<li class="breadcrumb-item"><a href="@Url.Action("Index","QuanLy")">Dashboard</a></li>
+	<li class="breadcrumb-item"><a href="@Url.Action("Index","Tags")">Tag</a></li>
+	<li class="breadcrumb-item active">Thêm mới</li>
+}
+<div class="row">
+	<div class="col-md-12">
+		<div class="card card-primary">
+			<div class="card-header">
+				<h3 class="card-title">Thông tin tag</h3>
+			</div>
+			<div class="card-body">
+				@using (Html.BeginForm("Create", "Tags", FormMethod.Post, new { id = "createForm", autocomplete="off" }))
+				{
+					@Html.AntiForgeryToken()
+					<div class="form-group">
+						@Html.LabelFor(model => model.TenTag, htmlAttributes: new { @class = "control-label col-md-2" })
+						@Html.EditorFor(model => model.TenTag, new { htmlAttributes = new { @class = "form-control" } })
+						@Html.ValidationMessageFor(model => model.TenTag, "", new { @class = "text-danger" })
+					</div>
+					<button class="btn btn-success" type="submit" id="submit">Lưu</button>
+				}
+			</div>
+			<!-- /.card-body -->
+		</div>
+		<!-- /.card -->
+	</div>
+</div>
+<div class="row">
+	<div class="col-12">
+		<a href="@Url.Action("Index")" class="btn btn-secondary">Trở về danh sách</a>
+	</div>
+</div>
+@section css{
+	<link href="~/Public/BackEnd/dist/css/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+}
+@section scripts{
+	<script src="~/Public/BackEnd/dist/js/sweetalert2.all.min.js"></script>
+	<script>
+		//Initialize
+		$('#tag').addClass('active');
+	</script>
+	<script>
+		//Validate
+		$(document).ready(function () {
+			$('#submit').prop('disabled', true);
+			$('#createForm').keyup(function () {
+				if ($('#TenTag').val() != '') {
+					$('#submit').prop('disabled', false);
+				} else {
+					$('#submit').prop('disabled', true);
+				}
+			})
+			$('#TenTag').keyup(function () {
+				if ($('#TenTag').val().trim() == '')
+					$('span[data-valmsg-for="TenTag"]').text('Hãy nhập tên tag.');
+				else
+					$('span[data-valmsg-for="TenTag"]').text('');
+			});
+			$('#TenTag').keydown(function () {
+				if ($('#TenTag').val().trim() == '')
+					$('span[data-valmsg-for="TenTag"]').text('Hãy nhập tên tag.');
+				else
+					$('span[data-valmsg-for="TenTag"]').text('');
+			});
+		});
+	</script>
+	@if (ViewBag.Error != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Thêm thất bại!',
+				"",
+				'error'
+			)
+		</script>
+	}
+}

@@ -1,0 +1,301 @@
+﻿@model ASPNETMVC_Group1.Models.AspNetUser
+@{
+	ViewBag.Title = "Sửa thông tin";
+	Layout = "~/Views/Shared/_LayoutBackEnd.cshtml";
+}
+@section breadcumb{
+	<li class="breadcrumb-item"><a href="@Url.Action("Index", "QuanLy")">Dashboard</a></li>
+	<li class="breadcrumb-item"><a href="@Url.Action("Index", "NhanVien")">Nhân viên</a></li>
+	<li class="breadcrumb-item active">Sửa thông tin</li>
+}
+<div class="row">
+	<div class="col-md-12">
+		<div class="card card-primary">
+			<div class="card-header">
+				<h3 class="card-title">Thông tin nhân viên</h3>
+			</div>
+			<div class="card-body">
+				@using (Html.BeginForm("Edit", "NhanVien", new { id = Model.Id }, FormMethod.Post, new { id = "changeProfile", @autocomplete = "off" }))
+				{
+					@Html.AntiForgeryToken()
+					@Html.HiddenFor(model => model.Id)
+					@Html.HiddenFor(model => model.UserName)
+					@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+					<div class="form-group">
+						@Html.LabelFor(m => m.Ten, "Họ tên", new { @class = "control-label col-md-2" })
+						@Html.TextBoxFor(m => m.Ten, new { @class = "form-control", autocomplete = "off" })
+						@Html.ValidationMessageFor(m => m.Ten, "", new { @class = "text-danger" })
+					</div>
+					<div class="form-group">
+						@Html.LabelFor(m => m.PhoneNumber, "Số điện thoại", new { @class = "control-label col-md-2" })
+						@Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", autocomplete = "off" })
+						@Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+					</div>
+					<div class="form-group">
+						@Html.LabelFor(m => m.GioiTinh, "Giới tính", new { @class = "control-label col-md-2" })
+						<select id="GioiTinh" class="form-control custom-select" name="GioiTinh">
+							<option value="">Chọn giới tính</option>
+							<option value="Nam" @(Model.GioiTinh.Equals("Nam") ? "selected" : "")>Nam</option>
+							<option value="Nữ" @(Model.GioiTinh.Equals("Nữ") ? "selected" : "")>Nữ</option>
+							<option value="Khác" @(Model.GioiTinh.Equals("Khác") ? "selected" : "")>Khác</option>
+						</select>
+						@Html.ValidationMessageFor(m => m.GioiTinh, "", new { @class = "text-danger" })
+					</div>
+					<div class="form-group">
+						@Html.LabelFor(m => m.NgaySinh, "Ngày sinh", new { @class = "control-label col-md-2" })
+						@Html.TextBoxFor(m => m.NgaySinh, "{0:yyyy-MM-dd}", new { @class = "form-control" })
+						@Html.ValidationMessageFor(m => m.NgaySinh, "", new { @class = "text-danger" })
+					</div>
+					<div class="form-group">
+						@Html.LabelFor(m => m.ThanhPho, "Thành phố", new { @class = "control-label col-md-2" })
+						<select id="ThanhPho" class="form-control custom-select" name="ThanhPho">
+						</select>
+						<div class="invalid-feedback" id="val-RegionId"></div>
+						@Html.ValidationMessageFor(m => m.ThanhPho, "", new { @class = "text-danger" })
+						<input type="hidden" id="TP" value="@Model.ThanhPho" />
+					</div>
+					<div class="form-group">
+						@Html.LabelFor(m => m.QuanHuyen, "Quận huyện", new { @class = "control-label col-md-2" })
+						<select id="QuanHuyen" class="form-control custom-select" name="QuanHuyen">
+						</select>
+						<div class="invalid-feedback" id="val-DistristId"></div>
+						@Html.ValidationMessageFor(m => m.QuanHuyen, "", new { @class = "text-danger" })
+						<input type="hidden" id="QH" value="@Model.QuanHuyen" />
+					</div>
+					<div class="form-group">
+						@Html.LabelFor(m => m.DiaChi, "Địa chỉ", new { @class = "control-label col-md-2" })
+						@Html.TextAreaFor(m => m.DiaChi, new { @class = "form-control" })
+						@Html.ValidationMessageFor(m => m.DiaChi, "", new { @class = "text-danger" })
+					</div>
+					<button class="btn btn-success" type="submit" id="updateProfile">Lưu</button>
+					<script>
+						localStorage.setItem('QH', document.getElementById("QH").value);
+						localStorage.setItem('TP', document.getElementById("TP").value);
+					</script>
+				}
+			</div>
+			<!-- /.card-body -->
+		</div>
+		<!-- /.card -->
+	</div>
+</div>
+<div class="row">
+	<div class="col-12">
+		<a href="@Url.Action("Index")" class="btn btn-secondary">Trở về danh sách</a>
+	</div>
+</div>
+@section cestaff{
+	<link href="~/Public/BackEnd/dist/css/datetimepicker.css" rel="stylesheet prefetch" type="text/css" />
+}
+@section css{
+	<link href="~/Public/BackEnd/dist/css/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+}
+@section scripts{
+	<script src="~/Public/BackEnd/dist/js/district.min.js"></script>
+	<script src="~/Public/BackEnd/dist/js/datetimepicker.js"></script>
+	<script src="~/Public/BackEnd/dist/js/sweetalert2.all.min.js"></script>
+	<script>
+		//Initialize
+		$('#nhanvien').addClass('active');
+		$('#NgaySinh').datepicker({
+			dateFormat: 'yy-mm-dd',
+			changeMonth: true,
+			changeYear: true,
+			yearRange: '1950:2010',
+			minDate: new Date(1950, 1 - 1, 1),
+			maxDate: '+30Y',
+			inline: true
+		});
+		$('select[name="ThanhPho"]').each(function () {
+			var $this = $(this),
+				stc = ''
+			c.forEach(function (i, e) {
+				e += +1
+				stc += '<option value="' + i + '">' + i + '</option>'
+				$this.html('<option value="">Chọn tỉnh thành phố</option>' + stc)
+				$this.on('change', function (i) {
+					i = $this.children('option:selected').index() - 1
+					var str = '',
+						r = $this.val()
+					if (r != '') {
+						arr[i].forEach(function (el) {
+							str += '<option value="' + el + '">' + el + '</option>'
+							$('select[name="QuanHuyen"]').html('<option value="">Chọn quận huyện</option>' + str)
+						})
+						$('select[name="QuanHuyen"]').on('change', function () {
+							var target = $(this).children('option:selected')
+							target.attr('selected', '')
+							$('select[name="QuanHuyen"] option').not(target).removeAttr('selected')
+							district = $('select[name="QuanHuyen"]').html()
+						})
+					} else {
+						$('select[name="QuanHuyen"]').html('<option value="">Chọn quận huyện</option>')
+						district = $('select[name="QuanHuyen"]').html()
+					}
+				})
+			})
+		});
+		$('#ThanhPho').val(localStorage.getItem('TP')).change();
+		$('#QuanHuyen').val(localStorage.getItem('QH')).change();
+	</script>
+	<script>
+		//Validate
+		const reTel = /^\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})$/;
+		const reDOB = /^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/;
+		$(document).ready(function () {
+			$('#changeProfile').keyup(function () {
+				if ($('#Ten').val().trim() != '' && $('#PhoneNumber').val().trim() != '' && $('#ThanhPho').val() != '' && $('#QuanHuyen').val() != '' && $('#DiaChi').val().trim() != '' &&
+					$('#GioiTinh').val() != '' && $('#NgaySinh').val().trim() != '') {
+					if (!reTel.test($('#PhoneNumber').val()) || !reDOB.test($('#NgaySinh').val())) {
+						$('#updateProfile').prop('disabled', true);
+					} else {
+						$('#updateProfile').prop('disabled', false);
+					}
+				} else {
+					$('#updateProfile').prop('disabled', true);
+				}
+			});
+			$('#changeProfile').change(function () {
+				if ($('#Ten').val().trim() != '' && $('#PhoneNumber').val().trim() != '' && $('#ThanhPho').val() != '' && $('#QuanHuyen').val() != '' && $('#DiaChi').val().trim() != '' &&
+					$('#GioiTinh').val() != '' && $('#NgaySinh').val().trim() != '') {
+					if (!reTel.test($('#PhoneNumber').val()) || !reDOB.test($('#NgaySinh').val())) {
+						$('#updateProfile').prop('disabled', true);
+					} else {
+						$('#updateProfile').prop('disabled', false);
+					}
+				} else {
+					$('#updateProfile').prop('disabled', true);
+				}
+			});
+			$('#Ten').keyup(function () {
+				if ($('#Ten').val().trim() == '')
+					$('span[data-valmsg-for="Ten"]').text('Hãy nhập họ tên.');
+				else
+					$('span[data-valmsg-for="Ten"]').text('');
+			});
+			$('#Ten').keydown(function () {
+				if ($('#Ten').val().trim() == '')
+					$('span[data-valmsg-for="Ten"]').text('Hãy nhập họ tên.');
+				else
+					$('span[data-valmsg-for="Ten"]').text('');
+			});
+			$('#PhoneNumber').keyup(function () {
+				if ($('#PhoneNumber').val().trim() == '')
+					$('span[data-valmsg-for="PhoneNumber"]').text('Hãy nhập số điện thoại.');
+				else {
+					if (!reTel.test($('#PhoneNumber').val()))
+						$('span[data-valmsg-for="PhoneNumber"]').text('Số điện thoại không hợp lệ.');
+					else
+						$('span[data-valmsg-for="PhoneNumber"]').text('');
+				}
+			});
+			$('#PhoneNumber').keydown(function () {
+				if ($('#PhoneNumber').val().trim() == '')
+					$('span[data-valmsg-for="PhoneNumber"]').text('Hãy nhập số điện thoại.');
+				else {
+					if (!reTel.test($('#PhoneNumber').val()))
+						$('span[data-valmsg-for="PhoneNumber"]').text('Số điện thoại không hợp lệ.');
+					else
+						$('span[data-valmsg-for="PhoneNumber"]').text('');
+				}
+			});
+			$('#GioiTinh').keydown(function () {
+				if ($('#GioiTinh').val() == '')
+					$('span[data-valmsg-for="GioiTinh"]').text('Hãy chọn giới tính.');
+				else
+					$('span[data-valmsg-for="GioiTinh"]').text('');
+			});
+			$('#GioiTinh').change(function () {
+				if ($('#GioiTinh').val() == '')
+					$('span[data-valmsg-for="GioiTinh"]').text('Hãy chọn giới tính.');
+				else
+					$('span[data-valmsg-for="GioiTinh"]').text('');
+			});
+			$('#NgaySinh').keyup(function () {
+				if ($('#NgaySinh').val().trim() == '')
+					$('span[data-valmsg-for="NgaySinh"]').text('Hãy nhập ngày sinh.');
+				else {
+					if (!reDOB.test($('#NgaySinh').val()))
+						$('span[data-valmsg-for="NgaySinh"]').text('Ngày sinh không hợp lệ.');
+					else
+						$('span[data-valmsg-for="NgaySinh"]').text('');
+				}
+			});
+			$('#NgaySinh').keydown(function () {
+				if ($('#NgaySinh').val().trim() == '')
+					$('span[data-valmsg-for="NgaySinh"]').text('Hãy nhập ngày sinh.');
+				else {
+					if (!reDOB.test($('#NgaySinh').val()))
+						$('span[data-valmsg-for="NgaySinh"]').text('Ngày sinh không hợp lệ.');
+					else
+						$('span[data-valmsg-for="NgaySinh"]').text('');
+				}
+			});
+			$('#NgaySinh').change(function () {
+				if ($('#NgaySinh').val().trim() == '')
+					$('span[data-valmsg-for="NgaySinh"]').text('Hãy nhập ngày sinh.');
+				else {
+					if (!reDOB.test($('#NgaySinh').val()))
+						$('span[data-valmsg-for="NgaySinh"]').text('Ngày sinh không hợp lệ.');
+					else
+						$('span[data-valmsg-for="NgaySinh"]').text('');
+				}
+			});
+			$('#ThanhPho').keydown(function () {
+				if ($('#ThanhPho').val() == '')
+					$('span[data-valmsg-for="ThanhPho"]').text('Hãy chọn tỉnh / thành phố.');
+				else
+					$('span[data-valmsg-for="ThanhPho"]').text('');
+			});
+			$('#ThanhPho').change(function () {
+				if ($('#ThanhPho').val() == '')
+					$('span[data-valmsg-for="ThanhPho"]').text('Hãy chọn tỉnh / thành phố.');
+				else
+					$('span[data-valmsg-for="ThanhPho"]').text('');
+			});
+			$('#QuanHuyen').keydown(function () {
+				if ($('#QuanHuyen').val() == '')
+					$('span[data-valmsg-for="QuanHuyen"]').text('Hãy chọn quận / huyện.');
+				else
+					$('span[data-valmsg-for="QuanHuyen"]').text('');
+			});
+			$('#QuanHuyen').change(function () {
+				if ($('#QuanHuyen').val() == '')
+					$('span[data-valmsg-for="QuanHuyen"]').text('Hãy chọn quận / huyện.');
+				else
+					$('span[data-valmsg-for="QuanHuyen"]').text('');
+			});
+			$('#DiaChi').keyup(function () {
+				if ($('#DiaChi').val().trim() == '')
+					$('span[data-valmsg-for="DiaChi"]').text('Hãy nhập địa chỉ.');
+				else
+					$('span[data-valmsg-for="DiaChi"]').text('');
+			});
+			$('#DiaChi').keydown(function () {
+				if ($('#DiaChi').val().trim() == '')
+					$('span[data-valmsg-for="DiaChi"]').text('Hãy nhập địa chỉ.');
+				else
+					$('span[data-valmsg-for="DiaChi"]').text('');
+			});
+		});
+	</script>
+	@if (ViewBag.Error != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Sửa thất bại!',
+				"",
+				'error'
+			)
+		</script>
+	}
+}
+
+

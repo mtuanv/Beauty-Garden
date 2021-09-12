@@ -1,0 +1,1661 @@
+﻿@model ASPNETMVC_Group1.Models.HomeViewModel
+@{
+	ViewBag.Title = "Beautygarden - Mỹ phẩm chính hãng giá tốt nhất tại Việt Nam";
+	Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
+}
+
+<main role="main" class="pb-3">
+	<h1 class="hide">Beautygarden Hệ thống phân phối mỹ phẩm số 1 Việt Nam</h1>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+					<!-- The slideshow -->
+					<div class="carousel-inner">
+						<div class="carousel-item active">
+							<a href="javascript:void(0);" target="_blank" title="banner ch&#xED;nh">
+								<img width="1170" height="450" src="@Url.Content("~/Public/FrontEnd/img/hieu dung chon dung su dung dung.jpg")" alt="Main Banner" class="img-reponsive">
+							</a>
+						</div>
+						<div class="carousel-item ">
+							<a href="javascript:void(0);" target="_blank" title="Happy Day - Th&#x1EE9; 3 H&#xE0;ng Tu&#x1EA7;n">
+								<img width="1170" height="450" data-src="@Url.Content("~/Public/FrontEnd/img/happy-day-beauty-garden.jpg")" alt="Happy Day - Thứ 3 Hàng Tuần" class="img-reponsive lazy-load">
+							</a>
+						</div>
+						<div class="carousel-item ">
+							<a href="javascript:void(0);" target="_blank" title="BANNER SINH NH&#x1EAC;T H&#x1EC6; TH&#x1ED0;NG">
+								<img width="1170" height="450" data-src="@Url.Content("~/Public/FrontEnd/img/Banner-Web-Ultimate-Voucher--Phat-Hanh.png")" alt="Banner Sinh Nhật Hệ Thống" class="img-reponsive lazy-load">
+							</a>
+						</div>
+						<div class="carousel-item ">
+							<a href="javascript:void(0);" target="_blank" title="&#x110;&#x1ECA;A CH&#x1EC8;">
+								<img width="1170" height="450" data-src="@Url.Content("~/Public/FrontEnd/img/He Thong Cua Hang.png")" alt="Địa Chỉ" class="img-reponsive lazy-load">
+							</a>
+						</div>
+					</div>
+
+					<!-- Left and right controls -->
+					<a class="slide-prev slide-all" href="#carouselExampleIndicators" data-slide="prev">
+						<i class="fa fa-angle-left" aria-hidden="true"></i>
+					</a>
+					<a class="slide-next slide-all" href="#carouselExampleIndicators" data-slide="next">
+						<i class="fa fa-angle-right" aria-hidden="true"></i>
+					</a>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="box-products">
+					<div class="head-box">
+						<div class="title-box">
+							<h2>
+								<a href="@Url.Action("Index", "KhuyenMai")" title="">
+									SẢN PHẨM KHUYẾN MÃI
+								</a>
+							</h2>
+						</div>
+						<div class="arrow-slider">
+							<a href="javascript:void(0)" class="sf-pre btn-pre bnts">
+								<i class="fa fa-angle-left" aria-hidden="true"></i>
+							</a>
+							<a href="javascript:void(0)" class="sf-nex btn-next bnts">
+								<i class="fa fa-angle-right" aria-hidden="true"></i>
+							</a>
+						</div>
+						<div class="clr"></div>
+					</div>
+					<div class="body-box">
+						<div class="owl-carousel slider-sale">
+							@functions
+											{
+								long RoundingTo(long myNum, long roundTo)
+								{
+									if (roundTo <= 0) return myNum;
+									return (myNum + roundTo / 2) / roundTo * roundTo;
+								}
+								long RoundingTo(long myNum, int roundTo)
+								{
+									return RoundingTo(myNum, (long)roundTo);
+								}
+								int RoundingTo(int myNum, int roundTo)
+								{
+									return (int)RoundingTo((long)myNum, (long)roundTo);
+								}
+							}
+							@foreach (var item in Model.khuyenMais)
+							{
+								int gb = (int)item.GiaBan;
+								int gtt = (int)item.GiaThiTruong;
+								int tk = gtt - gb;
+								string gb2 = "";
+								if (item.GiamGia != null || item.GiamGia > 0)
+								{
+									gb2 = double.Parse(gb.ToString()).ToString("#,###");
+									int gg = (int)item.GiamGia;
+									gb = (int)(gb - gb * ((double)gg / 100));
+									int digits = gb.ToString().Length;
+									gb = RoundingTo(gb, 1000);
+								}
+								string giaban = double.Parse(gb.ToString()).ToString("#,###");
+								string giathitruong = double.Parse(gtt.ToString()).ToString("#,###");
+								var ImagePath = "~/wwwroot/Products/";
+								if (Model.anhs.Where(s => s.MaSanPham == item.MaSanPham).FirstOrDefault() != null)
+								{
+									ImagePath += Model.anhs.Where(s => s.MaSanPham == item.MaSanPham).FirstOrDefault().LinkAnh;
+								}
+								<div class="item">
+									<div class="pd-box ">
+										<div class="box-images">
+											<a href="@Url.Action("Index", "SP", new { id = item.MaSanPham })" title="@item.TenSanPham">
+												<img src="@Url.Content(ImagePath)"
+													 data-src="@Url.Content(ImagePath)"
+													 alt="@item.TenSanPham" class="img-reponsive owl-lazy " style="width: 206px;height:230px" />
+											</a>
+											<button type="button" class="btn-addlike " onclick="AddLike(@item.MaSanPham)"><i class="fa fa-heart-o heart_new"></i></button>
+											@if (item.GiamGia != null || item.GiamGia > 0)
+											{
+												<div class="sale-off ">@item.GiamGia%<br />OFF</div>
+											}
+										</div>
+										<div class="box-content">
+											<h3>
+												<a href="@Url.Action("Index", "SP", new { id = item.MaSanPham })" title="@item.TenSanPham">@item.TenSanPham</a>
+											</h3>
+											<div>
+												<span class="price-drop">@giaban₫</span>
+												<span class="price ">@giathitruong₫</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="box-products">
+					<div class="head-box">
+						<div class="title-box">
+							<h2>
+								<a href="javascript:void(0);">
+									SẢN PHẨM MỚI VỀ
+								</a>
+							</h2>
+						</div>
+						<div class="arrow-slider">
+							<a href="javascript:void(0)" class="new-pre btn-pre bnts">
+								<i class="fa fa-angle-left" aria-hidden="true"></i>
+							</a>
+							<a href="javascript:void(0)" class="new-nex btn-next bnts">
+								<i class="fa fa-angle-right" aria-hidden="true"></i>
+							</a>
+						</div>
+						<div class="clr"></div>
+					</div>
+					<div class="body-box">
+						<div class="owl-carousel new-sale">
+							@foreach (var item in Model.moiVes)
+							{
+								int gb = (int)item.GiaBan;
+								int gtt = (int)item.GiaThiTruong;
+								int tk = gtt - gb;
+								string gb2 = "";
+								if (item.GiamGia != null || item.GiamGia > 0)
+								{
+									gb2 = double.Parse(gb.ToString()).ToString("#,###");
+									int gg = (int)item.GiamGia;
+									gb = (int)(gb - gb * ((double)gg / 100));
+									int digits = gb.ToString().Length;
+									gb = RoundingTo(gb, 1000);
+								}
+								string giaban = double.Parse(gb.ToString()).ToString("#,###");
+								string giathitruong = double.Parse(gtt.ToString()).ToString("#,###");
+								var ImagePath = "~/wwwroot/Products/";
+								if (Model.anhs.Where(s => s.MaSanPham == item.MaSanPham).FirstOrDefault() != null)
+								{
+									ImagePath += Model.anhs.Where(s => s.MaSanPham == item.MaSanPham).FirstOrDefault().LinkAnh;
+								}
+								<div class="item">
+									<div class="pd-box ">
+										<div class="box-images">
+											<a href="@Url.Action("Index", "SP", new { id = item.MaSanPham })" title="@item.TenSanPham">
+												<img src="@Url.Content(ImagePath)"
+													 data-src="@Url.Content(ImagePath)"
+													 alt="@item.TenSanPham" class="img-reponsive owl-lazy " style="width: 206px;height:230px" />
+											</a>
+											<button type="button" class="btn-addlike " onclick="AddLike(@item.MaSanPham)"><i class="fa fa-heart-o heart_new"></i></button>
+											@if (item.GiamGia != null || item.GiamGia > 0)
+											{
+												<div class="sale-off ">@item.GiamGia%<br />OFF</div>
+											}
+										</div>
+										<div class="box-content">
+											<h3>
+												<a href="@Url.Action("Index", "SP", new { id = item.MaSanPham })" title="@item.TenSanPham">@item.TenSanPham</a>
+											</h3>
+											<div>
+												<span class="price-drop">@giaban₫</span>
+												<span class="price ">@giathitruong₫</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container mar-top-25">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="box-banner">
+					<img width="1170" height="140" data-src="@Url.Content("~/Public/FrontEnd/img/banner-min.jpg")" alt="banner" class="img-reponsive lazy" />
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="back-gray pad-30">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="box-products-category">
+						<div class="head-box-category">
+							<a href="@Url.Action("Index", "Top100")" class="left-head">
+								<img src="@Url.Content("~/Public/FrontEnd/img/sh11-128.png")" alt="type icon" />
+								<h2>
+									TOP 100 BÁN CHẠY
+								</h2>
+								<i class="fa fa-angle-right" aria-hidden="true"></i>
+							</a>
+							<button class="btn-ct hidden-md" onclick="showcate(this)" data-id="topsale"><i class="fa fa-bars" aria-hidden="true"></i></button>
+							<div class="clr"></div>
+						</div>
+						<div class="body-box-category">
+							@{int count = 0; }
+							@foreach (var item in Model.banChays)
+							{
+								count++;
+								int gb = (int)item.GiaBan;
+								int gtt = (int)item.GiaThiTruong;
+								int tk = gtt - gb;
+								string gb2 = "";
+								if (item.GiamGia != null || item.GiamGia > 0)
+								{
+									gb2 = double.Parse(gb.ToString()).ToString("#,###");
+									int gg = (int)item.GiamGia;
+									gb = (int)(gb - gb * ((double)gg / 100));
+									int digits = gb.ToString().Length;
+									gb = RoundingTo(gb, 1000);
+								}
+								string giaban = double.Parse(gb.ToString()).ToString("#,###");
+								string giathitruong = double.Parse(gtt.ToString()).ToString("#,###");
+								var ImagePath = "~/wwwroot/Products/";
+								if (Model.anhs.Where(s => s.MaSanPham == item.MaSanPham).FirstOrDefault() != null)
+								{
+									ImagePath += Model.anhs.Where(s => s.MaSanPham == item.MaSanPham).FirstOrDefault().LinkAnh;
+								}
+								<div class="col-2-ct">
+									<div class="pd-box pd-box-category">
+										<div class="box-images">
+											<a href="@Url.Action("Index", "SP", new { id = item.MaSanPham })" title="@item.TenSanPham">
+												<img src="@Url.Content(ImagePath)"
+													 data-src="@Url.Content(ImagePath)"
+													 alt="@item.TenSanPham" class="img-reponsive owl-lazy " style="width: 206px;height:230px" />
+											</a>
+											<button type="button" class="btn-addlike" onclick="AddLike(@item.MaSanPham)"><i class="fa fa-heart-o heart_new"></i></button>
+											@if (item.GiamGia != null || item.GiamGia > 0)
+											{
+												<div class="sale-off ">@item.GiamGia%<br />OFF</div>
+											}
+										</div>
+										<div class="box-content">
+											<h3>
+												<a href="@Url.Action("Index", "SP", new { id = item.MaSanPham })" title="@item.TenSanPham">@item.TenSanPham</a>
+											</h3>
+											<div>
+												<span class="price-drop">@giaban₫</span>
+												<span class="price ">@giathitruong₫</span>
+											</div>
+										</div>
+									</div>
+								</div>
+								if (count == 12)
+								{
+									break;
+								}
+							}
+							<div class="clr"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="back-gray pad-30">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="box-products-category">
+						<div class="head-box-category">
+							<a href="@Url.Action("Index","DM",new { id = 1 })" class="left-head">
+								<img data-src="@Url.Content("~/Public/FrontEnd/img/trangdiem.png")" alt="Trang Điểm Icon" class="lazy" />
+								<h2>
+									Trang Điểm
+								</h2>
+								<i class="fa fa-angle-right" aria-hidden="true"></i>
+							</a>
+							<ul class="ul-non ul-category" id="cate2">
+								<li class="active"><a href="javascript:void(0)" onclick="ShowPDCT(1)">Trang Điểm Mặt</a></li>
+								<li class=""><a href="javascript:void(0)" onclick="ShowPDCT(2)">Trang Điểm Mắt</a></li>
+								<li class=""><a href="javascript:void(0)" onclick="ShowPDCT(3)">Trang Điểm Môi</a></li>
+							</ul>
+							<button class="btn-ct hidden-md" onclick="showcate(this)" data-id="cate2"><i class="fa fa-bars" aria-hidden="true"></i></button>
+							<div class="clr"></div>
+						</div>
+						<div class="body-box-category" id="tdmatj">
+							@{count = 0; }
+							@foreach (var item in Model.trangDiems.Where(s => s.DanhMuc.MaDanhMucCha == 7))
+							{
+								count++;
+								int gb = (int)item.GiaBan;
+								int gtt = (int)item.GiaThiTruong;
+								int tk = gtt - gb;
+								string gb2 = "";
+								if (item.GiamGia != null || item.GiamGia > 0)
+								{
+									gb2 = double.Parse(gb.ToString()).ToString("#,###");
+									int gg = (int)item.GiamGia;
+									gb = (int)(gb - gb * ((double)gg / 100));
+									int digits = gb.ToString().Length;
+									gb = RoundingTo(gb, 1000);
+								}
+								string giaban = double.Parse(gb.ToString()).ToString("#,###");
+								string giathitruong = double.Parse(gtt.ToString()).ToString("#,###");
+								var ImagePath = "~/wwwroot/Products/";
+								if (Model.anhs.Where(s => s.MaSanPham == item.MaSanPham).FirstOrDefault() != null)
+								{
+									ImagePath += Model.anhs.Where(s => s.MaSanPham == item.MaSanPham).FirstOrDefault().LinkAnh;
+								}
+								<div class="col-2-ct">
+									<div class="pd-box pd-box-category">
+										<div class="box-images">
+											<a href="@Url.Action("Index", "SP", new { id = item.MaSanPham })" title="@item.TenSanPham">
+												<img src="@Url.Content(ImagePath)"
+													 data-src="@Url.Content(ImagePath)"
+													 alt="@item.TenSanPham" class="img-reponsive owl-lazy " style="width: 206px;height:230px" />
+											</a>
+											<button type="button" class="btn-addlike" onclick="AddLike(@item.MaSanPham)"><i class="fa fa-heart-o heart_new"></i></button>
+											@if (item.GiamGia != null || item.GiamGia > 0)
+											{
+												<div class="sale-off ">@item.GiamGia%<br />OFF</div>
+											}
+										</div>
+										<div class="box-content">
+											<h3>
+												<a href="@Url.Action("Index", "SP", new { id = item.MaSanPham })" title="@item.TenSanPham">@item.TenSanPham</a>
+											</h3>
+											<div>
+												<span class="price-drop">@giaban₫</span>
+												<span class="price ">@giathitruong₫</span>
+											</div>
+										</div>
+									</div>
+								</div>
+								if (count == 12)
+								{
+									count = 0;
+									break;
+								}
+							}
+							<div class="clr"></div>
+						</div>
+						<div class="body-box-category d-none" id="tdmats">
+							@foreach (var item in Model.trangDiems.Where(s => s.DanhMuc.MaDanhMucCha == 8))
+							{
+								count++;
+								int gb = (int)item.GiaBan;
+								int gtt = (int)item.GiaThiTruong;
+								int tk = gtt - gb;
+								string gb2 = "";
+								if (item.GiamGia != null || item.GiamGia > 0)
+								{
+									gb2 = double.Parse(gb.ToString()).ToString("#,###");
+									int gg = (int)item.GiamGia;
+									gb = (int)(gb - gb * ((double)gg / 100));
+									int digits = gb.ToString().Length;
+									gb = RoundingTo(gb, 1000);
+								}
+								string giaban = double.Parse(gb.ToString()).ToString("#,###");
+								string giathitruong = double.Parse(gtt.ToString()).ToString("#,###");
+								var ImagePath = "~/wwwroot/Products/";
+								if (Model.anhs.Where(s => s.MaSanPham == item.MaSanPham).FirstOrDefault() != null)
+								{
+									ImagePath += Model.anhs.Where(s => s.MaSanPham == item.MaSanPham).FirstOrDefault().LinkAnh;
+								}
+								<div class="col-2-ct">
+									<div class="pd-box pd-box-category">
+										<div class="box-images">
+											<a href="@Url.Action("Index", "SP", new { id = item.MaSanPham })" title="@item.TenSanPham">
+												<img src="@Url.Content(ImagePath)"
+													 data-src="@Url.Content(ImagePath)"
+													 alt="@item.TenSanPham" class="img-reponsive owl-lazy " style="width: 206px;height:230px" />
+											</a>
+											<button type="button" class="btn-addlike" onclick="AddLike(@item.MaSanPham)"><i class="fa fa-heart-o heart_new"></i></button>
+											@if (item.GiamGia != null || item.GiamGia > 0)
+											{
+												<div class="sale-off ">@item.GiamGia%<br />OFF</div>
+											}
+										</div>
+										<div class="box-content">
+											<h3>
+												<a href="@Url.Action("Index", "SP", new { id = item.MaSanPham })" title="@item.TenSanPham">@item.TenSanPham</a>
+											</h3>
+											<div>
+												<span class="price-drop">@giaban₫</span>
+												<span class="price ">@giathitruong₫</span>
+											</div>
+										</div>
+									</div>
+								</div>
+								if (count == 12)
+								{
+									count = 0;
+									break;
+								}
+							}
+							<div class="clr"></div>
+						</div>
+						<div class="body-box-category d-none" id="tdmoi">
+							@foreach (var item in Model.trangDiems.Where(s => s.DanhMuc.MaDanhMucCha == 9))
+							{
+								count++;
+								int gb = (int)item.GiaBan;
+								int gtt = (int)item.GiaThiTruong;
+								int tk = gtt - gb;
+								string gb2 = "";
+								if (item.GiamGia != null || item.GiamGia > 0)
+								{
+									gb2 = double.Parse(gb.ToString()).ToString("#,###");
+									int gg = (int)item.GiamGia;
+									gb = (int)(gb - gb * ((double)gg / 100));
+									int digits = gb.ToString().Length;
+									gb = RoundingTo(gb, 1000);
+								}
+								string giaban = double.Parse(gb.ToString()).ToString("#,###");
+								string giathitruong = double.Parse(gtt.ToString()).ToString("#,###");
+								var ImagePath = "~/wwwroot/Products/";
+								if (Model.anhs.Where(s => s.MaSanPham == item.MaSanPham).FirstOrDefault() != null)
+								{
+									ImagePath += Model.anhs.Where(s => s.MaSanPham == item.MaSanPham).FirstOrDefault().LinkAnh;
+								}
+								<div class="col-2-ct">
+									<div class="pd-box pd-box-category">
+										<div class="box-images">
+											<a href="@Url.Action("Index", "SP", new { id = item.MaSanPham })" title="@item.TenSanPham">
+												<img src="@Url.Content(ImagePath)"
+													 data-src="@Url.Content(ImagePath)"
+													 alt="@item.TenSanPham" class="img-reponsive owl-lazy " style="width: 206px;height:230px" />
+											</a>
+											<button type="button" class="btn-addlike" onclick="AddLike(@item.MaSanPham)"><i class="fa fa-heart-o heart_new"></i></button>
+											@if (item.GiamGia != null || item.GiamGia > 0)
+											{
+												<div class="sale-off ">@item.GiamGia%<br />OFF</div>
+											}
+										</div>
+										<div class="box-content">
+											<h3>
+												<a href="@Url.Action("Index", "SP", new { id = item.MaSanPham })" title="@item.TenSanPham">@item.TenSanPham</a>
+											</h3>
+											<div>
+												<span class="price-drop">@giaban₫</span>
+												<span class="price ">@giathitruong₫</span>
+											</div>
+										</div>
+									</div>
+								</div>
+								if (count == 12)
+								{
+									count = 0;
+									break;
+								}
+							}
+							<div class="clr"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="back-gray pad-30">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="box-products-category">
+						<div class="head-box-category">
+							<a href="@Url.Action("Index","DM",new { id = 2 })" class="left-head">
+								<img data-src="@Url.Content("~/Public/FrontEnd/img/chamsocda.png")" alt="Chăm Sóc Da Icon" class="lazy" />
+								<h2>
+									Chăm Sóc Da
+								</h2>
+								<i class="fa fa-angle-right" aria-hidden="true"></i>
+							</a>
+							<ul class="ul-non ul-category" id="cate3">
+								<li class="active"><a href="javascript:void(0)" onclick="ShowPDCT(4)">Dưỡng Da </a></li>
+								<li class=""><a href="javascript:void(0)" onclick="ShowPDCT(5)">Làm sạch da </a></li>
+								<li class=""><a href="javascript:void(0)" onclick="ShowPDCT(6)">Mask - Mặt Nạ</a></li>
+							</ul>
+							<button class="btn-ct hidden-md" onclick="showcate(this)" data-id="cate3"><i class="fa fa-bars" aria-hidden="true"></i></button>
+							<div class="clr"></div>
+						</div>
+						<div class="body-box-category" id="duongda">
+							@foreach (var item in Model.chamSocDas.Where(s => s.DanhMuc.MaDanhMucCha == 30))
+							{
+								count++;
+								int gb = (int)item.GiaBan;
+								int gtt = (int)item.GiaThiTruong;
+								int tk = gtt - gb;
+								string gb2 = "";
+								if (item.GiamGia != null || item.GiamGia > 0)
+								{
+									gb2 = double.Parse(gb.ToString()).ToString("#,###");
+									int gg = (int)item.GiamGia;
+									gb = (int)(gb - gb * ((double)gg / 100));
+									int digits = gb.ToString().Length;
+									gb = RoundingTo(gb, 1000);
+								}
+								string giaban = double.Parse(gb.ToString()).ToString("#,###");
+								string giathitruong = double.Parse(gtt.ToString()).ToString("#,###");
+								var ImagePath = "~/wwwroot/Products/";
+								if (Model.anhs.Where(s => s.MaSanPham == item.MaSanPham).FirstOrDefault() != null)
+								{
+									ImagePath += Model.anhs.Where(s => s.MaSanPham == item.MaSanPham).FirstOrDefault().LinkAnh;
+								}
+								<div class="col-2-ct">
+									<div class="pd-box pd-box-category">
+										<div class="box-images">
+											<a href="@Url.Action("Index", "SP", new { id = item.MaSanPham })" title="@item.TenSanPham">
+												<img src="@Url.Content(ImagePath)"
+													 data-src="@Url.Content(ImagePath)"
+													 alt="@item.TenSanPham" class="img-reponsive owl-lazy " style="width: 206px;height:230px" />
+											</a>
+											<button type="button" class="btn-addlike" onclick="AddLike(@item.MaSanPham)"><i class="fa fa-heart-o heart_new"></i></button>
+											@if (item.GiamGia != null || item.GiamGia > 0)
+											{
+												<div class="sale-off ">@item.GiamGia%<br />OFF</div>
+											}
+										</div>
+										<div class="box-content">
+											<h3>
+												<a href="@Url.Action("Index", "SP", new { id = item.MaSanPham })" title="@item.TenSanPham">@item.TenSanPham</a>
+											</h3>
+											<div>
+												<span class="price-drop">@giaban₫</span>
+												<span class="price ">@giathitruong₫</span>
+											</div>
+										</div>
+									</div>
+								</div>
+								if (count == 12)
+								{
+									count = 0;
+									break;
+								}
+							}
+							<div class="clr"></div>
+						</div>
+						<div class="body-box-category d-none" id="lamsachda">
+							@foreach (var item in Model.chamSocDas.Where(s => s.DanhMuc.MaDanhMucCha == 31))
+							{
+								count++;
+								int gb = (int)item.GiaBan;
+								int gtt = (int)item.GiaThiTruong;
+								int tk = gtt - gb;
+								string gb2 = "";
+								if (item.GiamGia != null || item.GiamGia > 0)
+								{
+									gb2 = double.Parse(gb.ToString()).ToString("#,###");
+									int gg = (int)item.GiamGia;
+									gb = (int)(gb - gb * ((double)gg / 100));
+									int digits = gb.ToString().Length;
+									gb = RoundingTo(gb, 1000);
+								}
+								string giaban = double.Parse(gb.ToString()).ToString("#,###");
+								string giathitruong = double.Parse(gtt.ToString()).ToString("#,###");
+								var ImagePath = "~/wwwroot/Products/";
+								if (Model.anhs.Where(s => s.MaSanPham == item.MaSanPham).FirstOrDefault() != null)
+								{
+									ImagePath += Model.anhs.Where(s => s.MaSanPham == item.MaSanPham).FirstOrDefault().LinkAnh;
+								}
+								<div class="col-2-ct">
+									<div class="pd-box pd-box-category">
+										<div class="box-images">
+											<a href="@Url.Action("Index", "SP", new { id = item.MaSanPham })" title="@item.TenSanPham">
+												<img src="@Url.Content(ImagePath)"
+													 data-src="@Url.Content(ImagePath)"
+													 alt="@item.TenSanPham" class="img-reponsive owl-lazy " style="width: 206px;height:230px" />
+											</a>
+											<button type="button" class="btn-addlike" onclick="AddLike(@item.MaSanPham)"><i class="fa fa-heart-o heart_new"></i></button>
+											@if (item.GiamGia != null || item.GiamGia > 0)
+											{
+												<div class="sale-off ">@item.GiamGia%<br />OFF</div>
+											}
+										</div>
+										<div class="box-content">
+											<h3>
+												<a href="@Url.Action("Index", "SP", new { id = item.MaSanPham })" title="@item.TenSanPham">@item.TenSanPham</a>
+											</h3>
+											<div>
+												<span class="price-drop">@giaban₫</span>
+												<span class="price ">@giathitruong₫</span>
+											</div>
+										</div>
+									</div>
+								</div>
+								if (count == 12)
+								{
+									count = 0;
+									break;
+								}
+							}
+							<div class="clr"></div>
+						</div>
+						<div class="body-box-category d-none" id="mask-mn">
+							@foreach (var item in Model.chamSocDas.Where(s => s.DanhMuc.MaDanhMucCha == 32))
+							{
+								count++;
+								int gb = (int)item.GiaBan;
+								int gtt = (int)item.GiaThiTruong;
+								int tk = gtt - gb;
+								string gb2 = "";
+								if (item.GiamGia != null || item.GiamGia > 0)
+								{
+									gb2 = double.Parse(gb.ToString()).ToString("#,###");
+									int gg = (int)item.GiamGia;
+									gb = (int)(gb - gb * ((double)gg / 100));
+									int digits = gb.ToString().Length;
+									gb = RoundingTo(gb, 1000);
+								}
+								string giaban = double.Parse(gb.ToString()).ToString("#,###");
+								string giathitruong = double.Parse(gtt.ToString()).ToString("#,###");
+								var ImagePath = "~/wwwroot/Products/";
+								if (Model.anhs.Where(s => s.MaSanPham == item.MaSanPham).FirstOrDefault() != null)
+								{
+									ImagePath += Model.anhs.Where(s => s.MaSanPham == item.MaSanPham).FirstOrDefault().LinkAnh;
+								}
+								<div class="col-2-ct">
+									<div class="pd-box pd-box-category">
+										<div class="box-images">
+											<a href="@Url.Action("Index", "SP", new { id = item.MaSanPham })" title="@item.TenSanPham">
+												<img src="@Url.Content(ImagePath)"
+													 data-src="@Url.Content(ImagePath)"
+													 alt="@item.TenSanPham" class="img-reponsive owl-lazy " style="width: 206px;height:230px" />
+											</a>
+											<button type="button" class="btn-addlike" onclick="AddLike(@item.MaSanPham)"><i class="fa fa-heart-o heart_new"></i></button>
+											@if (item.GiamGia != null || item.GiamGia > 0)
+											{
+												<div class="sale-off ">@item.GiamGia%<br />OFF</div>
+											}
+										</div>
+										<div class="box-content">
+											<h3>
+												<a href="@Url.Action("Index", "SP", new { id = item.MaSanPham })" title="@item.TenSanPham">@item.TenSanPham</a>
+											</h3>
+											<div>
+												<span class="price-drop">@giaban₫</span>
+												<span class="price ">@giathitruong₫</span>
+											</div>
+										</div>
+									</div>
+								</div>
+								if (count == 12)
+								{
+									count = 0;
+									break;
+								}
+							}
+							<div class="clr"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="pad-30">
+		<div class="container ">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="box-brand">
+						<h2>THƯƠNG HIỆU NỔI BẬT</h2>
+						<div class="sroll-box">
+							<a href="javascript:void(0)" class="brand-pre bnts-brand">
+								<i class="fa fa-angle-left" aria-hidden="true"></i>
+							</a>
+							<div class="owl-carousel box-img">
+								<div class="item">
+									<a href="javascript:void(0);" title="Dr.Belmeur" class="brand-img">
+										<img width="97" height="71" src="https://adminbeauty.hvnet.vn/Upload/Files/og_image.jpg?width=137&height=100&v=17042020" data-cument="https://adminbeauty.hvnet.vn/Upload/Files/og_image.jpg?width=137&height=100&v=17042020" class="img-reponsive lazyslide" alt="Dr.Belmeur" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Th&#x1B0;&#x1A1;ng Hi&#x1EC7;u Kh&#xE1;c" class="brand-img">
+										<img width="97" height="71" src="https://adminbeauty.hvnet.vn/Upload/Files/thuong-hieu-khac.png?width=137&height=100&v=17042020" data-cument="https://adminbeauty.hvnet.vn/Upload/Files/thuong-hieu-khac.png?width=137&height=100&v=17042020" class="img-reponsive lazyslide" alt="Th&#x1B0;&#x1A1;ng Hi&#x1EC7;u Kh&#xE1;c" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Vichy" class="brand-img">
+										<img width="97" height="71" src="https://adminbeauty.hvnet.vn/Upload/Files/Capture.PNG?width=137&height=100&v=17042020" data-cument="https://adminbeauty.hvnet.vn/Upload/Files/Capture.PNG?width=137&height=100&v=17042020" class="img-reponsive lazyslide" alt="Vichy" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Cocoon" class="brand-img">
+										<img width="97" height="71" src="https://adminbeauty.hvnet.vn/Upload/Files/banner/logococoon.jpg?width=137&height=100&v=17042020" data-cument="https://adminbeauty.hvnet.vn/Upload/Files/banner/logococoon.jpg?width=137&height=100&v=17042020" class="img-reponsive lazyslide" alt="Cocoon" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Vacosi" class="brand-img">
+										<img width="97" height="71" src="https://adminbeauty.hvnet.vn/Upload/Files/vacosi.jpg?width=137&height=100&v=17042020" data-cument="https://adminbeauty.hvnet.vn/Upload/Files/vacosi.jpg?width=137&height=100&v=17042020" class="img-reponsive lazyslide" alt="Vacosi" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Avene" class="brand-img">
+										<img width="97" height="71" src="https://adminbeauty.hvnet.vn/Upload/Files/avene.jpg?width=137&height=100&v=17042020" data-cument="https://adminbeauty.hvnet.vn/Upload/Files/avene.jpg?width=137&height=100&v=17042020" class="img-reponsive lazyslide" alt="Avene" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Play Boy " class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/play-boy.gif?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="Play Boy " />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Pony" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/pony.jpg?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="Pony" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Paula&#x27;s Choice" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/paulas-choice.jpg?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="Paula&#x27;s Choice" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="NYX" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/nyx.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="NYX" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Bioderma" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/bioderma.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="Bioderma" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="LANEIGE KOREA" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/laneige-korea.jpg?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="LANEIGE KOREA" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Revlon" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/revlon-korea.jpg?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="Revlon" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Victoria&#x27;s Secret" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/victorias-secret.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="Victoria&#x27;s Secret" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="City Color" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/city-color.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="City Color" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="A&#x27;PIEU" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/apieu.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="A&#x27;PIEU" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="StIves" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/stives.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="StIves" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Ohui " class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/ohui.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="Ohui " />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="The Body Shop" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/the-body-shop.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="The Body Shop" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Physician Formula" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/physician-formula.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="Physician Formula" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Rimmel" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/rimmel.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="Rimmel" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Covergirl" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/covergirl.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="Covergirl" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Kose" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/kose.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="Kose" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Nature Republic" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/nature-republic.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="Nature Republic" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Simple" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/simple.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="Simple" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Yadah " class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/yadah.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="Yadah " />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Lanopearl" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/lanopearl.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="Lanopearl" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Rebirth " class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/rebirth.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="Rebirth " />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Aritaum" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/0003078_aritaum_420.jpeg?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="Aritaum" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Careline" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/careline.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="Careline" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="MAC" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/mac.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="MAC" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Shiseido" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/shiseido.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="Shiseido" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Missha" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/missha.jpg?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="Missha" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="L.A Girl" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/la-girl.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="L.A Girl" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Evoluderm" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/evoluderm.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="Evoluderm" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Benton" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/benton.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="Benton" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="DHC" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/dhc.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="DHC" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Mamonde" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/mamonde.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="Mamonde" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Sivanna Colors" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/sivanna-colors.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="Sivanna Colors" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Maybelline" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/maybeline.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="Maybelline" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Secret Key" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/secret-key.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="Secret Key" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Bath and body works" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/bath-amp-body-works.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="Bath and body works" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="L&#x27;oreal Paris" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/loreal.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="L&#x27;oreal Paris" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="3W Clinic" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/3wc.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="3W Clinic" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Tonymoly" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/tonymoly.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="Tonymoly" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="W7 " class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/w7.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="W7 " />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Holika Holika " class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/holika.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="Holika Holika " />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="3CE" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/3ce.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="3CE" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Etude House" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/etude-house.jpg?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="Etude House" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Skinfood" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/skinfood.jpg?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="Skinfood" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="SK - II" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/sk-ii.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="SK - II" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Innisfree" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/innisfree.jpg?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="Innisfree" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="The Face Shop" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/the-face-shop.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="The Face Shop" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Hada Labo" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/hada-labo.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="Hada Labo" />
+									</a>
+								</div>
+								<div class="item">
+									<a href="javascript:void(0);" title="Neutrogena" class="brand-img">
+										<img width="97" height="71" data-src="https://adminbeauty.hvnet.vn/Upload/Files/neutrogena.png?width=137&height=100&v=17042020" class="img-reponsive owl-lazy" alt="Neutrogena" />
+									</a>
+								</div>
+							</div>
+							<a href="javascript:void(0)" class="brand-nex bnts-brand">
+								<i class="fa fa-angle-right" aria-hidden="true"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="pad-30">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="box-litmit">
+						<h2>THÔNG TIN NỔI BẬT</h2>
+						<div class="arrow-slider caner">
+							<a href="javascript:void(0)" class="news-pre btn-pre bnts">
+								<i class="fa fa-angle-left" aria-hidden="true"></i>
+							</a>
+							<a href="javascript:void(0)" class="news-nex btn-next bnts">
+								<i class="fa fa-angle-right" aria-hidden="true"></i>
+							</a>
+						</div>
+					</div>
+
+					<div class="box-tent">
+						<div class="owl-carousel box-tintuc">
+							@foreach (var item in Model.tinNoiBats)
+							{
+								var ImagePath = "~/wwwroot/News/";
+								if (Model.anhs.Where(s => s.MaTinTuc == item.MaTinTuc).FirstOrDefault() != null)
+								{
+									ImagePath += Model.anhs.Where(s => s.MaTinTuc == item.MaTinTuc).FirstOrDefault().LinkAnh;
+								}
+								<div class="item">
+									<div class="box-news">
+										<div class="bor-s">
+											<div class="news-img">
+												<a href="@Url.Action("Index", "TT", new { id = item.MaTinTuc })">
+													<img src="@Url.Content(ImagePath)" data-cument="@Url.Content(ImagePath)" alt="@item.TieuDe" class="img-reponsive lazyslide" style="width:286px;height:192px" />
+												</a>
+											</div>
+											<div class="news-content">
+												<a href="@Url.Action("Index", "TT", new { id = item.MaTinTuc })" title="@item.TieuDe">
+													@item.TieuDe
+												</a>
+											
+											</div>
+										</div>
+									</div>
+								</div>
+							}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="pad-30">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="h2-customer">
+
+						<h2>
+							<i class="fa fa-quote-left left" aria-hidden="true"></i>
+							ý kiến khách hàng
+							<i class="fa fa-quote-right right" aria-hidden="true"></i>
+						</h2>
+
+					</div>
+
+					<div class="box-tent">
+						<a href="javascript:void(0)" class="customer-pre bnts-customer">
+							<i class="fa fa-angle-left" aria-hidden="true"></i>
+						</a>
+						<div class="owl-carousel box-customer">
+							<div class="item">
+								<div class="box-inner">
+									<div class="img-customer">
+										<img width="60" height="60"
+											 src="https://adminbeauty.hvnet.vn/Upload/Files/16112702_10208156288561212_4378727832274056704_o.jpg?width=60&height=60&v=18042020"
+											 data-cument="https://adminbeauty.hvnet.vn/Upload/Files/16112702_10208156288561212_4378727832274056704_o.jpg?width=60&height=60&v=18042020" alt="Ho&#xE0;ng Nhung" class="img-reponsive lazyslide" />
+									</div>
+									<a href="https://www.facebook.com/nhugpu/posts/10208235169173178:0" title="Ho&#xE0;ng Nhung" target="_blank">
+										Gi&#xE1; c&#x1EA3; c&#x1EF1;c d&#x1EC5; ch&#x1ECB;u tr&#xEA;n th&#x1ECB; tr&#x1B0;&#x1EDD;ng m&#x1EF9; ph&#x1EA9;m hi&#x1EC7;n nay. Ch&#x1ECB; nh&#xE2;n vi&#xEA;n h&#xF4;m qua t&#x1B0; v&#x1EA5;n cho m&#xEC;nh r&#x1EA5;t k&#x1EF9;, n&#xEA;n nghe t&#x1B0; v&#x1EA5;n xong mua mu&#x1ED1;n l&#x1EE7;ng c&#x1EA3; t&#xFA;i. S&#x1EBD; l&#xE0; kh&#xE1;ch h&#xE0;ng trung th&#xE0;nh c&#x1EE7;a Beauty Garden.&#xD;&#xA;
+										<span>Xem chi tiết</span>
+									</a>
+									<p><b>Ho&#xE0;ng Nhung</b></p>
+								</div>
+							</div>
+							<div class="item">
+								<div class="box-inner">
+									<div class="img-customer">
+										<img width="60" height="60"
+											 data-src="https://adminbeauty.hvnet.vn/Upload/Files/10406510_213960282128214_4383007999217281369_n.jpg?width=60&height=60&v=18042020" alt="EL Nin&#xF4; " class="img-reponsive owl-lazy" />
+									</div>
+									<a href="https://www.facebook.com/permalink.php?story_fbid=522792847911621&amp;id=100005427304915&amp;substory_index=0" title="EL Nin&#xF4; " target="_blank">
+										H&#xF4;m nay &#x111;&#x1EBF;n shop mua son cho b&#x1EA1;n g&#xE1;i m&#xEC;nh c&#x1EA3;m th&#x1EA5;y r&#x1EA5;t h&#xE0;i l&#xF2;ng v&#x1EC1; b&#x1EA1;n nh&#xE2;n vi&#xEA;n b&#xE1;n h&#xE0;ng , b&#x1EA1;n &#x1EA5;y &#x111;&#xE3; gi&#xFA;p m&#xEC;nh mua &#x111;&#xFA;ng m&#xE0;u son b&#x1EA1;n m&#xEC;nh th&#xED;ch.&#xD;&#xA;Shop &#x111;a d&#x1EA1;ng h&#xE0;ng ho&#xE1; , trang tr&#xED; &#x111;&#x1EB9;p v&#xE0; gi&#xE1; r&#x1EBB; s&#x1EBD; b&#x1EA3;o b&#x1EA1;n g&#xE1;i m&#xEC;nh qua mua h&#xE0;ng th&#x1B0;&#x1EDD;ng xuy&#xEA;n. Mong shop lu&#xF4;n lu&#xF4;n c&#xF3; nh&#x1EEF;ng b&#x1EA1;n nh&#xE2;n vi&#xEA;n t&#x1B0; v&#x1EA5;n nh&#x1B0; b&#x1EA1;n n&#x1EEF; &#x1EA5;y!
+										<span>Xem chi tiết</span>
+									</a>
+									<p><b>EL Nin&#xF4; </b></p>
+								</div>
+							</div>
+							<div class="item">
+								<div class="box-inner">
+									<div class="img-customer">
+										<img width="60" height="60"
+											 data-src="https://adminbeauty.hvnet.vn/Upload/Files/18221904_274323839695722_4187200371973568146_n.jpg?width=60&height=60&v=18042020" alt="Minh Anh" class="img-reponsive owl-lazy" />
+									</div>
+									<a href="https://www.facebook.com/daominhanh21101996/posts/193127467815360:0" title="Minh Anh" target="_blank">
+										Hai l&#x1EA7;n em &#x111;&#x1EBF;n shop mua t&#x1EA9;y da ch&#x1EBF;t ST.IVES v&#xE0; s&#x1EEF;a r&#x1EED;a m&#x1EB7;t. Em &#x111;&#x1EC1;u r&#x1EA5;t th&#xED;ch m&#x1EA5;y ch&#x1ECB; t&#x1B0; v&#x1EA5;n r&#x1EA5;t nhi&#x1EC7;t t&#xEC;nh. &#x110;&#x1EB7;c bi&#x1EC7;t m&#x1EA5;y ch&#x1ECB; lu&#xF4;n t&#x1B0;&#x1A1;i c&#x1B0;&#x1EDD;i k&#x1EC3; c&#x1EA3; ch&#x1ECB; t&#x1B0; v&#x1EA5;n v&#xE0; ch&#x1ECB; thu ng&#xE2;n. Em s&#x1EBD; lu&#xF4;n &#x1EE7;ng h&#x1ED9; shop.
+										<span>Xem chi tiết</span>
+									</a>
+									<p><b>Minh Anh</b></p>
+								</div>
+							</div>
+							<div class="item">
+								<div class="box-inner">
+									<div class="img-customer">
+										<img width="60" height="60"
+											 data-src="https://adminbeauty.hvnet.vn/Upload/Files/17798924_1054472354697871_498115013455581690_n.jpg?width=60&height=60&v=18042020" alt="Linh &#x110;&#x1EAD;u" class="img-reponsive owl-lazy" />
+									</div>
+									<a href="https://www.facebook.com/dieu.linh.39794/posts/959429147535526:0" title="Linh &#x110;&#x1EAD;u" target="_blank">
+										H&#xF4;m nay &#x111;&#x1EBF;n mua SP c&#x1EE7;a shop r&#x1EA5;t chi l&#xE0; th&#xED;ch ch&#x1ECB; nh&#xE2;n vi&#xEA;n &#x111;&#xF3;, do da m&#xEC;nh b&#x1ECB; kh&#xF4; n&#xEA;n ch&#x1ECB; t&#x1B0; v&#x1EA5;n r&#x1EA5;t k&#x1EF9; l&#x1B0;&#x1EE1;ng l&#x1EA1;i hay c&#x1B0;&#x1EDD;i n&#x1EEF;a , ch&#x1ECB; nhi&#x1EC7;t t&#xEC;nh gh&#xEA; c&#x1A1; , sp c&#x1EE7;a shop e v&#x1EC1; d&#xF9;ng th&#xED;ch l&#x1EAF;m lu&#xF4;n &#x1EA1; . C&#x1EA3;m &#x1A1;n ch&#x1ECB; nhi&#x1EC1;u nh&#xE9; , l&#x1EA7;n sau s&#x1EBD; qua v&#xE0; b&#x1EA3;o ch&#x1ECB; t&#x1B0; v&#x1EA5;n ak . Ch&#x1ECB; hay c&#x1B0;&#x1EDD;i.&#xD;&#xA;
+										<span>Xem chi tiết</span>
+									</a>
+									<p><b>Linh &#x110;&#x1EAD;u</b></p>
+								</div>
+							</div>
+							<div class="item">
+								<div class="box-inner">
+									<div class="img-customer">
+										<img width="60" height="60"
+											 data-src="https://adminbeauty.hvnet.vn/Upload/Files/17991991_636655289857415_2024600740020971408_n.jpg?width=60&height=60&v=18042020" alt="Th&#xE1;i Ph&#x1B0;&#x1A1;ng Th&#x1EA3;o" class="img-reponsive owl-lazy" />
+									</div>
+									<a href="https://www.facebook.com/yeu.bo.7/posts/573879736134971:0" title="Th&#xE1;i Ph&#x1B0;&#x1A1;ng Th&#x1EA3;o" target="_blank">
+										Y&#xEA;u Shop. m&#xE3;i &#x1EE7;ng h&#x1ED9; shop. &#x110;&#x1ED3; &#x111;a d&#x1EA1;ng, g&#x1EA7;n nh&#x1B0; l&#xE0; c&#xE1;i g&#xEC; m&#xEC;nh mu&#x1ED1;n mua shop &#x111;&#x1EC1;u c&#xF3; h&#x1EBF;t, m&#xE0; k&#x1EC3; c&#x1EA3; m&#xEC;nh ch&#x1B0;a c&#x1EA7;n mua g&#xEC; th&#xEC; &#x111;&#x1EBF;n shop ki&#x1EC3;u g&#xEC; c&#x169;ng ph&#x1EA3;i khu&#xE2;n 1 c&#xE1;i g&#xEC; &#x111;&#xF3; v&#x1EC1; v&#xEC; h&#xE0;ng l&#xFA;c n&#xE0;o c&#x169;ng tuy&#x1EC7;t v&#x1EDD;i, gi&#xE1; th&#xEC; y&#xEA;u ko th&#x1EC3; t&#x1EA3;.
+										<span>Xem chi tiết</span>
+									</a>
+									<p><b>Th&#xE1;i Ph&#x1B0;&#x1A1;ng Th&#x1EA3;o</b></p>
+								</div>
+							</div>
+							<div class="item">
+								<div class="box-inner">
+									<div class="img-customer">
+										<img width="60" height="60"
+											 data-src="https://adminbeauty.hvnet.vn/Upload/Files/17264338_119423171922471_2018974082884941836_n.jpg?width=60&height=60&v=18042020" alt="Ti&#xEA;u D&#x1B0;&#x1A1;ng" class="img-reponsive owl-lazy" />
+									</div>
+									<a href="https://www.facebook.com/duong.tieu.58726/posts/122954438236011:0" title="Ti&#xEA;u D&#x1B0;&#x1A1;ng" target="_blank">
+										&#x110;&#xE3; mua v&#xE0; c&#x1EF1;c k&#x1EF3; h&#xE0;i l&#xF2;ng. &#x1EDE; &#x110;&#xE0; N&#x1EB5;ng mu&#x1ED1;n t&#xEC;m m&#x1ED9;t n&#x1A1;i c&#xF3; r&#x1EA5;t nhi&#x1EC1;u m&#x1EF9; ph&#x1EA9;m l&#xE0;m &#x111;&#x1EB9;p nh&#x1B0; n&#xE0;y th&#x1EAD;t s&#x1EF1; l&#xE0; r&#x1EA5;t kh&#xF3;.&#xD;&#xA;
+										<span>Xem chi tiết</span>
+									</a>
+									<p><b>Ti&#xEA;u D&#x1B0;&#x1A1;ng</b></p>
+								</div>
+							</div>
+							<div class="item">
+								<div class="box-inner">
+									<div class="img-customer">
+										<img width="60" height="60"
+											 data-src="https://adminbeauty.hvnet.vn/Upload/Files/12651218_945171965579673_4150068264542304142_n.jpg?width=60&height=60&v=18042020" alt="Nguy&#x1EC5;n Hi&#x1EC7;n" class="img-reponsive owl-lazy" />
+									</div>
+									<a href="https://www.facebook.com/hientakao/posts/1179142738849260:0" title="Nguy&#x1EC5;n Hi&#x1EC7;n" target="_blank">
+										S&#x1EA3;n ph&#x1EA9;m ch&#xED;nh h&#xE3;ng nhi&#x1EC1;u kinh kh&#x1EE7;ng, t&#x1EDB;i mua cho v&#x1EE3; m&#xF3;n qu&#xE0; sinh nh&#x1EAD;t m&#xE0; kh&#xF4;ng bi&#x1EBF;t ch&#x1ECD;n lo&#x1EA1;i g&#xEC; may m&#xE0; nh&#x1EDD; m&#x1EA5;y em t&#x1B0; v&#x1EA5;n nhi&#x1EC7;t t&#xEC;nh. C&#x1EA3;m &#x1A1;n Beauty Garden.
+										<span>Xem chi tiết</span>
+									</a>
+									<p><b>Nguy&#x1EC5;n Hi&#x1EC7;n</b></p>
+								</div>
+							</div>
+							<div class="item">
+								<div class="box-inner">
+									<div class="img-customer">
+										<img width="60" height="60"
+											 data-src="https://adminbeauty.hvnet.vn/Upload/Files/16602746_659432207573110_1651129273927689767_n-compressor.jpg?width=60&height=60&v=18042020" alt="Nguy&#x1EC5;n Th&#x1ECB; Tuy&#x1EBF;t Trinh" class="img-reponsive owl-lazy" />
+									</div>
+									<a href="https://www.facebook.com/zuize.zin/posts/663035820546082:0" title="Nguy&#x1EC5;n Th&#x1ECB; Tuy&#x1EBF;t Trinh" target="_blank">
+										Th&#xED;ch mua &#x111;&#x1ED3; &#x1EDF; shop v&#xEC; nh&#xE2;n vi&#xEA;n si&#xEA;u cute, h&#xF4;m tr&#x1B0;&#x1EDB;c m&#xEC;nh gh&#xE9; chi nh&#xE1;nh Ph&#xFA; Nhu&#x1EAD;n &#x111;&#x1B0;&#x1EE3;c ch&#x1ECB; nh&#xE2;n vi&#xEA;n t&#x1B0; v&#x1EA5;n nhi&#x1EC7;t t&#xEC;nh v&#xE0; ch&#x1EC9; th&#xEA;m nhi&#x1EC1;u b&#xED; quy&#x1EBF;t d&#x1B0;&#x1EE1;ng da . Y&#xEA;u Shop...
+										<span>Xem chi tiết</span>
+									</a>
+									<p><b>Nguy&#x1EC5;n Th&#x1ECB; Tuy&#x1EBF;t Trinh</b></p>
+								</div>
+							</div>
+
+						</div>
+						<a href="javascript:void(0)" class="customer-nex bnts-customer">
+							<i class="fa fa-angle-right" aria-hidden="true"></i>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="pad-30">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="box-litmit">
+						<h2>HỆ THỐNG CỬA HÀNG</h2>
+						<div class="arrow-slider caner">
+							<a href="javascript:void(0)" class="shop-pre btn-pre bnts">
+								<i class="fa fa-angle-left" aria-hidden="true"></i>
+							</a>
+							<a href="javascript:void(0)" class="shop-nex btn-next bnts">
+								<i class="fa fa-angle-right" aria-hidden="true"></i>
+							</a>
+						</div>
+					</div>
+
+					<div class="box-tent">
+						<div class="owl-carousel box-shop">
+							<div class="item">
+								<div class="box-news">
+									<div class="bor-s">
+										<div class="news-img">
+											<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3917.197072840642!2d106.81767041483745!3d10.948481058988!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3174dead1c56497b%3A0x7ae97cbaa860aabc!2zMzkgSMawbmcgxJDhuqFvIFbGsMahbmcsIFF1eeG6v3QgVGjhuq9uZywgVGjDoG5oIHBo4buRIEJpw6puIEjDsmEsIMSQ4buTbmcgTmFpLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1606872171234!5m2!1svi!2s" onclick="OpenMoal(this)">
+												<img width="283" height="188" src="https://adminbeauty.hvnet.vn/Upload/Files/banner/beautygarden-bienhoa-cuahang.jpg?width=268&height=178&v=17042020" data-cument="https://adminbeauty.hvnet.vn/Upload/Files/banner/beautygarden-bienhoa-cuahang.jpg?width=268&height=178&v=17042020" alt="" class="img-reponsive lazyslide" />
+												<div class="map-eage">
+													<i class="fa fa-map-marker"></i>
+													<p>39 H&#x1B0;ng &#x110;&#x1EA1;o V&#x1B0;&#x1A1;ng, Th&#xE0;nh ph&#x1ED1; Bi&#xEA;n H&#xF2;a, &#x110;&#x1ED3;ng Nai</p>
+												</div>
+											</a>
+										</div>
+										<div class="news-content shop-content">
+											<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3917.197072840642!2d106.81767041483745!3d10.948481058988!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3174dead1c56497b%3A0x7ae97cbaa860aabc!2zMzkgSMawbmcgxJDhuqFvIFbGsMahbmcsIFF1eeG6v3QgVGjhuq9uZywgVGjDoG5oIHBo4buRIEJpw6puIEjDsmEsIMSQ4buTbmcgTmFpLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1606872171234!5m2!1svi!2s" onclick="OpenMoal(this)">
+												Chi Nh&#xE1;nh Bi&#xEA;n H&#xF2;a
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="item">
+								<div class="box-news">
+									<div class="bor-s">
+										<div class="news-img">
+											<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3928.835329599595!2d105.77405951471812!3d10.03044397526167!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31a088218097e8ad%3A0x9d8ae3002404b305!2zMTU0IE5ndXnhu4VuIFZp4buHdCBI4buTbmcsIFh1w6JuIEtow6FuaCwgTmluaCBLaeG7gXUsIEPhuqduIFRoxqEsIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1592129658474!5m2!1svi!2s" onclick="OpenMoal(this)">
+												<img width="283" height="188" src="https://adminbeauty.hvnet.vn/Upload/Files/banner/cuahangcantho.jpg?width=268&height=178&v=17042020" data-cument="https://adminbeauty.hvnet.vn/Upload/Files/banner/cuahangcantho.jpg?width=268&height=178&v=17042020" alt="" class="img-reponsive lazyslide" />
+												<div class="map-eage">
+													<i class="fa fa-map-marker"></i>
+													<p>154 Nguy&#x1EC5;n Vi&#x1EC7;t H&#x1ED3;ng, P.An Ph&#xFA;, Ninh Ki&#x1EC1;u, C&#x1EA7;n Th&#x1A1;</p>
+												</div>
+											</a>
+										</div>
+										<div class="news-content shop-content">
+											<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3928.835329599595!2d105.77405951471812!3d10.03044397526167!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31a088218097e8ad%3A0x9d8ae3002404b305!2zMTU0IE5ndXnhu4VuIFZp4buHdCBI4buTbmcsIFh1w6JuIEtow6FuaCwgTmluaCBLaeG7gXUsIEPhuqduIFRoxqEsIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1592129658474!5m2!1svi!2s" onclick="OpenMoal(this)">
+												Chi Nh&#xE1;nh C&#x1EA7;n Th&#x1A1;
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="item">
+								<div class="box-news">
+									<div class="bor-s">
+										<div class="news-img">
+											<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.9120606482597!2d105.78411161482066!3d21.0362043929002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab4a748ee167%3A0x4d8a95bdb7a8a30!2zTmfDtSAxNjVDLCBYdcOibiBUaOG7p3ksIEThu4tjaCBW4buNbmcgSOG6rXUsIEPhuqd1IEdp4bqleSwgSMOgIE7hu5lpLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1592129556282!5m2!1svi!2s" onclick="OpenMoal(this)">
+												<img width="283" height="188" src="https://adminbeauty.hvnet.vn/Upload/Files/banner/cuahangxuanthuy.jpg?width=268&height=178&v=17042020" data-cument="https://adminbeauty.hvnet.vn/Upload/Files/banner/cuahangxuanthuy.jpg?width=268&height=178&v=17042020" alt="" class="img-reponsive lazyslide" />
+												<div class="map-eage">
+													<i class="fa fa-map-marker"></i>
+													<p>165C Xu&#xE2;n Th&#x1EE7;y, C&#x1EA7;u Gi&#x1EA5;y, H&#xE0; N&#x1ED9;i</p>
+												</div>
+											</a>
+										</div>
+										<div class="news-content shop-content">
+											<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.9120606482597!2d105.78411161482066!3d21.0362043929002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab4a748ee167%3A0x4d8a95bdb7a8a30!2zTmfDtSAxNjVDLCBYdcOibiBUaOG7p3ksIEThu4tjaCBW4buNbmcgSOG6rXUsIEPhuqd1IEdp4bqleSwgSMOgIE7hu5lpLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1592129556282!5m2!1svi!2s" onclick="OpenMoal(this)">
+												Chi Nh&#xE1;nh Xu&#xE2;n Th&#x1EE7;y H&#xE0; N&#x1ED9;i
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="item">
+								<div class="box-news">
+									<div class="bor-s">
+										<div class="news-img">
+											<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3892.449104911124!2d108.044288!3d12.684084!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x88ad5f499d631d80!2sBeauty%20Garden%20-%20Bu%C3%B4n%20Ma%20Thu%E1%BB%99t!5e0!3m2!1svi!2sus!4v1586851943823!5m2!1svi!2sus" onclick="OpenMoal(this)">
+												<img width="283" height="188" src="https://adminbeauty.hvnet.vn/Upload/Files/St-bmt.jpg?width=268&height=178&v=17042020" data-cument="https://adminbeauty.hvnet.vn/Upload/Files/St-bmt.jpg?width=268&height=178&v=17042020" alt="" class="img-reponsive lazyslide" />
+												<div class="map-eage">
+													<i class="fa fa-map-marker"></i>
+													<p>87 Hai B&#xE0; Tr&#x1B0;ng, P.Th&#x1EAF;ng L&#x1EE3;i, Tp.Bu&#xF4;n Ma Thu&#x1ED9;t</p>
+												</div>
+											</a>
+										</div>
+										<div class="news-content shop-content">
+											<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3892.449104911124!2d108.044288!3d12.684084!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x88ad5f499d631d80!2sBeauty%20Garden%20-%20Bu%C3%B4n%20Ma%20Thu%E1%BB%99t!5e0!3m2!1svi!2sus!4v1586851943823!5m2!1svi!2sus" onclick="OpenMoal(this)">
+												Chi Nh&#xE1;nh Bu&#xF4;n Ma Thu&#x1ED9;t - &#x110;&#x103;kL&#x103;k
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="item">
+								<div class="box-news">
+									<div class="bor-s">
+										<div class="news-img">
+											<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7838.796294140641!2d106.632957!3d10.780787!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f0dfa4d3a4f%3A0x472bcdd9525c3fd7!2sBeauty%20Garden%20-%20T%C3%A2n%20Ph%C3%BA!5e0!3m2!1svi!2sus!4v1586851550998!5m2!1svi!2sus" onclick="OpenMoal(this)">
+												<img width="283" height="188" data-src="https://adminbeauty.hvnet.vn/Upload/Files/st-tp-hcm.jpg?width=268&height=178&v=17042020" alt="" class="img-reponsive owl-lazy" />
+												<div class="map-eage">
+													<i class="fa fa-map-marker"></i>
+													<p>17 Nguy&#x1EC5;n S&#x1A1;n, P.Ph&#xFA; Th&#x1EA1;nh, Q.T&#xE2;n Ph&#xFA;, TP H&#x1ED3; Ch&#xED; Minh</p>
+												</div>
+											</a>
+										</div>
+										<div class="news-content shop-content">
+											<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7838.796294140641!2d106.632957!3d10.780787!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f0dfa4d3a4f%3A0x472bcdd9525c3fd7!2sBeauty%20Garden%20-%20T%C3%A2n%20Ph%C3%BA!5e0!3m2!1svi!2sus!4v1586851550998!5m2!1svi!2sus" onclick="OpenMoal(this)">
+												Chi Nh&#xE1;nh T&#xE2;n Ph&#xFA; - TP H&#x1ED3; Ch&#xED; Minh
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="item">
+								<div class="box-news">
+									<div class="bor-s">
+										<div class="news-img">
+											<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7667.797888151916!2d108.14820200000001!3d16.070733!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3142190b6f039953%3A0x6f63baf0fc4f133d!2zQmVhdXR5IEdhcmRlbiAoSOG7hyBUaOG7kW5nIE3hu7kgUGjhuqltIENow61uaCBIw6NuZyk!5e0!3m2!1svi!2sus!4v1586851763324!5m2!1svi!2sus" onclick="OpenMoal(this)">
+												<img width="283" height="188" data-src="https://adminbeauty.hvnet.vn/Upload/Files/da-2.jpg?width=268&height=178&v=17042020" alt="" class="img-reponsive owl-lazy" />
+												<div class="map-eage">
+													<i class="fa fa-map-marker"></i>
+													<p>94 &#xC2;u C&#x1A1;, P.H&#xF2;a Kh&#xE1;nh B&#x1EAF;c, Q.Li&#xEA;n Chi&#x1EC3;u, TP. &#x110;&#xE0; N&#x1EB5;ng</p>
+												</div>
+											</a>
+										</div>
+										<div class="news-content shop-content">
+											<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7667.797888151916!2d108.14820200000001!3d16.070733!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3142190b6f039953%3A0x6f63baf0fc4f133d!2zQmVhdXR5IEdhcmRlbiAoSOG7hyBUaOG7kW5nIE3hu7kgUGjhuqltIENow61uaCBIw6NuZyk!5e0!3m2!1svi!2sus!4v1586851763324!5m2!1svi!2sus" onclick="OpenMoal(this)">
+												Chi Nh&#xE1;nh &#x110;&#xE0; N&#x1EB5;ng 2
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="item">
+								<div class="box-news">
+									<div class="bor-s">
+										<div class="news-img">
+											<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7837.118984785582!2d106.79197800000001!3d10.844984!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x37fb819462e9c33b!2zQmVhdXR5IEdhcmRlbiAoSOG7hyBUaOG7kW5nIE3hu7kgUGjhuqltIENow61uaCBow6NuZyAp!5e0!3m2!1sen!2sus!4v1586851454403!5m2!1sen!2sus" onclick="OpenMoal(this)">
+												<img width="283" height="188" data-src="https://adminbeauty.hvnet.vn/Upload/Files/beautygardenquan9.jpg?width=268&height=178&v=17042020" alt="" class="img-reponsive owl-lazy" />
+												<div class="map-eage">
+													<i class="fa fa-map-marker"></i>
+													<p>435 L&#xEA; V&#x103;n Vi&#x1EC7;t, T&#x103;ng Nh&#x1A1;n Ph&#xFA; A, Qu&#x1EAD;n 9, TP H&#x1ED3; Ch&#xED; Minh</p>
+												</div>
+											</a>
+										</div>
+										<div class="news-content shop-content">
+											<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7837.118984785582!2d106.79197800000001!3d10.844984!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x37fb819462e9c33b!2zQmVhdXR5IEdhcmRlbiAoSOG7hyBUaOG7kW5nIE3hu7kgUGjhuqltIENow61uaCBow6NuZyAp!5e0!3m2!1sen!2sus!4v1586851454403!5m2!1sen!2sus" onclick="OpenMoal(this)">
+												Chi Nh&#xE1;nh Qu&#x1EAD;n 9 - TP H&#x1ED3; Ch&#xED; Minh
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="item">
+								<div class="box-news">
+									<div class="bor-s">
+										<div class="news-img">
+											<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7743.299855649141!2d107.994139!3d13.979431!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x316c1f2a95123ddf%3A0x165c680e2d90bcbf!2sBeauty%20Garden%20(chi%20nh%C3%A1nh%20Gia%20Lai)!5e0!3m2!1sen!2sus!4v1586851872004!5m2!1sen!2sus" onclick="OpenMoal(this)">
+												<img width="283" height="188" data-src="https://adminbeauty.hvnet.vn/Upload/Files/beautygardenpleiku.jpg?width=268&height=178&v=17042020" alt="" class="img-reponsive owl-lazy" />
+												<div class="map-eage">
+													<i class="fa fa-map-marker"></i>
+													<p>79 Hai B&#xE0; Tr&#x1B0;ng, Ph&#x1B0;&#x1EDD;ng Di&#xEA;n H&#x1ED3;ng, TP Pleiku, Gia Lai</p>
+												</div>
+											</a>
+										</div>
+										<div class="news-content shop-content">
+											<a href="javascript:void(0)" data-url="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7743.299855649141!2d107.994139!3d13.979431!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x316c1f2a95123ddf%3A0x165c680e2d90bcbf!2sBeauty%20Garden%20(chi%20nh%C3%A1nh%20Gia%20Lai)!5e0!3m2!1sen!2sus!4v1586851872004!5m2!1sen!2sus" onclick="OpenMoal(this)">
+												Chi Nh&#xE1;nh Pleiku - Gia Lai
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<input type="hidden" value="7/24/2021 6:46:12 AM" data-id="False" id="Prosale" />
+
+</main>
+@section Scripts{
+	<script>
+		$(document).ready(function () {
+			Killer();
+		});
+		function Killer() {
+			var isSale = $("#Prosale").attr("data-id");
+			if (isSale == "True") {
+				var date = $("#Prosale").val();
+				var datekiller = Date.parse(date);
+				LoadDateCounter(datekiller);
+			}
+		}
+		function LoadDateCounter(datekiller) {
+			// Set the date we're counting down to
+			var countDownDate = datekiller;
+
+			// Update the count down every 1 second
+			var x = setInterval(function () {
+
+				// Get today's date and time
+				var now = new Date().getTime();
+
+				// Find the distance between now and the count down date
+				var distance = countDownDate - now;
+
+				// Time calculations for days, hours, minutes and seconds
+				var days = ("0" + Math.floor(distance / (1000 * 60 * 60 * 24))).slice(-2);
+				var hours = ("0" + Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).slice(-2);
+				var minutes = ("0" + Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).slice(-2);
+				var seconds = ("0" + Math.floor((distance % (1000 * 60)) / 1000)).slice(-2);
+
+				// Output the result in an element with id="demo"
+				var dax = "<div class=\"cd-days\">" + days + " Days</div> : ";
+				var hourx = "<div class=\"cd-days\">" + hours + " Hrs</div> : ";
+				var minutx = "<div class=\"cd-days\">" + minutes + " Mins</div> : ";
+				var seconx = "<div class=\"cd-days\">" + seconds + " Secs</div>";
+				document.getElementById("count-dow").innerHTML = dax + hourx + minutx + seconx;
+
+				// If the count down is over, write some text
+				if (distance < 0) {
+					clearInterval(x);
+					document.getElementById("count-dow").innerHTML = "EXPIRED";
+				}
+			}, 1000);
+		}
+	</script>
+	<script>
+		$(function () {
+			$('#carouselExampleIndicators').on('slide.bs.carousel', function (ev) {
+				var lazy;
+				lazy = $(ev.relatedTarget).find("img.lazy-load");
+				lazy.attr("src", lazy.data('src'));
+				lazy.removeAttr("data-src");
+				lazy.removeClass("lazy-load");
+			});
+		});
+	</script>
+	<script>
+		var owls = $('.slider-sale');
+		owls.owlCarousel({
+			margin: 10,
+			loop: true,
+			lazyLoad: true,
+			autoplayTimeout: 5000,
+			responsive: {
+				0: {
+					items: 2
+				},
+				600: {
+					items: 3
+				},
+				1000: {
+					items: 6
+				}
+			}
+		});
+		$('.sf-nex').click(function () {
+			owls.trigger('next.owl.carousel');
+		});
+		$('.sf-pre').click(function () {
+			owls.trigger('prev.owl.carousel');
+		});
+
+
+		var owlnew = $('.new-sale');
+		owlnew.owlCarousel({
+			margin: 10,
+			lazyLoad: true,
+			autoplayTimeout: 5000,
+			responsive: {
+				0: {
+					items: 2
+				},
+				600: {
+					items: 3
+				},
+				1000: {
+					items: 6
+				}
+			}
+		});
+		$('.new-nex').click(function () {
+			owlnew.trigger('next.owl.carousel');
+		});
+		$('.new-pre').click(function () {
+			owlnew.trigger('prev.owl.carousel');
+		});
+
+		var owlbrand = $('.box-img');
+		owlbrand.owlCarousel({
+			margin: 40,
+			lazyLoad: true,
+			autoplayTimeout: 5000,
+			responsive: {
+				0: {
+					items: 2
+				},
+				600: {
+					items: 3
+				},
+				1000: {
+					items: 6
+				}
+			}
+		});
+
+		$('.brand-nex').click(function () {
+			owlbrand.trigger('next.owl.carousel');
+		});
+		$('.brand-pre').click(function () {
+			owlbrand.trigger('prev.owl.carousel');
+		});
+
+		var owlnews = $('.box-tintuc');
+		owlnews.owlCarousel({
+			margin: 5,
+			lazyLoad: true,
+			autoplayTimeout: 8000,
+			responsive: {
+				0: {
+					items: 1
+				},
+				375: {
+					items: 1
+				},
+				480: {
+					items: 2
+				},
+				600: {
+					items: 3
+				},
+				1000: {
+					items: 4
+				}
+			}
+		});
+
+		$('.news-nex').click(function () {
+			owlnews.trigger('next.owl.carousel');
+		});
+		$('.news-pre').click(function () {
+			owlnews.trigger('prev.owl.carousel');
+		});
+
+		var owlcustomer = $('.box-customer');
+		owlcustomer.owlCarousel({
+			margin: 0,
+			lazyLoad: true,
+			autoplayTimeout: 3000,
+			responsive: {
+				0: {
+					items: 1
+				},
+				375: {
+					items: 1
+				},
+				480: {
+					items: 1
+				},
+				600: {
+					items: 1
+				},
+				1000: {
+					items: 1
+				}
+			}
+		});
+
+		$('.customer-nex').click(function () {
+			owlcustomer.trigger('next.owl.carousel');
+		});
+		$('.customer-pre').click(function () {
+			owlcustomer.trigger('prev.owl.carousel');
+		});
+
+		var owlshop = $('.box-shop');
+		owlshop.owlCarousel({
+			margin: 10,
+			lazyLoad: true,
+			autoplayTimeout: 5000,
+			responsive: {
+				0: {
+					items: 1
+				},
+				375: {
+					items: 1
+				},
+				480: {
+					items: 2
+				},
+				600: {
+					items: 3
+				},
+				1000: {
+					items: 4
+				}
+			}
+		});
+
+		$('.shop-nex').click(function () {
+			owlshop.trigger('next.owl.carousel');
+		});
+		$('.shop-pre').click(function () {
+			owlshop.trigger('prev.owl.carousel');
+		});
+	</script>
+	<script>
+		$('#carouselExampleIndicators').on("slide", function (e) {
+
+			//SCROLLING LEFT
+			var prevItem = $('.active.item', this).prev('.item');
+
+			//Account for looping to LAST image
+			if (!prevItem.length) {
+				prevItem = $('.active.item', this).siblings(":last");
+			}
+
+			//Get image selector
+			prevImage = prevItem.find('img');
+
+			//Remove class to not load again - probably unnecessary
+			if (prevImage.hasClass('lazy-load')) {
+				prevImage.removeClass('lazy-load');
+				prevImage.attr('src', prevImage.data('lazy-load-src'));
+			}
+
+			//SCROLLING RIGHT
+			var nextItem = $('.active.item', this).next('.item');
+
+			//Account for looping to FIRST image
+			if (!nextItem.length) {
+				nextItem = $('.active.item', this).siblings(":first");
+			}
+
+			//Get image selector
+			nextImage = nextItem.find('img');
+
+			//Remove class to not load again - probably unnecessary
+			if (nextImage.hasClass('lazy-load')) {
+				nextImage.removeClass('lazy-load');
+				nextImage.attr('src', nextImage.data('data-src'));
+			}
+
+		});
+	</script>
+	<script>
+		function ShowPDCT(e) {
+			if (e == 1) {
+				$("#tdmatj").addClass("d-block");
+				$("#tdmats").removeClass("d-block").addClass("d-none");
+				$("#tdmoi").removeClass("d-block").addClass("d-none");
+			}
+			if (e == 2) {
+				$("#tdmatj").removeClass("d-block").addClass("d-none");
+				$("#tdmats").addClass("d-block");
+				$("#tdmoi").removeClass("d-block").addClass("d-none");
+			}
+			if (e == 3) {
+				$("#tdmatj").removeClass("d-block").addClass("d-none");
+				$("#tdmats").removeClass("d-block").addClass("d-none");
+				$("#tdmoi").addClass("d-block");
+			}
+			if (e == 4) {
+				$("#duongda").addClass("d-block");
+				$("#lamsachda").removeClass("d-block").addClass("d-none");
+				$("#mask-mn").removeClass("d-block").addClass("d-none");
+			}
+			if (e == 5) {
+				$("#duongda").removeClass("d-block").addClass("d-none");
+				$("#lamsachda").addClass("d-block");
+				$("#mask-mn").removeClass("d-block").addClass("d-none");
+			}
+			if (e == 6) {
+				$("#duongda").removeClass("d-block").addClass("d-none");
+				$("#lamsachda").removeClass("d-block").addClass("d-none");
+				$("#mask-mn").addClass("d-block");
+			}
+		}
+	</script>
+}

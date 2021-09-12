@@ -1,0 +1,39 @@
+﻿@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+	<li>
+		<a href="javascript:void(0);" class="pixen-lg">@User.Identity.GetUserName() <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+		<ul class="ul-non ul-lg ul-xs">
+			<li>
+				@using (Html.BeginForm("Logoff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+				{
+					@Html.AntiForgeryToken()
+
+				<ul class="nav navbar-nav navbar-right">
+					@if (User.IsInRole("Admin") || User.IsInRole("Nhân viên"))
+					{
+						<li><a href="@Url.Action("Index","QuanLy")">Quản lý</a></li>
+					}
+					else
+					{
+						<li>
+							@Html.ActionLink("Tài khoản", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+						</li>
+					}
+					<li><a href="javascript:document.getElementById('logoutForm').submit()">Đăng xuất</a></li>
+				</ul>
+				}
+			</li>
+		</ul>
+	</li>
+}
+else
+{
+	<li>
+		<a href="javascript:void(0);" class="pixen-lg">Tài khoản <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+		<ul class="ul-non ul-lg ul-xs">
+			<li>@Html.ActionLink("Đăng nhập", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+			<li>@Html.ActionLink("Đăng ký", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+		</ul>
+	</li>
+}

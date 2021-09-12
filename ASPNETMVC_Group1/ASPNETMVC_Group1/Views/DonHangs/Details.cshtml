@@ -1,0 +1,329 @@
+﻿@model ASPNETMVC_Group1.Models.DonHangViewModel
+
+@{
+	ViewBag.Title = "Chi tiết đơn hàng";
+	Layout = "~/Views/Shared/_LayoutBackEnd.cshtml";
+}
+@section breadcumb{
+	<li class="breadcrumb-item"><a href="@Url.Action("Index","QuanLy")">Dashboard</a></li>
+	<li class="breadcrumb-item"><a href="@Url.Action("Index","DonHangs")">Đơn hàng</a></li>
+	<li class="breadcrumb-item active">Chi tiết</li>
+}
+@functions
+											{
+	long RoundingTo(long myNum, long roundTo)
+	{
+		if (roundTo <= 0) return myNum;
+		return (myNum + roundTo / 2) / roundTo * roundTo;
+	}
+	long RoundingTo(long myNum, int roundTo)
+	{
+		return RoundingTo(myNum, (long)roundTo);
+	}
+	int RoundingTo(int myNum, int roundTo)
+	{
+		return (int)RoundingTo((long)myNum, (long)roundTo);
+	}
+}
+<div class="row">
+	<div class="col-12">
+		<!-- Main content -->
+		<div class="invoice p-3 mb-3">
+			<!-- title row -->
+			<div class="row">
+				<div class="col-12">
+					<h4>
+						<i class="fas fa-globe"></i> Beauty Garden
+						<small class="float-right">Ngày: @DateTime.UtcNow.AddHours(7).ToString("dd/MM/yyyy")</small>
+					</h4>
+				</div>
+				<!-- /.col -->
+			</div>
+			<!-- info row -->
+			<div class="row invoice-info">
+				<div class="col-sm-4 invoice-col">
+					Từ
+					<address>
+						<strong>Beauty Garden</strong><br>
+						Số 298 Đ. Cầu Diễn, Minh Khai<br>
+						Bắc Từ Liêm, Hà Nội<br>
+						Điện thoại: 032 7439 204<br>
+						Email: beautygardenhaui@gmail.com
+					</address>
+				</div>
+				<!-- /.col -->
+				<div class="col-sm-4 invoice-col">
+					Đến
+					<address>
+						<strong>@Model.Ten</strong><br>
+						@Model.DiaChi<br>
+						@Model.QuanHuyen, @Model.ThanhPho<br>
+						Điện thoại: @Model.SDT<br>
+					</address>
+				</div>
+				<!-- /.col -->
+				<div class="col-sm-4 invoice-col">
+					<b>Hoá Đơn #@Model.MaDonHang</b><br>
+					<b>Ngày Đặt: </b>@Model.NgayDat
+				</div>
+				<!-- /.col -->
+			</div>
+			<!-- /.row -->
+			<!-- Table row -->
+			@{int ThanhTien = 0;}
+			<div class="row">
+				<div class="col-12 table-responsive">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>Sản phẩm</th>
+								<th>Đơn giá</th>
+								<th>Số lượng</th>
+								<th>Giảm giá</th>
+								<th>Thành tiền</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var item in Model.detailDonHangs)
+							{
+								int gb = (int)item.DonGia;
+								string gb2 = "";
+								if (item.GiamGia != null || item.GiamGia > 0)
+								{
+									gb2 = double.Parse(gb.ToString()).ToString("#,###");
+									int gg = (int)item.GiamGia;
+									gb = (int)(gb - gb * ((double)gg / 100));
+									int digits = gb.ToString().Length;
+									gb = RoundingTo(gb, 1000);
+								}
+								ThanhTien += gb * (int)item.SoLuong;
+								string ttsp = double.Parse((item.SoLuong * gb).ToString()).ToString("#,###");
+								string giaban = double.Parse(item.DonGia.ToString()).ToString("#,###");
+								<tr>
+									<td>@item.TenSanPham</td>
+									<td>@giaban</td>
+									<td>@item.SoLuong</td>
+									<td>@(item.GiamGia != null ? item.GiamGia : 0)</td>
+									<td>@ttsp</td>
+								</tr>
+							}
+							@{string TongTT = double.Parse(ThanhTien.ToString()).ToString("#,###");}
+						</tbody>
+					</table>
+				</div>
+				<!-- /.col -->
+			</div>
+			<!-- /.row -->
+
+			<div class="row">
+				<!-- accepted payments column -->
+				<div class="col-6">
+
+				</div>
+				<!-- /.col -->
+				<div class="col-6">
+					<div class="table-responsive">
+						<table class="table">
+							<tr>
+								<th>Tổng tiền:</th>
+								<td>@TongTT₫</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<!-- /.col -->
+			</div>
+			<!-- /.row -->
+			<!-- this row will not appear when printing -->
+			<div class="row no-print">
+				<div class="col-12">
+					<a href="@Url.Action("In","DonHangs",new { id = Model.MaDonHang })" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> In</a>
+					@if (Model.TrangThai == 1)
+					{
+						using (Html.BeginForm("XacNhan", "QuanLy/DonHang", new { id = Model.MaDonHang }, FormMethod.Post, new { @class = "d-inline" }))
+						{
+							@Html.AntiForgeryToken()
+							<button type="submit" data-click="xn" class="btn btn-info btn-sm text-white float-right">
+								<i class="far fa-check-circle"></i> Xác nhận
+							</button>
+						}
+						using (Html.BeginForm("Huy", "QuanLy/DonHang", new { id = Model.MaDonHang }, FormMethod.Post, new { @class = "d-inline" }))
+						{
+							@Html.AntiForgeryToken()
+							<button type="submit" data-click="huy" class="btn btn-danger btn-sm text-white float-right" style="margin-right: 5px;">
+								<i class="fas fa-ban"></i> Huỷ
+							</button>
+						}
+					}
+					@if (Model.TrangThai == 2)
+					{
+						using (Html.BeginForm("HoanThanh", "QuanLy/DonHang", new { id = Model.MaDonHang }, FormMethod.Post, new { @class = "d-inline" }))
+						{
+							@Html.AntiForgeryToken()
+							<button type="submit" data-click="ht" class="btn btn-success btn-sm text-white float-right">
+								<i class="fas fa-money-check"></i> Hoàn thành
+							</button>
+						}
+						using (Html.BeginForm("Huy", "QuanLy/DonHang", new { id = Model.MaDonHang }, FormMethod.Post, new { @class = "d-inline" }))
+						{
+							@Html.AntiForgeryToken()
+							<button type="submit" data-click="huy" class="btn btn-danger btn-sm text-white float-right" style="margin-right: 5px;">
+								<i class="fas fa-ban"></i> Huỷ
+							</button>
+						}
+					}
+					@*<button type="button" class="btn btn-success float-right">
+						<i class="far fa-credit-card"></i> Submit
+						Payment
+					</button>
+					<button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
+						<i class="fas fa-download"></i> Generate PDF
+					</button>*@
+				</div>
+			</div>
+		</div>
+		<!-- /.invoice -->
+	</div><!-- /.col -->
+</div><!-- /.row -->
+@section css{
+	<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+	<link href="~/Public/BackEnd/dist/css/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+}
+@section scripts{
+	<script src="~/Public/BackEnd/dist/js/sweetalert2.all.min.js"></script>
+	<script>
+		//Initialize
+		$('#donhang').addClass('active');
+	</script>
+	<script>
+		//Submit xn
+		$(document).ready(function () {
+			$('[data-click="xn"]').click(function (e) {
+				e.preventDefault();
+				var form = $(this).parents('form');
+				const swalWithBootstrapButtons = Swal.mixin({
+					customClass: {
+						confirmButton: 'btn btn-success mr-3',
+						cancelButton: 'btn btn-danger'
+					},
+					buttonsStyling: false
+				})
+				swalWithBootstrapButtons.fire({
+					title: 'Xác nhận đơn hàng',
+					text: "Xác nhận đơn hàng này?",
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonText: 'Có',
+					cancelButtonText: 'Không'
+				}).then((result) => {
+					if (result.isConfirmed) {
+						form.submit()
+					}
+				});
+			});
+		});
+		//Submit ht
+		$(document).ready(function () {
+			$('[data-click="ht"]').click(function (e) {
+				e.preventDefault();
+				var form = $(this).parents('form');
+				const swalWithBootstrapButtons = Swal.mixin({
+					customClass: {
+						confirmButton: 'btn btn-success mr-3',
+						cancelButton: 'btn btn-danger'
+					},
+					buttonsStyling: false
+				})
+				swalWithBootstrapButtons.fire({
+					title: 'Hoàn thành đơn hàng',
+					text: "Hoàn thành đơn hàng này?",
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonText: 'Có',
+					cancelButtonText: 'Không'
+				}).then((result) => {
+					if (result.isConfirmed) {
+						form.submit()
+					}
+				});
+			});
+		});
+		//Submit huy
+		$(document).ready(function () {
+			$('[data-click="huy"]').click(function (e) {
+				e.preventDefault();
+				var form = $(this).parents('form');
+				const swalWithBootstrapButtons = Swal.mixin({
+					customClass: {
+						confirmButton: 'btn btn-success mr-3',
+						cancelButton: 'btn btn-danger'
+					},
+					buttonsStyling: false
+				})
+				swalWithBootstrapButtons.fire({
+					title: 'Huỷ đơn hàng',
+					text: "Huỷ đơn hàng này?",
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonText: 'Có',
+					cancelButtonText: 'Không'
+				}).then((result) => {
+					if (result.isConfirmed) {
+						form.submit()
+					}
+				});
+			});
+		});
+	</script>
+	@if (ViewBag.HTSuccess != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Hoàn thành đơn hàng!',
+				'',
+				'success'
+			)
+		</script>
+	}
+	@if (ViewBag.XNSuccess != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Xác nhận thành công!',
+				'',
+				'success'
+			)
+		</script>
+	}
+	@if (ViewBag.HuySuccess != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Huỷ đơn hàng thành công!',
+				'',
+				'success'
+			)
+		</script>
+	}
+}

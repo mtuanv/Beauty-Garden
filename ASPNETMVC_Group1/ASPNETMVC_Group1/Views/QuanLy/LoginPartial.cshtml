@@ -1,0 +1,19 @@
+﻿@model ASPNETMVC_Group1.Models.AspNetUser
+<div class="image">
+	@{
+		string ImagePath = "~/wwwroot/Avatars/";
+		if (Model.Anh != null)
+		{
+			ImagePath += Model.Anh;
+		}
+		else
+		{
+			ImagePath += "default_avatar.jpg";
+		}
+	}
+	<img src="@Url.Content(ImagePath)" class="img-circle elevation-2" alt="User Image">
+</div>
+<div class="info">
+	<a href="javascript:void(0);" class="d-block">@Model.Ten</a>
+</div>
+

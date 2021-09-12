@@ -1,0 +1,116 @@
+﻿@model IEnumerable<ASPNETMVC_Group1.Models.DanhMuc>
+
+@foreach (var mnu1 in Model.Where(m => !m.MaDanhMucCha.HasValue))
+{
+	if (mnu1.MaDanhMuc == 1 || mnu1.MaDanhMuc == 2)
+	{
+		<li class="li-parent">
+			<a href="@Url.Action("Index","DM",new { id = mnu1.MaDanhMuc })" class="a-parent">
+				@mnu1.TenDanhMuc
+				<i class="fa fa-angle-down hidden-xs hidden-sm" aria-hidden="true"></i>
+			</a>
+			<i class="fa fa-angle-right hidden-md ase" aria-hidden="true"></i>
+			<div class="out-menu">
+				<div class="row">
+					@foreach (var mnu2 in Model.Where(m => m.MaDanhMucCha == mnu1.MaDanhMuc))
+					{
+						<div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+							<div>
+								<a href="@Url.Action("Index","DM",new { id = mnu2.MaDanhMuc })" class="title-two">@mnu2.TenDanhMuc</a>
+								<ul class="ul-non ul-out">
+									@foreach (var mnu3 in Model.Where(m => m.MaDanhMucCha == mnu2.MaDanhMuc && !m.DeletedDate.HasValue))
+									{
+										<li><a href="@Url.Action("Index","DM",new { id = mnu3.MaDanhMuc })">@mnu3.TenDanhMuc</a></li>
+									}
+								</ul>
+							</div>
+						</div>
+					}
+					<div class="col-lg-3 col-md-12 col-sm-12 col-xs-12 hidden-sm hidden-xs">
+						<div>
+							<img src="~/Public/FrontEnd/img/make-up-bg.png" alt="banner-maker" class="img-reponsive lazy-img" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</li>
+	}
+	if (mnu1.MaDanhMuc == 4 || mnu1.MaDanhMuc == 5)
+	{
+		<li class="li-parent">
+			<a href="@Url.Action("Index","DM",new { id = mnu1.MaDanhMuc })" class="a-parent">
+				@mnu1.TenDanhMuc
+				<i class="fa fa-angle-down hidden-xs hidden-sm" aria-hidden="true"></i>
+			</a>
+			<i class="fa fa-angle-right hidden-md ase" aria-hidden="true"></i>
+			<div class="out-menu menu-outer">
+				<div class="row">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<div>
+							<ul class="ul-non ul-out">
+								@foreach (var mnu4 in Model.Where(m => m.MaDanhMucCha == mnu1.MaDanhMuc && !m.DeletedDate.HasValue))
+								{
+									<li>
+										<a href="@Url.Action("Index","DM",new { id = mnu4.MaDanhMuc })">@mnu4.TenDanhMuc</a>
+									</li>
+								}
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</li>
+	}
+	if (mnu1.MaDanhMuc == 3 || mnu1.MaDanhMuc == 6)
+	{
+		<li class="li-parent">
+			<a href="@Url.Action("Index","DM",new { id = mnu1.MaDanhMuc })" class="a-parent">
+				@mnu1.TenDanhMuc
+				<i class="fa fa-angle-down hidden-xs hidden-sm" aria-hidden="true"></i>
+			</a>
+			<i class="fa fa-angle-right hidden-md ase" aria-hidden="true"></i>
+			<div class="out-menu right-mn">
+				<div class="row">
+					@{
+						int oneRow = Model.Where(m => m.MaDanhMucCha == mnu1.MaDanhMuc && !m.DeletedDate.HasValue).Count() / 3;
+						int lastRow = oneRow + (Model.Where(m => m.MaDanhMucCha == mnu1.MaDanhMuc && !m.DeletedDate.HasValue).Count() % 3);
+						int skip = 0;
+						if ((lastRow - oneRow) % 3 != 0)
+						{
+							lastRow -= 2;
+							oneRow += 1;
+						}
+					}
+					@for (int i = 0; i < 3; i++)
+					{
+						if (i == 2)
+						{
+							<div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+								<div>
+									<ul class="ul-non ul-out">
+										@foreach (var mnu5 in Model.Where(m => m.MaDanhMucCha == mnu1.MaDanhMuc && !m.DeletedDate.HasValue).Skip(skip).Take(lastRow))
+										{
+											<li><a href="@Url.Action("Index","DM",new { id = mnu5.MaDanhMuc })">@mnu5.TenDanhMuc</a></li>
+										}
+									</ul>
+								</div>
+							</div>
+							break;
+						}
+						<div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+							<div>
+								<ul class="ul-non ul-out">
+									@foreach (var mnu5 in Model.Where(m => m.MaDanhMucCha == mnu1.MaDanhMuc && !m.DeletedDate.HasValue).Skip(skip).Take(oneRow))
+									{
+										<li><a href="@Url.Action("Index","DM",new { id = mnu5.MaDanhMuc })">@mnu5.TenDanhMuc</a></li>
+									}
+								</ul>
+							</div>
+						</div>
+						skip += oneRow;
+					}
+				</div>
+			</div>
+		</li>
+	}
+}

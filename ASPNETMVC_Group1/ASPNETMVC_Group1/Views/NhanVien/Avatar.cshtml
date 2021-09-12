@@ -1,0 +1,131 @@
+﻿@model ASPNETMVC_Group1.Models.AspNetUser
+@{
+	ViewBag.Title = "Đổi ảnh đại diện";
+	Layout = "~/Views/Shared/_LayoutBackEnd.cshtml";
+}
+@section breadcumb{
+	<li class="breadcrumb-item"><a href="@Url.Action("Index", "QuanLy")">Dashboard</a></li>
+	<li class="breadcrumb-item"><a href="@Url.Action("Index", "NhanVien")">Nhân viên</a></li>
+	<li class="breadcrumb-item active">Đổi ảnh đại diện</li>
+}
+<div class="row">
+	<div class="col-md-6">
+		<div class="card card-primary">
+			<div class="card-header">
+				<h3 class="card-title">Ảnh đại diện</h3>
+			</div>
+			<div class="card-body">
+				@using (Html.BeginForm("Avatar", "NhanVien", new { id = Model.Id }, FormMethod.Post, new { id = "changeAvatar", enctype = "multipart/form-data" }))
+				{
+					@Html.AntiForgeryToken()
+					@Html.HiddenFor(model => model.Id)
+					<div class="form-group">
+						<div class="custom-file">
+							<input type="file" class="custom-file-input" id="File" name="File" onchange="loadFile(event)">
+							<label class="custom-file-label" for="File">Chọn ảnh</label>
+							<small id="file-valid" class="text-danger"></small>
+						</div>
+					</div>
+					<button class="btn btn-success" type="submit" id="updateAvatar">Lưu</button>
+				}
+			</div>
+			<!-- /.card-body -->
+		</div>
+		<!-- /.card -->
+	</div>
+	<div class="col-md-6">
+		@{
+			string ImagePath = "~/wwwroot/Avatars/";
+			if (Model.Anh != null)
+			{
+				ImagePath += Model.Anh;
+			}
+			else
+			{
+				ImagePath += "default_avatar.jpg";
+			}
+		}
+		<img src="@Url.Content(ImagePath)" alt="Avatar" width="350" id="BigAvatar" class="img-thumbnail">
+	</div>
+</div>
+<div class="row">
+	<div class="col-12">
+		<a href="@Url.Action("Index")" class="btn btn-secondary">Trở về danh sách</a>
+	</div>
+</div>
+@section css{
+	<link href="~/Public/BackEnd/dist/css/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+}
+@section scripts{
+	<script src="~/Public/BackEnd/dist/js/sweetalert2.all.min.js"></script>
+	<script src="~/Public/BackEnd/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+	<script>
+		$(function () {
+			bsCustomFileInput.init();
+		});
+	</script>
+	<script>
+		//Initialize
+		$('#nhanvien').addClass('active');
+	</script>
+	<script>
+		//Validate
+		$('#updateAvatar').prop('disabled', true);
+		$('#File').change(function () {
+			if ($("#File").val() == "") {
+				$("#file-valid").text("Hãy chọn ảnh");
+				$('#updateAvatar').prop('disabled', true);
+			} else {
+				var allowed = [".jpg", ".png", ".gif", ".jpeg", ".jfif"];
+				var imageUpload = $("#File")[0];
+				var regexImage = new RegExp(
+					"([a-zA-Z0-9s_\\.-:()])+(" + allowed.join("|") + ")$"
+				);
+				if (!regexImage.test(imageUpload.value.toLowerCase())) {
+					$("#file-valid").text("Định dạng ảnh không phù hợp");
+					$('#updateAvatar').prop('disabled', true);
+				} else {
+					$("#file-valid").text("");
+					$('#updateAvatar').prop('disabled', false);
+				}
+			}
+		});
+		var loadFile = function (event) {
+			var flag = true;
+			if ($("#File").val() == "") {
+				flag = false;
+			} else {
+				var allowed = [".jpg", ".png", ".gif", ".jpeg", ".jfif"];
+				var imageUpload = $("#File")[0];
+				var regexImage = new RegExp(
+					"([a-zA-Z0-9s_\\.-:()])+(" + allowed.join("|") + ")$"
+				);
+				if (!regexImage.test(imageUpload.value.toLowerCase())) {
+					flag = false;
+				}
+			}
+			if (flag) {
+				var image = document.getElementById("BigAvatar");
+				image.src = URL.createObjectURL(event.target.files[0]);
+			}
+		};
+	</script>
+	@if (ViewBag.Error != null)
+	{
+		<script>
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger mr-3'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire(
+				'Đổi thất bại!',
+				"",
+				'error'
+			)
+		</script>
+	}
+}
+

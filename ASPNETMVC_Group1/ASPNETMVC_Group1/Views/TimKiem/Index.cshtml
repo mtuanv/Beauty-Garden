@@ -1,0 +1,194 @@
+﻿@model PagedList.IPagedList<ASPNETMVC_Group1.Models.SearchView>
+@using PagedList.Mvc
+@{
+	ViewBag.Title = "Tìm kiếm sản phẩm";
+	Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
+}
+<main role="main" class="pb-3">
+	<input type="hidden" id="keyhide" value="son" />
+	<div class="bracum">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<ol class="ol-non">
+						<li><a href="/">Trang chủ</a></li>
+						<li><a href="javascript:void(0)">Tìm Kiếm</a></li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="">
+		<div class="container">
+			<div class="row">
+				@if (ViewBag.CurrentType == 0)
+				{
+					<div class="col-lg-9 order-lg-last">
+						<div class="box-manugar">
+							<div class="my-content">
+								<div class="head-box">
+									<div class="title-box">
+										<h1>
+											<span>
+												Có <b style="color:red">@ViewBag.KetQua</b> kết quả tìm kiếm cho từ khóa '<b style="color:red">@ViewBag.CurrentKeyword</b>'
+											</span>
+										</h1>
+									</div>
+									<div class="clr"></div>
+								</div>
+								<div class="mar-bot-20">
+									<div class="row">
+										@functions
+											{
+											long RoundingTo(long myNum, long roundTo)
+											{
+												if (roundTo <= 0) return myNum;
+												return (myNum + roundTo / 2) / roundTo * roundTo;
+											}
+											long RoundingTo(long myNum, int roundTo)
+											{
+												return RoundingTo(myNum, (long)roundTo);
+											}
+											int RoundingTo(int myNum, int roundTo)
+											{
+												return (int)RoundingTo((long)myNum, (long)roundTo);
+											}
+										}
+										@foreach (var item in Model)
+										{
+											int gb = (int)item.GiaBan;
+											int gtt = (int)item.GiaThiTruong;
+											int tk = gtt - gb;
+											string gb2 = "";
+											if (item.GiamGia != null || item.GiamGia > 0)
+											{
+												gb2 = double.Parse(gb.ToString()).ToString("#,###");
+												int gg = (int)item.GiamGia;
+												gb = (int)(gb - gb * ((double)gg / 100));
+												int digits = gb.ToString().Length;
+												gb = RoundingTo(gb, 1000);
+											}
+											string giaban = double.Parse(gb.ToString()).ToString("#,###");
+											string giathitruong = double.Parse(gtt.ToString()).ToString("#,###");
+											<div class="col-lg-3 col-md-4 col-sm-6 col-6 pan-right mar-bot-10">
+												<div class="pd-box ">
+													<div class="box-images">
+														<a href="@Url.Action("Index", "SP", new { id = item.MaSanPham })" title="@item.TenSanPham">
+															@{var ImagePath = "~/wwwroot/Products/" + item.anh.LinkAnh;}
+															<img src="@Url.Content(ImagePath)"
+																 data-src="@Url.Content(ImagePath)"
+																 alt="@item.TenSanPham" class="img-reponsive lazy " style="width:206px;height:230px" />
+														</a>
+														<button type="button" class="btn-addlike " onclick="AddLike(@item.MaSanPham)"><i class="fa fa-heart-o heart_new"></i></button>
+														@if (item.GiamGia != null || item.GiamGia > 0)
+														{
+															<div class="sale-off">@item.GiamGia%<br />OFF</div>
+														}
+													</div>
+													<div class="box-content">
+														<h3>
+															<a href="@Url.Action("Index", "SP", new { id = item.MaSanPham })" title="@item.TenSanPham">@item.TenSanPham</a>
+														</h3>
+														<div>
+															<span class="price-drop">@giaban₫</span>
+															<span class="price ">@giathitruong₫</span>
+														</div>
+													</div>
+												</div>
+											</div>
+										}
+									</div>
+									<div class="row">
+										<div class="col-lg-12">
+											@Html.PagedListPager(Model, page => Url.Action("Index", new { page, keyword = ViewBag.CurrentKeyword, type = ViewBag.CurrentType }))
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				}
+				else
+				{
+					<div class="col-lg-9 order-lg-last">
+						<div class="box-manugar">
+							<div class="my-content">
+								<div class="head-box">
+									<div class="title-box">
+										<h1>
+											<span>
+												Có <b style="color:red">@ViewBag.KetQua</b> kết quả tìm kiếm cho từ khóa '<b style="color:red">@ViewBag.CurrentKeyword</b>'
+											</span>
+										</h1>
+									</div>
+									<div class="clr"></div>
+								</div>
+								<div class="body-box">
+									@foreach (var item in Model)
+									{
+										<div class="item-news">
+											<div class="row">
+												<div class="col-lg-5">
+													<a href="@Url.Action("Index", "TT", new { id = item.MaTinTuc })" title="@item.TieuDe" class="a-recome">
+														@{
+															var ImagePath = "~/wwwroot/News/" + item.anh.LinkAnh;
+														}
+														<img data-src="@Url.Content(ImagePath)" alt="@item.TieuDe" class="img-reponsive lazy" />
+													</a>
+												</div>
+												<div class="col-lg-7">
+													<div class="content-right">
+														<h2>
+															<a href="@Url.Action("Index","TT",new { id = item.MaTinTuc })" title="@item.TieuDe">@item.TieuDe</a>
+														</h2>
+														<span>@Convert.ToDateTime(item.CreatedDate).ToString("dd/MM/yyyy")</span>
+														<p></p>
+														<a href="@Url.Action("Index","TT",new { id = item.MaTinTuc })" class="see-more" title="Xem tiếp">Xem tiếp</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									}
+								</div>
+								<div class="mar-bot-20">
+									<div class="row">
+										<div class="col-lg-12 text-right">
+											@Html.PagedListPager(Model, page => Url.Action("Index", new { page, keyword = ViewBag.CurrentKeyword, type = ViewBag.CurrentType }))
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				}
+
+			<div class="col-lg-3 order-lg-first">
+				<div class="box-left hidden-sm hidden-xs">
+					@{Html.RenderAction("DanhMucSanPham", "Partial");}
+				</div>
+
+				<div class="box-left hidden-sm hidden-xs">
+					@{Html.RenderAction("TinNoiBat", "Partial");}
+				</div>
+
+				<div class="box-left">
+					@{Html.RenderAction("SanPhamMoiVe", "Partial");}
+				</div>
+
+			</div>
+			</div>
+		</div>
+	</div>
+
+
+</main>
+
+@section css{
+	<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+	<link href="~/Public/FrontEnd/css/category.css" rel="stylesheet" type="text/css" />
+}
+
+
+
